@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/style">
+        <file>ApplicationWindow.qml</file>
+        <file>Button.qml</file>
+        <file>CheckBox.qml</file>
+        <file>CheckIndicator.qml</file>
+        <file>ComboBox.qml</file>
+        <file>Control.qml</file>
+        <file>Menu.qml</file>
+        <file>MenuItem.qml</file>
+        <file>Page.qml</file>
+        <file>RadioButton.qml</file>
+        <file>RadioIndicator.qml</file>
+        <file>Slider.qml</file>
+        <file>TabBar.qml</file>
+        <file>TabButton.qml</file>
+        <file>TextArea.qml</file>
+        <file>TextField.qml</file>
+    </qresource>
+</RCC>

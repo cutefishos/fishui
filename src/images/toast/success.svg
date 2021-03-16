@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="16"
+   height="16"
+   version="1.1"
+   id="svg6"
+   sodipodi:docname="success.svg"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)">
+  <metadata
+     id="metadata12">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs10" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1366"
+     inkscape:window-height="659"
+     id="namedview8"
+     showgrid="false"
+     inkscape:zoom="24.742661"
+     inkscape:cx="7.0882101"
+     inkscape:cy="8.641063"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="g4"
+     inkscape:document-rotation="0" />
+  <g
+     transform="translate(-913 271)"
+     id="g4">
+    <path
+       class="error"
+       color="#ffffff"
+       d="m 921,-271 c -4.423,0 -8,3.576 -8,8 0,4.424 3.577,8 8,8 4.424,0 8,-3.576 8,-8 0,-4.424 -3.576,-8 -8,-8 z m 0,1 c 3.86599,0 7,3.13401 7,7 0,3.86599 -3.13401,7 -7,7 -3.86599,0 -7,-3.13401 -7,-7 0,-3.86599 3.13401,-7 7,-7 z"
+       fill="#ffffff"
+       overflow="visible"
+       style="text-indent:0;text-transform:none;fill:#ffffff;marker:none"
+       id="path2"
+       sodipodi:nodetypes="ssssssssss" />
+    <path
+       class="success"
+       color="#ffffff"
+       d="m 924.47415,-266.0365 c 0.89888,-0.0257 1.36114,1.06545 0.71655,1.69228 l -5.13208,5.13209 -2.86518,-2.86518 c -0.96787,-0.92844 0.46521,-2.36152 1.39366,-1.39365 l 1.47152,1.47153 3.73843,-3.73843 c 0.17857,-0.18397 0.42183,-0.29109 0.67809,-0.29864 z"
+       fill="#ffffff"
+       overflow="visible"
+       style="fill:#ffffff;stroke-width:0.211983;stroke-miterlimit:4;stroke-dasharray:none;marker:none"
+       id="path2-3"
+       sodipodi:nodetypes="ccccccccc" />
+  </g>
+</svg>

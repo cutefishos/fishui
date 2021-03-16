@@ -1,0 +1,31 @@
+<RCC>
+    <qresource prefix="/meui/kit">
+        <file alias="BlurBackground.qml">controls/BlurBackground.qml</file>
+        <file alias="BusyIndicator.qml">controls/BusyIndicator.qml</file>
+        <file alias="Icon.qml">controls/Icon.qml</file>
+        <file alias="Menu.qml">controls/Menu.qml</file>
+        <file alias="MouseHover.qml">controls/MouseHover.qml</file>
+        <file alias="PopupTips.qml">controls/PopupTips.qml</file>
+        <file alias="RoundedRect.qml">controls/RoundedRect.qml</file>
+        <file alias="Theme.qml">controls/Theme.qml</file>
+        <file alias="Toast.qml">controls/Toast.qml</file>
+        <file alias="Units.qml">controls/Units.qml</file>
+        <file alias="Window.qml">controls/Window.qml</file>
+        <file alias="WindowButton.qml">controls/WindowButton.qml</file>
+        <file>images/refresh.svg</file>
+        <file>images/dark/close.svg</file>
+        <file>images/dark/maximize.svg</file>
+        <file>images/dark/minimize.svg</file>
+        <file>images/dark/restore.svg</file>
+        <file>images/light/close.svg</file>
+        <file>images/light/maximize.svg</file>
+        <file>images/light/minimize.svg</file>
+        <file>images/light/restore.svg</file>
+        <file>images/toast/close.svg</file>
+        <file>images/toast/error.svg</file>
+        <file>images/toast/info.svg</file>
+        <file>images/toast/success.svg</file>
+        <file>images/toast/warn.svg</file>
+    </qresource>
+    <qresource prefix="/"/>
+</RCC>

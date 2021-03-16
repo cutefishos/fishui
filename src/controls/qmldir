@@ -1,0 +1,15 @@
+module MeuiKit
+plugin MeuiKit
+classname MeuiKit
+depends QtQuick.Controls 2.13
+depends QtQuick.Controls.Private 2.10
+depends QtQuick.Controls 2.10
+depends QtGraphicalEffects 1.0
+designersupported
+
+typeinfo plugins.qmltypes
+
+singleton Theme 1.0 Theme.qml
+singleton Units 1.0 Units.qml
+
+PopupTips 1.0 PopupTips.qml
