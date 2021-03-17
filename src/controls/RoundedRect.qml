@@ -10,7 +10,7 @@ Item {
     property real radius: Meui.Theme.smallRadius
     property var color: Meui.Theme.backgroundColor
 
-    property bool animationEnabled: false
+    property bool animationEnabled: true
 
     property alias backgroundOpacity: _background.opacity
 
@@ -62,7 +62,7 @@ Item {
         Behavior on color {
             ColorAnimation {
                 duration: control.animationEnabled ? 200 : 0
-                easing.type: Easing.InOutCubic
+                easing.type: Easing.Linear
             }
         }
     }
