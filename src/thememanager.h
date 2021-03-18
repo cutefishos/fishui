@@ -55,7 +55,7 @@ private:
     int m_accentColorID;
 
     QColor m_accentColor;
-    QColor m_blueColor   = QColor(34,  115, 230);   // #2273E6
+    QColor m_blueColor   = QColor(51,  133, 255);   // #3385FF
     QColor m_redColor    = QColor(232, 46,  62 );   // #E82E3E
     QColor m_greenColor  = QColor(53,  191, 86 );   // #35BF56
     QColor m_purpleColor = QColor(130, 102, 255);   // #8266FF

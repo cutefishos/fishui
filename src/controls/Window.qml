@@ -164,8 +164,8 @@ Window {
 
         Behavior on color {
             ColorAnimation {
-                duration: 0
-                easing.type: Easing.InOutCubic
+                duration: 200
+                easing.type: Easing.Linear
             }
         }
 
