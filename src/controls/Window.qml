@@ -41,9 +41,13 @@ Window {
         }
     }
 
+    Meui.WindowHelper {
+        id: windowHelper
+    }
+
     // Left bottom edge
     MouseArea {
-        height: edgeSize
+        height: edgeSize * 2
         width: height
         anchors.bottom: parent.bottom
         anchors.left: parent.left
@@ -58,13 +62,13 @@ Window {
         DragHandler {
             grabPermissions: TapHandler.CanTakeOverFromAnything
             target: null
-            onActiveChanged: if (active) { root.startSystemResize(Qt.LeftEdge | Qt.BottomEdge) }
+            onActiveChanged: if (active) { windowHelper.startSystemResize(root, Qt.LeftEdge | Qt.BottomEdge) }
         }
     }
 
     // Right bottom edge
     MouseArea {
-        height: edgeSize
+        height: edgeSize * 2
         width: height
         anchors.bottom: parent.bottom
         anchors.right: parent.right
@@ -79,7 +83,7 @@ Window {
         DragHandler {
             grabPermissions: TapHandler.CanTakeOverFromAnything
             target: null
-            onActiveChanged: if (active) { root.startSystemResize(Qt.RightEdge | Qt.BottomEdge) }
+            onActiveChanged: if (active) { windowHelper.startSystemResize(root, Qt.RightEdge | Qt.BottomEdge) }
         }
     }
 
@@ -100,7 +104,7 @@ Window {
         DragHandler {
             grabPermissions: TapHandler.CanTakeOverFromAnything
             target: null
-            onActiveChanged: if (active) { root.startSystemResize(Qt.BottomEdge) }
+            onActiveChanged: if (active) { windowHelper.startSystemResize(root, Qt.BottomEdge) }
         }
     }
 
@@ -121,7 +125,7 @@ Window {
         DragHandler {
             grabPermissions: TapHandler.CanTakeOverFromAnything
             target: null
-            onActiveChanged: if (active) { root.startSystemResize(Qt.LeftEdge) }
+            onActiveChanged: if (active) { windowHelper.startSystemResize(root, Qt.LeftEdge) }
         }
     }
 
@@ -142,7 +146,7 @@ Window {
         DragHandler {
             grabPermissions: TapHandler.CanTakeOverFromAnything
             target: null
-            onActiveChanged: if (active) { root.startSystemResize(Qt.RightEdge) }
+            onActiveChanged: if (active) { windowHelper.startSystemResize(root, Qt.RightEdge) }
         }
     }
 
@@ -159,7 +163,8 @@ Window {
         anchors.fill: parent
         anchors.margins: 0
         radius: !isMaximized && !isFullScreen ? root.windowRadius : 0
-        color: Qt.rgba(root.backgroundColor.r, root.backgroundColor.g, root.backgroundColor.b, root.backgroundOpacity)
+        color: Qt.rgba(root.backgroundColor.r, root.backgroundColor.g,
+                       root.backgroundColor.b, root.backgroundOpacity)
         antialiasing: true
 
         Behavior on color {
@@ -211,7 +216,7 @@ Window {
                     DragHandler {
                         acceptedDevices: PointerDevice.GenericPointer
                         grabPermissions: PointerHandler.CanTakeOverFromItems | PointerHandler.CanTakeOverFromHandlersOfDifferentType | PointerHandler.ApprovesTakeOverByAnything
-                        onActiveChanged: if (active) { root.startSystemMove() }
+                        onActiveChanged: if (active) { windowHelper.startSystemMove(root) }
                     }
                 }
 
@@ -240,7 +245,7 @@ Window {
                             WindowButton {
                                 size: 35
                                 source: "qrc:/meui/kit/images/" + (Meui.Theme.darkMode ? "dark/" : "light/") + "minimize.svg"
-                                onClicked: root.showMinimized()
+                                onClicked: windowHelper.minimizeWindow(root)
                                 visible: root.visibility !== Window.FullScreen
                                 Layout.alignment: Qt.AlignTop
                             }

@@ -17,27 +17,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MEUIKIT_H
-#define MEUIKIT_H
+#ifndef WINDOWHELPER_H
+#define WINDOWHELPER_H
 
-#include <QtQml/QQmlExtensionPlugin>
+#include <QObject>
+#include <QWindow>
+#include <xcb/xcb.h>
 
-class MeuiKit : public QQmlExtensionPlugin
+class WindowHelper : public QObject
 {
     Q_OBJECT
-    Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
 
 public:
-    void initializeEngine(QQmlEngine *engine, const char *uri);
-    void registerTypes(const char *uri);
+    explicit WindowHelper(QObject *parent = nullptr);
+
+    Q_INVOKABLE void startSystemMove(QWindow *w);
+    Q_INVOKABLE void startSystemResize(QWindow *w, Qt::Edges edges);
+
+    Q_INVOKABLE void minimizeWindow(QWindow *w);
 
 private:
-    QUrl componentUrl(const QString &fileName) const;
-    QString resolveFilePath(const QString &path) const
-    {
-        return baseUrl().toLocalFile() + QLatin1Char('/') + path;
-    }
+    void doStartSystemMoveResize(QWindow *w, int edges);
 
+private:
+    xcb_atom_t m_moveResizeAtom;
 };
 
-#endif // MEUIKIT_H
+#endif // WINDOWHELPER_H

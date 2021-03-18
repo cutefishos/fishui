@@ -10,6 +10,7 @@ set(SOURCES
     shadowhelper/tileset.cpp
     blurhelper/windowblur.cpp
     blurhelper/windowblur.h
+    windowhelper.cpp
 
     meuikit.qrc
     meui-style/style.qrc
@@ -26,6 +27,7 @@ target_link_libraries (${TARGET}
         Qt5::Qml
         Qt5::Quick
         Qt5::QuickControls2
+        Qt5::X11Extras
         KF5::WindowSystem
 )
 
