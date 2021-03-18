@@ -6,8 +6,9 @@ import QtQuick.Controls.impl 2.4
 T.Button
 {
     id: control
-    implicitWidth: Math.max(background.implicitWidth, contentItem.implicitWidth + Meui.Units.largeSpacing)
-    implicitHeight: background.implicitHeight
+    implicitWidth: Math.max(background.implicitWidth + Meui.Units.extendBorderWidth,
+                            contentItem.implicitWidth + Meui.Units.largeSpacing + Meui.Units.extendBorderWidth)
+    implicitHeight: background.implicitHeight + Meui.Units.extendBorderWidth
     hoverEnabled: true
 
     property color hoveredColor: Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r,
@@ -37,15 +38,32 @@ T.Button
         alignment: Qt.AlignCenter
     }
 
-    background: Rectangle {
-        implicitWidth:  (Meui.Units.iconSizes.medium * 3) + Meui.Units.largeSpacing
-        implicitHeight: Meui.Units.iconSizes.medium + Meui.Units.smallSpacing
+    background: Item {
+        implicitWidth:  (Meui.Units.iconSizes.medium * 3) + Meui.Units.largeSpacing + Meui.Units.extendBorderWidth
+        implicitHeight: Meui.Units.iconSizes.medium + Meui.Units.smallSpacing + Meui.Units.extendBorderWidth
 
-        color: control.flat && control.enabled ? control.pressed ? control.flatPressedColor : control.hovered ? control.flatHoveredColor : Meui.Theme.highlightColor
-                            : control.pressed ? control.pressedColor : control.hovered ? control.hoveredColor : Meui.Theme.backgroundColor
-        border.color: control.flat && control.enabled ? Meui.Theme.highlightColor : control.activeFocus || control.pressed ? Meui.Theme.highlightColor : 
-                                     Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
-        border.width: control.pressed ? 0 : Meui.Units.devicePixelRatio
-        radius: Meui.Theme.smallRadius
+        Rectangle {
+            id: _border
+            anchors.fill: parent
+            visible: control.activeFocus
+            color: "transparent"
+            border.color: Qt.rgba(Meui.Theme.highlightColor.r,
+                                  Meui.Theme.highlightColor.g,
+                                  Meui.Theme.highlightColor.b, 0.3)
+            border.width: Meui.Units.extendBorderWidth
+            radius: Meui.Theme.smallRadius
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            anchors.margins: Meui.Units.extendBorderWidth
+            radius: Meui.Theme.smallRadius - Meui.Units.extendBorderWidth
+            border.color: control.flat && control.enabled ? Meui.Theme.highlightColor : control.activeFocus || control.pressed ? Meui.Theme.highlightColor : 
+                          Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
+            border.width: 1
+
+            color: control.flat && control.enabled ? control.pressed ? control.flatPressedColor : control.hovered ? control.flatHoveredColor : Meui.Theme.highlightColor
+                                : control.pressed ? control.pressedColor : control.hovered ? control.hoveredColor : Meui.Theme.backgroundColor
+        }
     }
 }

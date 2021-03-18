@@ -31,14 +31,14 @@ T.TextField {
 
     implicitWidth: Math.max(200,
                             placeholderText ? placeholder.implicitWidth + leftPadding + rightPadding : 0)
-                            || contentWidth + leftPadding + rightPadding
+                            || contentWidth + leftPadding + rightPadding + Meui.Units.extendBorderWidth
     implicitHeight: Math.max(contentHeight + topPadding + bottomPadding,
                              background ? background.implicitHeight : 0,
-                             placeholder.implicitHeight + topPadding + bottomPadding)
+                             placeholder.implicitHeight + topPadding + bottomPadding + Meui.Units.extendBorderWidth)
 
     // padding: 6
-    leftPadding: Meui.Units.smallSpacing
-    rightPadding: Meui.Units.smallSpacing
+    leftPadding: Meui.Units.smallSpacing + Meui.Units.extendBorderWidth
+    rightPadding: Meui.Units.smallSpacing + Meui.Units.extendBorderWidth
 
     //Text.NativeRendering is broken on non integer pixel ratios
     renderType: Window.devicePixelRatio % 1 !== 0 ? Text.QtRendering : Text.NativeRendering
@@ -73,24 +73,31 @@ T.TextField {
 		wrapMode: Text.NoWrap
 	}
 
-	background: Rectangle {
-        implicitWidth: 1 * 120
-        implicitHeight: Meui.Units.iconSizes.medium + Meui.Units.smallSpacing
-        color: control.activeFocus ? Qt.lighter(Meui.Theme.backgroundColor, 1.4)
-        : (control.hovered ? Qt.lighter(Meui.Theme.backgroundColor, 1.3) : Meui.Theme.backgroundColor)
-
-        border.color: control.activeFocus ? Meui.Theme.highlightColor :
-                      Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
-        
-        ColorAnimation {
-            id: _colorAnimation
-            duration: 125
-            easing.type: Easing.InOutCubic
-        }
-        Behavior on color { animation: _colorAnimation }
-        Behavior on border.color { animation: _colorAnimation }
-
+    background: Rectangle {
+        implicitWidth: (Meui.Units.iconSizes.medium * 3) + Meui.Units.smallSpacing + Meui.Units.extendBorderWidth
+        implicitHeight: Meui.Units.iconSizes.medium + Meui.Units.smallSpacing + Meui.Units.extendBorderWidth
+        color: control.activeFocus ? Qt.lighter(Meui.Theme.backgroundColor, 1.4) : Meui.Theme.backgroundColor
         radius: Meui.Theme.smallRadius
-        border.width: 1
-	}
+
+        Rectangle {
+            id: _border
+            anchors.fill: parent
+            visible: control.activeFocus
+            color: "transparent"
+            border.color: Qt.rgba(Meui.Theme.highlightColor.r,
+                                  Meui.Theme.highlightColor.g,
+                                  Meui.Theme.highlightColor.b, 0.3)
+            border.width: Meui.Units.extendBorderWidth
+            radius: Meui.Theme.smallRadius
+        }
+
+        Rectangle {
+            anchors.fill: parent
+            anchors.margins: Meui.Units.extendBorderWidth
+            radius: Meui.Theme.smallRadius - Meui.Units.extendBorderWidth
+            color: "transparent"
+            border.color: control.activeFocus ? Meui.Theme.highlightColor : Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
+            border.width: 1
+        }
+    }
 }

@@ -45,11 +45,11 @@ import MeuiKit 1.0 as Meui
 T.ComboBox {
     id: control
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-                            implicitContentWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             implicitContentHeight + topPadding + bottomPadding,
-                             implicitIndicatorHeight + topPadding + bottomPadding)
+    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset + Meui.Units.extendBorderWidth,
+                            implicitContentWidth + leftPadding + rightPadding + Meui.Units.extendBorderWidth)
+    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset + Meui.Units.extendBorderWidth,
+                             implicitContentHeight + topPadding + bottomPadding + Meui.Units.extendBorderWidth,
+                             implicitIndicatorHeight + topPadding + bottomPadding + Meui.Units.extendBorderWidth)
 
     topInset: Meui.Units.smallSpacing
     bottomInset: Meui.Units.smallSpacing
@@ -105,15 +105,36 @@ T.ComboBox {
 
         color: !control.editable ? control.Meui.Theme.backgroundColor : "transparent"
 
-        border.color: Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
+        Rectangle {
+            id: _border
+            anchors.fill: parent
+            visible: control.activeFocus
+            color: "transparent"
+            border.color: Qt.rgba(Meui.Theme.highlightColor.r,
+                                  Meui.Theme.highlightColor.g,
+                                  Meui.Theme.highlightColor.b, 0.3)
+            border.width: Meui.Units.extendBorderWidth
+            radius: Meui.Theme.smallRadius
+        }
 
         Rectangle {
-            visible: control.editable
-            y: parent.y + control.baselineOffset
-            width: parent.width
-            height: control.activeFocus ? 2 : 1
-            color: control.editable && control.activeFocus ? control.Meui.Theme.highlightColor : control.Meui.Theme.highlightedTextColor
+            anchors.fill: parent
+            anchors.margins: Meui.Units.extendBorderWidth
+            radius: Meui.Theme.smallRadius - Meui.Units.extendBorderWidth
+            color: "transparent"
+            border.color: control.activeFocus ? Meui.Theme.highlightColor : Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
+            border.width: 1
         }
+
+        // border.color: control.activeFocus ? Meui.Theme.highlightColor : Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
+
+        // Rectangle {
+        //     visible: control.editable
+        //     y: parent.y + control.baselineOffset
+        //     width: parent.width
+        //     height: control.activeFocus ? 2 : 1
+        //     color: control.editable && control.activeFocus ? control.Meui.Theme.highlightColor : control.Meui.Theme.highlightedTextColor
+        // }
     }
 
     popup: T.Popup {

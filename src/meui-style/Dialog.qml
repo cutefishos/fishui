@@ -44,7 +44,7 @@ T.Dialog {
             from: 0
             to: 1
             easing.type: Easing.InOutCubic
-            duration: 250
+            duration: 200
         }
     }
 
@@ -54,7 +54,7 @@ T.Dialog {
             from: 1
             to: 0
             easing.type: Easing.InOutCubic
-            duration: 250
+            duration: 200
         }
     }
 

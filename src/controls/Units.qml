@@ -16,6 +16,8 @@ QtObject {
      */
     property int gridUnit: fontMetrics.height
 
+    property int extendBorderWidth: 3
+
     /**
      * units.iconSizes provides access to platform-dependent icon sizing
      *

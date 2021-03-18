@@ -24,7 +24,7 @@ T.Label {
     color: Meui.Theme.textColor
     linkColor: Meui.Theme.linkColor
 
-    opacity: enabled? 1 : 0.6
+    opacity: enabled ? 1 : 0.6
 
     Accessible.role: Accessible.StaticText
     Accessible.name: text
