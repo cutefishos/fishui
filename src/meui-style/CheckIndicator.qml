@@ -44,11 +44,12 @@ Rectangle {
     id: indicatorItem
     implicitWidth: 18
     implicitHeight: 18
+
     color: !control.enabled ? control.Meui.Theme.backgroundColor
                             : checked ? Qt.rgba(control.Meui.Theme.highlightColor.r, control.Meui.Theme.highlightColor.g, control.Meui.Theme.highlightColor.b, 0.6) : control.Meui.Theme.backgroundColor
     border.color: !control.enabled ? control.Meui.Theme.disabledTextColor
         : checked ? control.Meui.Theme.highlightColor: control.Meui.Theme.textColor
-    border.width: 2
+    border.width: 1
     radius: control.autoExclusive ? Math.min(height, width) : 2
 
     property Item control
@@ -69,22 +70,21 @@ Rectangle {
     }   
 
     Image {
-           id: checkImage
-           x: (parent.width - width) / 2
-           y: (parent.height - height) / 2
-           width: 14
-           height: 14
-           source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/Material/images/check.png"
-           fillMode: Image.PreserveAspectFit
+        id: checkImage
+        width: parent.height * 0.6
+        height: parent.height * 0.6
+        anchors.centerIn: parent
+        source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/Material/images/check.png"
+        fillMode: Image.PreserveAspectFit
 
-           scale: checked ? 1 : 0
-           Behavior on scale {
-               NumberAnimation {
-                   duration: 100
-                   easing.type: Easing.InOutCubic
-                }
+        scale: checked ? 1 : 0
+        Behavior on scale {
+            NumberAnimation {
+                duration: 100
+                easing.type: Easing.InOutCubic
             }
-       }
+        }
+    }
 
     transitions: Transition {
         SequentialAnimation {

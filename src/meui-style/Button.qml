@@ -31,7 +31,7 @@ T.Button
         text: control.text
         font: control.font
         icon: control.icon
-        color: !control.enabled ? control.Meui.Theme.disabledTextColor : control.flat ? Meui.Theme.highlightedTextColor : Meui.Theme.textColor
+        color: !control.enabled ? control.Meui.Theme.disabledTextColor : control.flat ? Meui.Theme.highlightColor : Meui.Theme.textColor
         spacing: control.spacing
         mirrored: control.mirrored
         display: control.display
@@ -45,25 +45,29 @@ T.Button
         Rectangle {
             id: _border
             anchors.fill: parent
-            visible: control.activeFocus
             color: "transparent"
-            border.color: Qt.rgba(Meui.Theme.highlightColor.r,
-                                  Meui.Theme.highlightColor.g,
-                                  Meui.Theme.highlightColor.b, 0.3)
+            border.color: control.activeFocus ? Qt.rgba(Meui.Theme.highlightColor.r,
+                                                        Meui.Theme.highlightColor.g,
+                                                        Meui.Theme.highlightColor.b, 0.3) : "transparent"
             border.width: Meui.Units.extendBorderWidth
-            radius: Meui.Theme.smallRadius
+            radius: Meui.Theme.smallRadius + Meui.Units.extendBorderWidth
+
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 50
+                }
+            }
         }
 
         Rectangle {
             anchors.fill: parent
             anchors.margins: Meui.Units.extendBorderWidth
-            radius: Meui.Theme.smallRadius - Meui.Units.extendBorderWidth
-            border.color: control.flat && control.enabled ? Meui.Theme.highlightColor : control.activeFocus || control.pressed ? Meui.Theme.highlightColor : 
+            radius: Meui.Theme.smallRadius
+            border.color: control.activeFocus || control.pressed ? Meui.Theme.highlightColor : 
                           Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
             border.width: 1
 
-            color: control.flat && control.enabled ? control.pressed ? control.flatPressedColor : control.hovered ? control.flatHoveredColor : Meui.Theme.highlightColor
-                                : control.pressed ? control.pressedColor : control.hovered ? control.hoveredColor : Meui.Theme.backgroundColor
+            color: control.pressed ? control.pressedColor : control.hovered ? control.hoveredColor : Meui.Theme.backgroundColor
         }
     }
 }

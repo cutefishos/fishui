@@ -82,19 +82,24 @@ T.TextField {
         Rectangle {
             id: _border
             anchors.fill: parent
-            visible: control.activeFocus
             color: "transparent"
-            border.color: Qt.rgba(Meui.Theme.highlightColor.r,
-                                  Meui.Theme.highlightColor.g,
-                                  Meui.Theme.highlightColor.b, 0.3)
+            border.color: control.activeFocus ? Qt.rgba(Meui.Theme.highlightColor.r,
+                                                        Meui.Theme.highlightColor.g,
+                                                        Meui.Theme.highlightColor.b, 0.3) : "transparent"
             border.width: Meui.Units.extendBorderWidth
-            radius: Meui.Theme.smallRadius
+            radius: Meui.Theme.smallRadius + Meui.Units.extendBorderWidth
+
+            Behavior on border.color {
+                ColorAnimation {
+                    duration: 50
+                }
+            }
         }
 
         Rectangle {
             anchors.fill: parent
             anchors.margins: Meui.Units.extendBorderWidth
-            radius: Meui.Theme.smallRadius - Meui.Units.extendBorderWidth
+            radius: Meui.Theme.smallRadius
             color: "transparent"
             border.color: control.activeFocus ? Meui.Theme.highlightColor : Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
             border.width: 1

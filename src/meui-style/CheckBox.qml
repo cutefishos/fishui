@@ -40,11 +40,19 @@ T.CheckBox {
 
     hoverEnabled: true
 
-    indicator: CheckIndicator {
-        control: controlRoot
+    indicator: Item {
+        width: controlRoot.height
+        height: controlRoot.height
+
+        CheckIndicator {
+            anchors.centerIn: parent
+            width: parent.height * 0.8
+            height: parent.height * 0.8
+            control: controlRoot
+        }
     }
 
-    contentItem: Label  {
+    contentItem: Label {
         leftPadding: controlRoot.indicator && !controlRoot.mirrored ? controlRoot.indicator.width + controlRoot.spacing : 0
         rightPadding: controlRoot.indicator && controlRoot.mirrored ? controlRoot.indicator.width + controlRoot.spacing : 0
         opacity: controlRoot.enabled ? 1 : 0.6
