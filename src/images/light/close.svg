@@ -7,7 +7,7 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="close_normal.svg"
+   sodipodi:docname="close.svg"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
    id="svg8"
    version="1.1"
@@ -19,18 +19,18 @@
   <sodipodi:namedview
      inkscape:document-rotation="0"
      inkscape:pagecheckerboard="false"
-     inkscape:window-maximized="0"
-     inkscape:window-y="234"
-     inkscape:window-x="198"
-     inkscape:window-height="997"
-     inkscape:window-width="1623"
+     inkscape:window-maximized="1"
+     inkscape:window-y="0"
+     inkscape:window-x="0"
+     inkscape:window-height="1304"
+     inkscape:window-width="2160"
      units="px"
      showgrid="false"
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
-     inkscape:cy="13.467799"
-     inkscape:cx="-28.794643"
-     inkscape:zoom="11.2"
+     inkscape:cy="18.272706"
+     inkscape:cx="9.8768456"
+     inkscape:zoom="22.4"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -76,10 +76,18 @@
        x="0.86407435"
        y="289.91785"
        ry="6.5889685e-06" />
-    <polygon
-       style="fill:#383838;fill-opacity:1"
-       transform="matrix(0.39226266,0,0,0.393394,-3.9745689,285.065)"
-       points="24.146,17.063 20.958,20.25 24.146,23.438 24.5,23.792 23.792,24.5 23.438,24.146 20.25,20.958 17.063,24.146 16.708,24.5 16,23.792 16.354,23.438 19.542,20.25 16.354,17.063 16,16.708 16.708,16 17.063,16.354 20.25,19.542 23.438,16.354 23.792,16 24.5,16.708 "
-       id="polygon2562" />
+    <g
+       id="g6"
+       transform="matrix(0.0065117,0,0,0.00651172,2.3017515,291.36422)"
+       style="fill:#383838;fill-opacity:1">
+      <g
+         id="g4"
+         style="fill:#383838;fill-opacity:1">
+        <path
+           d="M 284.286,256.002 506.143,34.144 c 7.811,-7.811 7.811,-20.475 0,-28.285 -7.811,-7.81 -20.475,-7.811 -28.285,0 L 256,227.717 34.143,5.859 c -7.811,-7.811 -20.475,-7.811 -28.285,0 -7.81,7.811 -7.811,20.475 0,28.285 L 227.715,256.001 5.858,477.859 c -7.811,7.811 -7.811,20.475 0,28.285 3.905,3.905 9.024,5.857 14.143,5.857 5.119,0 10.237,-1.952 14.143,-5.857 L 256,284.287 477.857,506.144 c 3.905,3.905 9.024,5.857 14.143,5.857 5.119,0 10.237,-1.952 14.143,-5.857 7.811,-7.811 7.811,-20.475 0,-28.285 z"
+           id="path2-3"
+           style="fill:#383838;fill-opacity:1" />
+      </g>
+    </g>
   </g>
 </svg>

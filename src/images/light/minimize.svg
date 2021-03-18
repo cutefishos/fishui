@@ -7,7 +7,7 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   sodipodi:docname="minimize_normal.svg"
+   sodipodi:docname="minimize.svg"
    inkscape:version="1.0.1 (3bc2e813f5, 2020-09-07)"
    id="svg8"
    version="1.1"
@@ -20,17 +20,17 @@
      inkscape:document-rotation="0"
      inkscape:pagecheckerboard="false"
      inkscape:window-maximized="1"
-     inkscape:window-y="30"
+     inkscape:window-y="0"
      inkscape:window-x="0"
-     inkscape:window-height="1277"
+     inkscape:window-height="1304"
      inkscape:window-width="2160"
      units="px"
      showgrid="false"
      inkscape:current-layer="layer1"
      inkscape:document-units="mm"
-     inkscape:cy="16.518502"
-     inkscape:cx="-30.012016"
-     inkscape:zoom="11.2"
+     inkscape:cy="19.593901"
+     inkscape:cx="3.0923684"
+     inkscape:zoom="31.678384"
      inkscape:pageshadow="2"
      inkscape:pageopacity="0.0"
      borderopacity="1.0"
@@ -70,9 +70,9 @@
        id="4-7" />
     <polygon
        fill="#303030"
-       points="25,19 24.529,19 15.471,19 15,19 15,20 15.471,20 24.529,20 25,20 "
+       points="25,20 25,19 24.529,19 15.471,19 15,19 15,20 15.471,20 24.529,20 "
        id="polygon2"
-       transform="matrix(0.36896569,0,0,0.36896569,-3.4105638,285.8364)"
+       transform="matrix(0.36896569,0,0,0.26458333,-3.4105638,287.87186)"
        style="fill:#383838;fill-opacity:1" />
   </g>
 </svg>
