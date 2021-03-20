@@ -111,7 +111,7 @@ T.ComboBox {
             color: "transparent"
             border.color: control.activeFocus ? Qt.rgba(Meui.Theme.highlightColor.r,
                                                         Meui.Theme.highlightColor.g,
-                                                        Meui.Theme.highlightColor.b, 0.3) : "transparent"
+                                                        Meui.Theme.highlightColor.b, 0.2) : "transparent"
             border.width: Meui.Units.extendBorderWidth
             radius: Meui.Theme.smallRadius + Meui.Units.extendBorderWidth
 

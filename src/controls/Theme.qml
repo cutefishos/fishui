@@ -6,6 +6,8 @@ import MeuiKit.Core 1.0 as MeuiKitCore
 QtObject {
     id: theme
 
+    property real devicePixelRatio: MeuiKitCore.ThemeManager.devicePixelRatio
+
     property bool darkMode: MeuiKitCore.ThemeManager.darkMode
 
     property color blueColor: MeuiKitCore.ThemeManager.blueColor
@@ -33,6 +35,7 @@ QtObject {
     property color visitedLinkBackgroundColor: "#2196F3"
 
     property real smallRadius: 8.0
+    property real mediumRadius: 10.0
     property real bigRadius: 12.0
 
     property font defaultFont: fontMetrics.font

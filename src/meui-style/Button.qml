@@ -6,7 +6,7 @@ import QtQuick.Controls.impl 2.4
 T.Button
 {
     id: control
-    implicitWidth: Math.max(background.implicitWidth + Meui.Units.extendBorderWidth,
+    implicitWidth: Math.max(background.implicitWidth + Meui.Units.extendBorderWidth + Meui.Theme.mediumRadius / 2,
                             contentItem.implicitWidth + Meui.Units.largeSpacing + Meui.Units.extendBorderWidth)
     implicitHeight: background.implicitHeight + Meui.Units.extendBorderWidth
     hoverEnabled: true
@@ -48,9 +48,9 @@ T.Button
             color: "transparent"
             border.color: control.activeFocus ? Qt.rgba(Meui.Theme.highlightColor.r,
                                                         Meui.Theme.highlightColor.g,
-                                                        Meui.Theme.highlightColor.b, 0.3) : "transparent"
+                                                        Meui.Theme.highlightColor.b, 0.2) : "transparent"
             border.width: Meui.Units.extendBorderWidth
-            radius: Meui.Theme.smallRadius + Meui.Units.extendBorderWidth
+            radius: Meui.Theme.mediumRadius + Meui.Units.extendBorderWidth
 
             Behavior on border.color {
                 ColorAnimation {
@@ -62,7 +62,7 @@ T.Button
         Rectangle {
             anchors.fill: parent
             anchors.margins: Meui.Units.extendBorderWidth
-            radius: Meui.Theme.smallRadius
+            radius: Meui.Theme.mediumRadius
             border.color: control.activeFocus || control.pressed ? Meui.Theme.highlightColor : 
                           Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
             border.width: 1

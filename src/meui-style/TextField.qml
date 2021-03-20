@@ -76,7 +76,8 @@ T.TextField {
     background: Rectangle {
         implicitWidth: (Meui.Units.iconSizes.medium * 3) + Meui.Units.smallSpacing + Meui.Units.extendBorderWidth
         implicitHeight: Meui.Units.iconSizes.medium + Meui.Units.smallSpacing + Meui.Units.extendBorderWidth
-        color: control.activeFocus ? Qt.lighter(Meui.Theme.backgroundColor, 1.4) : Meui.Theme.backgroundColor
+        // color: control.activeFocus ? Qt.lighter(Meui.Theme.backgroundColor, 1.4) : Meui.Theme.backgroundColor
+        color: "transparent"
         radius: Meui.Theme.smallRadius
 
         Rectangle {
@@ -85,7 +86,7 @@ T.TextField {
             color: "transparent"
             border.color: control.activeFocus ? Qt.rgba(Meui.Theme.highlightColor.r,
                                                         Meui.Theme.highlightColor.g,
-                                                        Meui.Theme.highlightColor.b, 0.3) : "transparent"
+                                                        Meui.Theme.highlightColor.b, 0.2) : "transparent"
             border.width: Meui.Units.extendBorderWidth
             radius: Meui.Theme.smallRadius + Meui.Units.extendBorderWidth
 

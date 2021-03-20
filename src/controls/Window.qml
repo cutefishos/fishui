@@ -87,6 +87,27 @@ Window {
         }
     }
 
+    // Top edge
+    MouseArea {
+        height: edgeSize / 2
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.leftMargin: edgeSize * 2
+        anchors.rightMargin: edgeSize * 2
+        visible: !isMaximized && !isFullScreen
+        cursorShape: Qt.SizeVerCursor
+        z: 999
+
+        onPressed: mouse.accepted = false
+
+        DragHandler {
+            grabPermissions: TapHandler.CanTakeOverFromAnything
+            target: null
+            onActiveChanged: if (active) { windowHelper.startSystemResize(root, Qt.TopEdge) }
+        }
+    }
+
     // Bottom edge
     MouseArea {
         height: edgeSize / 2

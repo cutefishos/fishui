@@ -42,9 +42,12 @@ class ThemeManager : public QObject
     Q_PROPERTY(QColor purpleColor READ purpleColor CONSTANT)
     Q_PROPERTY(QColor pinkColor READ pinkColor CONSTANT)
     Q_PROPERTY(QColor orangeColor READ orangeColor CONSTANT)
+    Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio CONSTANT)
 
 public:
     explicit ThemeManager(QObject *parent = nullptr);
+
+    qreal devicePixelRatio() const;
 
     bool darkMode() { return m_darkMode; }
     QColor accentColor() { return m_accentColor; }

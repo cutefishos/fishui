@@ -19,6 +19,8 @@
 
 #include "thememanager.h"
 
+#include <QApplication>
+
 #include <QDBusConnection>
 #include <QDBusServiceWatcher>
 #include <QDBusInterface>
@@ -42,6 +44,11 @@ ThemeManager::ThemeManager(QObject *parent)
 
     initDBusSignals();
     initData();
+}
+
+qreal ThemeManager::devicePixelRatio() const
+{
+    return qApp->devicePixelRatio();
 }
 
 void ThemeManager::initData()

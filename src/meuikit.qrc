@@ -1,9 +1,7 @@
 <RCC>
     <qresource prefix="/meui/kit">
-        <file alias="BlurBackground.qml">controls/BlurBackground.qml</file>
         <file alias="BusyIndicator.qml">controls/BusyIndicator.qml</file>
         <file alias="Icon.qml">controls/Icon.qml</file>
-        <file alias="Menu.qml">controls/Menu.qml</file>
         <file alias="MouseHover.qml">controls/MouseHover.qml</file>
         <file alias="PopupTips.qml">controls/PopupTips.qml</file>
         <file alias="RoundedRect.qml">controls/RoundedRect.qml</file>
