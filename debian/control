@@ -1,0 +1,23 @@
+Source: cutefish-uikit
+Section: devel
+Priority: optional
+Maintainer: CutefishOS <cutefishos@foxmail.com>
+Build-Depends: cmake,
+               debhelper (>= 9),
+               extra-cmake-modules,
+               libkf5windowsystem-dev,
+               qtbase5-dev,
+               qtdeclarative5-dev,
+               qtquickcontrols2-5-dev,
+               qttools5-dev,
+               qttools5-dev-tools
+Standards-Version: 4.5.0
+Homepage: https://github.com/cutefishos/uikit
+
+Package: cutefish-uikit
+Architecture: any
+Depends: qml-module-qtquick-controls2,
+         qml-module-qtquick2,
+         ${misc:Depends},
+         ${shlibs:Depends}
+Description: CutefishOS UIKit
