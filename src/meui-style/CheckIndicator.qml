@@ -46,11 +46,11 @@ Rectangle {
     implicitHeight: 18
 
     color: !control.enabled ? control.Meui.Theme.backgroundColor
-                            : checked ? Qt.rgba(control.Meui.Theme.highlightColor.r, control.Meui.Theme.highlightColor.g, control.Meui.Theme.highlightColor.b, 0.6) : control.Meui.Theme.backgroundColor
+                            : checked ? Meui.Theme.highlightColor : control.Meui.Theme.backgroundColor
     border.color: !control.enabled ? control.Meui.Theme.disabledTextColor
         : checked ? control.Meui.Theme.highlightColor: control.Meui.Theme.textColor
     border.width: 1
-    radius: control.autoExclusive ? Math.min(height, width) : 2
+    radius: control.autoExclusive ? Math.min(height, width) : 4
 
     property Item control
     property bool checked : control.checked
