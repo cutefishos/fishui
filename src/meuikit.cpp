@@ -23,6 +23,7 @@
 #include "shadowhelper/windowshadow.h"
 #include "blurhelper/windowblur.h"
 #include "windowhelper.h"
+#include "iconitem.h"
 
 #include <QDebug>
 #include <QQmlEngine>
@@ -52,6 +53,7 @@ void MeuiKit::registerTypes(const char *uri)
     qmlRegisterType<WindowShadow>(uri, 1, 0, "WindowShadow");
     qmlRegisterType<WindowBlur>(uri, 1, 0, "WindowBlur");
     qmlRegisterType<WindowHelper>(uri, 1, 0, "WindowHelper");
+    qmlRegisterType<IconItem>(uri, 1, 0, "IconItem");
 
     qmlRegisterSingletonType(componentUrl(QStringLiteral("Theme.qml")), uri, 1, 0, "Theme");
     qmlRegisterSingletonType(componentUrl(QStringLiteral("Units.qml")), uri, 1, 0, "Units");

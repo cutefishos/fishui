@@ -11,6 +11,8 @@ set(SOURCES
     blurhelper/windowblur.cpp
     blurhelper/windowblur.h
     windowhelper.cpp
+    iconitem.cpp
+    managedtexturenode.cpp
 
     meuikit.qrc
     meui-style/style.qrc
