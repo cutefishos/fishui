@@ -60,7 +60,12 @@ T.Dialog {
 
     contentItem: Item {}
 
-    background: Meui.RoundedRect {
+    background: Rectangle {
+        radius: Meui.Theme.mediumRadius
+        color: Meui.Theme.backgroundColor
+        border.width: 1
+        border.color: Meui.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.2) : Qt.rgba(0, 0, 0, 0.1)
+
         layer.enabled: true
         layer.effect: DropShadow {
             transparentBorder: true

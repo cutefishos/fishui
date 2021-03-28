@@ -25,6 +25,7 @@
 #include <QQuickWindow>
 #include <QPixmap>
 #include <QImageReader>
+#include <QPixmapCache>
 
 #include "managedtexturenode.h"
 
@@ -201,13 +202,11 @@ void IconItem::setSource(const QVariant &source)
     m_source = source;
     QString sourceString = source.toString();
 
-    // If the QIcon was created with QIcon::fromTheme(), try to load it as svg
     if (source.canConvert<QIcon>() && !source.value<QIcon>().name().isEmpty()) {
         sourceString = source.value<QIcon>().name();
     }
 
     if (!sourceString.isEmpty()) {
-        // If a file:// URL or a absolute path is passed, take the image pointed by that from disk
         QString localFile;
         if (sourceString.startsWith(QLatin1String("file:"))) {
             localFile = QUrl(sourceString).toLocalFile();
@@ -399,6 +398,8 @@ void IconItem::loadPixmap()
     if (!isComponentComplete()) {
         return;
     }
+
+    QPixmapCache::clear();
 
     int size = qMin(qRound(width()), qRound(height()));
     QPixmap result;

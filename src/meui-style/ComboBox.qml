@@ -45,11 +45,11 @@ import MeuiKit 1.0 as Meui
 T.ComboBox {
     id: control
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset + Meui.Units.extendBorderWidth,
-                            implicitContentWidth + leftPadding + rightPadding + Meui.Units.extendBorderWidth)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset + Meui.Units.extendBorderWidth,
-                             implicitContentHeight + topPadding + bottomPadding + Meui.Units.extendBorderWidth,
-                             implicitIndicatorHeight + topPadding + bottomPadding + Meui.Units.extendBorderWidth)
+    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+                            implicitContentWidth + leftPadding + rightPadding)
+    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+                             implicitContentHeight + topPadding + bottomPadding,
+                             implicitIndicatorHeight + topPadding + bottomPadding)
 
     topInset: Meui.Units.smallSpacing
     bottomInset: Meui.Units.smallSpacing
