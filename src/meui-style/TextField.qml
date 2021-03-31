@@ -101,7 +101,7 @@ T.TextField {
             anchors.fill: parent
             anchors.margins: Meui.Units.extendBorderWidth
             radius: Meui.Theme.smallRadius
-            color: "transparent"
+            color: Meui.Theme.backgroundColor
             border.color: control.activeFocus ? Meui.Theme.highlightColor : Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
             border.width: 1
         }
