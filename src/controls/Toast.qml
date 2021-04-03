@@ -4,113 +4,192 @@ import QtQuick.Layouts 1.12
 import QtGraphicalEffects 1.0
 import MeuiKit 1.0 as Meui
 
-Item {
-    id: _toast
-    //visible: open
-    Layout.alignment: Qt.AlignBottom | Qt.AlignLeft
-    width: open ? _layout.implicitWidth + (Meui.Units.largeSpacing * 2) : 0
-    height: _layout.implicitHeight + (Meui.Units.largeSpacing * 2)
+Popup {
+    id: control
+    x: Math.round(parent.width / 2 - width / 2)
+    y: parent.height - height - Meui.Units.smallSpacing
+    implicitWidth: Math.max(background ? background.implicitWidth : 0,
+                            contentWidth + leftPadding + rightPadding) + leftInset + rightInset
+    implicitHeight: Math.max(background ? background.implicitHeight : 0 ,
+                             contentHeight + topPadding + bottomPadding)+ topInset + bottomInset
+    height: implicitHeight
+    width: implicitWidth
+
+    topPadding: Meui.Units.smallSpacing
+    leftPadding: Meui.Units.smallSpacing
+    rightPadding: Meui.Units.smallSpacing
+    bottomPadding: Meui.Units.smallSpacing
+
+    modal: false
+    closePolicy: Popup.NoAutoClose
+    focus: false
     clip: false
 
-    Behavior on width {
-        NumberAnimation {
-            duration: 500
-            easing.type: Easing.InOutCubic
+    function showNotification(message, timeout, actionText, callBack) {
+        if (!message) {
+            return
+        }
+
+        let interval = 7000
+
+        if (timeout === "short") {
+            interval = 4000
+        } else if (timeout === "long") {
+            interval = 12000
+        } else if (timeout > 0) {
+            interval = timeout
+        }
+
+        open()
+
+        for (let i = 0; i < outerLayout.children.length - 3; ++i) {
+            outerLayout.children[i].close()
+        }
+
+        let delegate = delegateComponent.createObject(outerLayout, {
+            "text": message,
+            "actionText": actionText || "",
+            "callBack": callBack || (function(){}),
+            "interval": interval
+        });
+
+        // Reorder items to have the last on top
+        let children = outerLayout.children;
+        for (let i in children) {
+            children[i].Layout.row = children.length - 1 - i
         }
     }
 
-    property string text: ""
-    /**
-        Possible types:
-            - info: Gray toast
-            - success: Green toast
-            - warn: Yellow toast
-            - error: Red toast
-    */
-    property string type: "error"
-    property bool hasCloseButton: true
-    property bool open: false
+    background: Item {}
 
-    onOpenChanged: {
-        _timer.restart()
+    contentItem: GridLayout {
+        id: outerLayout
+        columns: 1
     }
 
-    Timer {
-        id: _timer
-        interval: 5000
-        running: false
-        repeat: false
-        onTriggered: _toast.open = false
-    }
+    Component {
+        id: delegateComponent
 
-    function getColorFromType() {
-        switch(_toast.type) {
-            case "info":
-                return Meui.Theme.blueColor
-            case "success":
-                return Meui.Theme.greenColor
-            case "warn":
-                return Meui.Theme.orangeColor
-            case "error":
-                return Meui.Theme.redColor
-            default:
-                console.log("Toast: invalid type")
-                return;
-        }
-    }
+        Control {
+            id: delegate
+            property alias text: label.text
+            property alias actionText: actionButton.text
+            property alias interval: timer.interval
+            property var callBack
+            Layout.alignment: Qt.AlignCenter
+            Layout.bottomMargin: -delegate.height
+            opacity: 0
 
-    Rectangle {
-        radius: Meui.Theme.bigRadius
-        color: getColorFromType()
-        anchors.fill: parent
-
-        RowLayout {
-            id: _layout
-            anchors.fill: parent
-            anchors.margins: Meui.Units.smallSpacing
-
-            Image {
-                // Icon for toast, determined by type
-                width: 22
-                height: width
-                sourceSize.width: width
-                sourceSize.height: height
-                source: "qrc:/meui/kit/images/toast/${_toast.type}.svg"
-                Layout.margins: Meui.Units.smallSpacing
+            function close() {
+                closeAnim.running = true;
             }
 
-            Label {
-                Layout.alignment: Qt.AlignVCenter
-                text: _toast.text
-                color: Meui.Theme.highlightedTextColor
+            leftPadding: Meui.Units.largeSpacing
+            rightPadding: Meui.Units.largeSpacing
+            topPadding: Meui.Units.largeSpacing
+            bottomPadding: Meui.Units.largeSpacing
+
+            Component.onCompleted: openAnim.restart()
+            ParallelAnimation {
+                id: openAnim
+                OpacityAnimator {
+                    target: delegate
+                    from: 0
+                    to: 1
+                    duration: 400
+                    easing.type: Easing.InOutQuad
+                }
+                NumberAnimation {
+                    target: delegate
+                    property: "Layout.bottomMargin"
+                    from: -delegate.height
+                    to: 0
+                    duration: 400
+                    easing.type: Easing.InOutQuad
+                }
             }
 
-            Item {
-                Layout.fillWidth: true
+            SequentialAnimation {
+                id: closeAnim
+                ParallelAnimation {
+                    OpacityAnimator {
+                        target: delegate
+                        from: 1
+                        to: 0
+                        duration: 400
+                        easing.type: Easing.InOutQuad
+                    }
+                    NumberAnimation {
+                        target: delegate
+                        property: "Layout.bottomMargin"
+                        to: -delegate.height
+                        duration: 400
+                        easing.type: Easing.InOutQuad
+                    }
+                }
+                ScriptAction {
+                    script: delegate.destroy();
+                }
             }
 
-            Image {
-                visible: _toast.hasCloseButton
-                Layout.leftMargin: Meui.Theme.largeSpacing
-                width: 32
-                height: 32
-                source: "qrc:/meui/kit/images/toast/close.svg"
+            contentItem: RowLayout {
+                id: mainLayout
 
-                MouseArea {
-                    anchors.fill: parent
+                width: mainLayout.width
+                //FIXME: why this is not automatic?
+                implicitHeight: Math.max(label.implicitHeight, actionButton.implicitHeight)
+
+                HoverHandler {
+                    id: hover
+                }
+                TapHandler {
                     acceptedButtons: Qt.LeftButton
+                    onTapped: delegate.close();
+                }
+                Timer {
+                    id: timer
+                    running: control.visible && !hover.hovered
+                    onTriggered: delegate.close();
+                }
+
+                Label {
+                    id: label
+                    Layout.maximumWidth: Math.min(control.parent.width - Meui.Units.largeSpacing * 4, implicitWidth)
+                    elide: Text.ElideRight
+                    wrapMode: Text.WordWrap
+                    maximumLineCount: 4
+                }
+
+                Button {
+                    id: actionButton
+                    visible: text.length > 0
                     onClicked: {
-                        _toast.open = false
+                        delegate.close();;
+                        if (delegate.callBack && (typeof delegate.callBack === "function")) {
+                            delegate.callBack();
+                        }
                     }
                 }
             }
-        }
 
-        layer.enabled: true
-        layer.effect: DropShadow {
-            radius: 8.0
-            samples: 17
-            color: "#80000000"
+            background: Meui.RoundedRect {
+                backgroundOpacity: 0.6
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    transparentBorder: true
+                    radius: 32
+                    samples: 32
+                    horizontalOffset: 0
+                    verticalOffset: 0
+                    color: Qt.rgba(0, 0, 0, 0.11)
+                }
+            }
         }
     }
+
+    Overlay.modal: Rectangle {
+        color: Qt.rgba(0, 0, 0, 0.4)
+    }
+
+    Overlay.modeless: Item {}
 }
