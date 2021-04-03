@@ -29,6 +29,7 @@ target_link_libraries (${TARGET}
         Qt5::Qml
         Qt5::Quick
         Qt5::QuickControls2
+        Qt5::GuiPrivate
         Qt5::X11Extras
         KF5::WindowSystem
 )
