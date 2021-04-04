@@ -39,4 +39,8 @@ Meui.PopupWindow {
     function open() {
         control.show()
     }
+
+    function popup() {
+        control.show()
+    }
 }
