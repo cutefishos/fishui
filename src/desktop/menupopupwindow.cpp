@@ -17,13 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "popupwindow.h"
+#include "menupopupwindow.h"
 #include <QGuiApplication>
 #include <QQuickRenderControl>
 #include <QQuickItem>
 #include <QScreen>
 
-PopupWindow::PopupWindow(QQuickWindow *parent)
+MenuPopupWindow::MenuPopupWindow(QQuickWindow *parent)
     : QQuickWindow(parent)
     , m_parentItem(0)
     , m_contentItem(0)
@@ -36,13 +36,13 @@ PopupWindow::PopupWindow(QQuickWindow *parent)
             this, SLOT(applicationStateChanged(Qt::ApplicationState)));
 }
 
-void PopupWindow::applicationStateChanged(Qt::ApplicationState state)
+void MenuPopupWindow::applicationStateChanged(Qt::ApplicationState state)
 {
     if (state != Qt::ApplicationActive)
         dismissPopup();
 }
 
-void PopupWindow::show()
+void MenuPopupWindow::show()
 {
     QPoint pos = QCursor::pos();
     int w = m_contentItem->implicitWidth();
@@ -59,7 +59,7 @@ void PopupWindow::show()
     QRect g = pw->screen()->availableGeometry();
 
     if (posx + w > g.right()) {
-        if (qobject_cast<PopupWindow *>(transientParent())) {
+        if (qobject_cast<MenuPopupWindow *>(transientParent())) {
             // reposition submenu window on the parent menu's left side
             int submenuOverlap = pw->x() + pw->width() - posx;
             posx -= pw->width() + w - 2 * submenuOverlap;
@@ -70,6 +70,9 @@ void PopupWindow::show()
         posx = qMax(posx, g.left());
     }
 
+    m_mouseMoved = false;
+    m_dismissed = false;
+
     posy = qBound(g.top(), posy, g.bottom() - h);
 
     setGeometry(posx, posy, w, h);
@@ -79,14 +82,14 @@ void PopupWindow::show()
     setKeyboardGrabEnabled(true);
 }
 
-void PopupWindow::setParentItem(QQuickItem *item)
+void MenuPopupWindow::setParentItem(QQuickItem *item)
 {
     m_parentItem = item;
     if (m_parentItem)
         setTransientParent(m_parentItem->window());
 }
 
-void PopupWindow::setPopupContentItem(QQuickItem *contentItem)
+void MenuPopupWindow::setPopupContentItem(QQuickItem *contentItem)
 {
     if (!contentItem)
         return;
@@ -95,21 +98,21 @@ void PopupWindow::setPopupContentItem(QQuickItem *contentItem)
     m_contentItem = contentItem;
 }
 
-void PopupWindow::dismissPopup()
+void MenuPopupWindow::dismissPopup()
 {
     m_dismissed = true;
     emit popupDismissed();
     hide();
 }
 
-void PopupWindow::mouseMoveEvent(QMouseEvent *e)
+void MenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
 {
     m_mouseMoved = true;
 
     QQuickWindow::mouseMoveEvent(e);
 }
 
-void PopupWindow::mousePressEvent(QMouseEvent *e)
+void MenuPopupWindow::mousePressEvent(QMouseEvent *e)
 {
     QRect rect = QRect(QPoint(), size());
     if (rect.contains(e->pos())) {
@@ -119,15 +122,17 @@ void PopupWindow::mousePressEvent(QMouseEvent *e)
     }
 }
 
-void PopupWindow::mouseReleaseEvent(QMouseEvent *e)
+void MenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
 {
     QRect rect = QRect(QPoint(), size());
     if (rect.contains(e->pos())) {
         if (m_mouseMoved) {
             QMouseEvent pe = QMouseEvent(QEvent::MouseButtonPress, e->pos(), e->button(), e->buttons(), e->modifiers());
             QQuickWindow::mousePressEvent(&pe);
-            if (!m_dismissed)
+            if (!m_dismissed) {
+                dismissPopup();
                 QQuickWindow::mouseReleaseEvent(e);
+            }
         }
         m_mouseMoved = true;
     }
@@ -136,14 +141,14 @@ void PopupWindow::mouseReleaseEvent(QMouseEvent *e)
     // dismissPopup();
 }
 
-bool PopupWindow::event(QEvent *event)
+bool MenuPopupWindow::event(QEvent *event)
 {
     //QTBUG-45079
     //This is a workaround for popup menu not being closed when using touch input.
     //Currently mouse synthesized events are not created for touch events which are
     //outside the qquickwindow.
 
-    if (event->type() == QEvent::TouchBegin && !qobject_cast<PopupWindow*>(transientParent())) {
+    if (event->type() == QEvent::TouchBegin && !qobject_cast<MenuPopupWindow*>(transientParent())) {
         QRect rect = QRect(QPoint(), size());
         QTouchEvent *touch = static_cast<QTouchEvent*>(event);
         QTouchEvent::TouchPoint point = touch->touchPoints().first();

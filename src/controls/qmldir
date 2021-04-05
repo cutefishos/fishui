@@ -19,4 +19,4 @@ RoundedRect 1.0 RoundedRect.qml
 Window 1.0 Window.qml
 WindowButton 1.0 WindowButton.qml
 Toast 1.0 Toast.qml
-TopLevelMenu 1.0 TopLevelMenu.qml
+DesktopMenu 1.0 DesktopMenu.qml

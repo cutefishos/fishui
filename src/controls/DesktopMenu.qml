@@ -3,7 +3,7 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
 import MeuiKit 1.0 as Meui
 
-Meui.PopupWindow {
+Meui.MenuPopupWindow {
     id: control
 
     default property alias content : _mainLayout.data

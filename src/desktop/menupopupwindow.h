@@ -17,13 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef TOPLEVELMENU_H
-#define TOPLEVELMENU_H
+#ifndef MENUPOPUPWINDOW_H
+#define MENUPOPUPWINDOW_H
 
 #include <QQuickWindow>
 #include <QQuickItem>
 
-class PopupWindow : public QQuickWindow
+class MenuPopupWindow : public QQuickWindow
 {
     Q_OBJECT
     Q_PROPERTY(QQuickItem *popupContentItem READ popupContentItem WRITE setPopupContentItem)
@@ -31,7 +31,7 @@ class PopupWindow : public QQuickWindow
     Q_PROPERTY(QQuickItem *parentItem READ parentItem WRITE setParentItem)
 
 public:
-    PopupWindow(QQuickWindow *parent = nullptr);
+    MenuPopupWindow(QQuickWindow *parent = nullptr);
 
     QQuickItem *popupContentItem() const { return m_contentItem; }
     void setPopupContentItem(QQuickItem *popupContentItem);
@@ -63,4 +63,4 @@ private:
     bool m_dismissed;
 };
 
-#endif // POPUPWINDOW_H
+#endif

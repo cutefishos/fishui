@@ -13,7 +13,8 @@ set(SOURCES
     windowhelper.cpp
     iconitem.cpp
     managedtexturenode.cpp
-    popupwindow.cpp
+
+    desktop/menupopupwindow.cpp
 
     meuikit.qrc
     meui-style/style.qrc

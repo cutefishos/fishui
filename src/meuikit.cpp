@@ -24,7 +24,8 @@
 #include "blurhelper/windowblur.h"
 #include "windowhelper.h"
 #include "iconitem.h"
-#include "popupwindow.h"
+
+#include "desktop/menupopupwindow.h"
 
 #include <QDebug>
 #include <QQmlEngine>
@@ -55,7 +56,7 @@ void MeuiKit::registerTypes(const char *uri)
     qmlRegisterType<WindowBlur>(uri, 1, 0, "WindowBlur");
     qmlRegisterType<WindowHelper>(uri, 1, 0, "WindowHelper");
     qmlRegisterType<IconItem>(uri, 1, 0, "IconItem");
-    qmlRegisterType<PopupWindow>(uri, 1, 0, "PopupWindow");
+    qmlRegisterType<MenuPopupWindow>(uri, 1, 0, "MenuPopupWindow");
 
     qmlRegisterSingletonType(componentUrl(QStringLiteral("Theme.qml")), uri, 1, 0, "Theme");
     qmlRegisterSingletonType(componentUrl(QStringLiteral("Units.qml")), uri, 1, 0, "Units");
@@ -68,7 +69,7 @@ void MeuiKit::registerTypes(const char *uri)
     qmlRegisterType(componentUrl(QStringLiteral("Toast.qml")), uri, 1, 0, "Toast");
     qmlRegisterType(componentUrl(QStringLiteral("Window.qml")), uri, 1, 0, "Window");
     qmlRegisterType(componentUrl(QStringLiteral("WindowButton.qml")), uri, 1, 0, "WindowButton");
-    qmlRegisterType(componentUrl(QStringLiteral("TopLevelMenu.qml")), uri, 1, 0, "TopLevelMenu");
+    qmlRegisterType(componentUrl(QStringLiteral("DesktopMenu.qml")), uri, 1, 0, "DesktopMenu");
 
     qmlProtectModule(uri, 1);
 }
