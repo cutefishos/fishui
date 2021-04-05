@@ -104,6 +104,8 @@ void PopupWindow::dismissPopup()
 
 void PopupWindow::mouseMoveEvent(QMouseEvent *e)
 {
+    m_mouseMoved = true;
+
     QQuickWindow::mouseMoveEvent(e);
 }
 
@@ -119,8 +121,19 @@ void PopupWindow::mousePressEvent(QMouseEvent *e)
 
 void PopupWindow::mouseReleaseEvent(QMouseEvent *e)
 {
-    QQuickWindow::mouseReleaseEvent(e);
-    dismissPopup();
+    QRect rect = QRect(QPoint(), size());
+    if (rect.contains(e->pos())) {
+        if (m_mouseMoved) {
+            QMouseEvent pe = QMouseEvent(QEvent::MouseButtonPress, e->pos(), e->button(), e->buttons(), e->modifiers());
+            QQuickWindow::mousePressEvent(&pe);
+            if (!m_dismissed)
+                QQuickWindow::mouseReleaseEvent(e);
+        }
+        m_mouseMoved = true;
+    }
+
+    // QQuickWindow::mouseReleaseEvent(e);
+    // dismissPopup();
 }
 
 bool PopupWindow::event(QEvent *event)
