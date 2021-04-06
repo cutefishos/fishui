@@ -132,6 +132,23 @@ void WindowShadow::setRadius(qreal value)
     }
 }
 
+qreal WindowShadow::strength() const
+{
+    return m_strength;
+}
+
+void WindowShadow::setStrength(qreal strength)
+{
+    if (m_strength != strength) {
+        m_strength = strength;
+
+        this->classBegin();
+        configureTiles();
+
+        emit strengthChanged();
+    }
+}
+
 void WindowShadow::onViewVisibleChanged(bool visible)
 {
     if (visible && m_view) {
@@ -181,7 +198,7 @@ TileSet WindowShadow::shadowTiles()
     };
 
     const QColor color = Qt::black;
-    const qreal strength = 1.5;
+    const qreal strength = m_strength;
 
     const QSize boxSize = BoxShadowRenderer::calculateMinimumBoxSize(params.shadow1.radius)
         .expandedTo(BoxShadowRenderer::calculateMinimumBoxSize(params.shadow2.radius));

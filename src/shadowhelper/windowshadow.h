@@ -60,6 +60,7 @@ class WindowShadow : public QObject, public QQmlParserStatus
     Q_PROPERTY(QWindow *view READ view WRITE setView NOTIFY viewChanged)
     Q_PROPERTY(QRect geometry READ geometry WRITE setGeometry NOTIFY geometryChanged)
     Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusChanged)
+    Q_PROPERTY(qreal strength READ strength WRITE setStrength NOTIFY strengthChanged)
 
 public:
     WindowShadow(QObject *parent = nullptr) noexcept;
@@ -79,6 +80,9 @@ public:
     void setRadius(qreal value);
     qreal radius() { return m_radius; }
 
+    qreal strength() const;
+    void setStrength(qreal strength);
+
 private slots:
     void onViewVisibleChanged(bool);
 
@@ -95,6 +99,7 @@ signals:
     void viewChanged();
     void edgesChanged();
     void radiusChanged();
+    void strengthChanged();
 
 private:
     QWindow *m_view;
@@ -103,6 +108,7 @@ private:
     QVector<KWindowShadowTile::Ptr> m_tile;
     TileSet m_shadowTiles;
     qreal m_radius = 10;
+    qreal m_strength = 1.3;
 };
 
 #endif

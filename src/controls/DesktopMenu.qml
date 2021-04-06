@@ -8,12 +8,13 @@ Meui.MenuPopupWindow {
 
     default property alias content : _mainLayout.data
 
-    Rectangle {
+    Meui.RoundedRect {
         id: _background
         anchors.fill: parent
-        opacity: 0.6
-        color: Meui.Theme.backgroundColor
-        radius: Meui.Theme.mediumRadius
+        // opacity: 0.6
+        // color: Meui.Theme.backgroundColor
+        // radius: Meui.Theme.mediumRadius
+        backgroundOpacity: 0.6
 
         Meui.WindowShadow {
             view: control
