@@ -33,14 +33,6 @@ Window {
         headerBar.anchors.fill = _header
     }
 
-    function toggleMaximized() {
-        if (isMaximized) {
-            root.showNormal();
-        } else {
-            root.showMaximized();
-        }
-    }
-
     Meui.WindowHelper {
         id: windowHelper
     }
@@ -311,6 +303,28 @@ Window {
                     }
                 }
             }
+        }
+    }
+
+    QtObject {
+        id: internal
+        property QtObject passiveNotification
+    }
+
+    function showPassiveNotification(message, timeout, actionText, callBack) {
+        if (!internal.passiveNotification) {
+            var component = Qt.createComponent("qrc:/meui/kit/Toast.qml")
+            internal.passiveNotification = component.createObject(root)
+        }
+
+        internal.passiveNotification.showNotification(message, timeout, actionText, callBack)
+    }
+
+    function toggleMaximized() {
+        if (isMaximized) {
+            root.showNormal();
+        } else {
+            root.showMaximized();
         }
     }
 }

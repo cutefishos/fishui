@@ -7,7 +7,7 @@ import MeuiKit 1.0 as Meui
 Popup {
     id: control
     x: Math.round(parent.width / 2 - width / 2)
-    y: parent.height - height - Meui.Units.smallSpacing
+    y: parent.height - height - Meui.Units.largeSpacing
     implicitWidth: Math.max(background ? background.implicitWidth : 0,
                             contentWidth + leftPadding + rightPadding) + leftInset + rightInset
     implicitHeight: Math.max(background ? background.implicitHeight : 0 ,
@@ -18,7 +18,7 @@ Popup {
     topPadding: Meui.Units.smallSpacing
     leftPadding: Meui.Units.smallSpacing
     rightPadding: Meui.Units.smallSpacing
-    bottomPadding: Meui.Units.smallSpacing
+    bottomPadding: Meui.Units.largeSpacing
 
     modal: false
     closePolicy: Popup.NoAutoClose
@@ -172,8 +172,10 @@ Popup {
                 }
             }
 
-            background: Meui.RoundedRect {
-                backgroundOpacity: 0.6
+            background: Rectangle {
+                color: Meui.Theme.backgroundColor
+                radius: Meui.Theme.mediumRadius
+                opacity: 0.9
                 layer.enabled: true
                 layer.effect: DropShadow {
                     transparentBorder: true
@@ -181,7 +183,7 @@ Popup {
                     samples: 32
                     horizontalOffset: 0
                     verticalOffset: 0
-                    color: Qt.rgba(0, 0, 0, 0.11)
+                    color: Qt.rgba(0, 0, 0, 0.14)
                 }
             }
         }
