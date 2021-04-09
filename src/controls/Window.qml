@@ -202,7 +202,7 @@ Window {
             anchors.margins: 1
             color: "transparent"
             radius: parent.radius - 1
-            border.color: Qt.rgba(255, 255, 255, 0.3)
+            border.color: Meui.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3) : "transparent"
             antialiasing: true
             visible: !isMaximized && !isFullScreen && Meui.Theme.darkMode
             z: 999

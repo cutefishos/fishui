@@ -129,7 +129,7 @@ void MenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
         if (m_mouseMoved) {
             QMouseEvent pe = QMouseEvent(QEvent::MouseButtonPress, e->pos(), e->button(), e->buttons(), e->modifiers());
             QQuickWindow::mousePressEvent(&pe);
-            if (!m_dismissed) {
+            if (!m_dismissed && e->button() != Qt::RightButton) {
                 dismissPopup();
                 QQuickWindow::mouseReleaseEvent(e);
             }

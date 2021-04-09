@@ -84,6 +84,7 @@ Item {
         anchors.margins: 1
         radius: control.radius - 1
         color: "transparent"
+        visible: Meui.Theme.darkMode
         border.color: Qt.rgba(255, 255, 255, 0.3)
         border.width: 1
         smooth: true
