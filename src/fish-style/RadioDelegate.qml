@@ -1,7 +1,7 @@
 import QtQuick 2.4
 import QtQuick.Controls 2.4
 import QtQuick.Templates 2.4 as T
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 T.RadioDelegate {
     id: control
@@ -13,12 +13,12 @@ T.RadioDelegate {
                                       indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
     baselineOffset: contentItem.y + contentItem.baselineOffset
 
-    topPadding: control.Meui.Units.smallSpacing
-    bottomPadding: control.Meui.Units.smallSpacing
-    leftPadding: control.Meui.Units.smallSpacing
-    rightPadding: control.Meui.Units.smallSpacing
+    topPadding: control.FishUI.Units.smallSpacing
+    bottomPadding: control.FishUI.Units.smallSpacing
+    leftPadding: control.FishUI.Units.smallSpacing
+    rightPadding: control.FishUI.Units.smallSpacing
 
-    spacing: control.Meui.Units.smallSpacing
+    spacing: control.FishUI.Units.smallSpacing
 
     opacity: control.enabled ? 1.0 : 0.5
 
@@ -28,7 +28,7 @@ T.RadioDelegate {
 
         text: control.text
         font: control.font
-        color: Meui.Theme.textColor
+        color: FishUI.Theme.textColor
 
         elide: Text.ElideRight
         visible: control.text

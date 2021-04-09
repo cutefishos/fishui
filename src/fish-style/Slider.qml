@@ -1,7 +1,7 @@
 import QtQuick 2.6
 import QtQuick.Templates 2.3 as T
 import QtGraphicalEffects 1.0
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 T.Slider {
     id: control
@@ -17,7 +17,7 @@ T.Slider {
         x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
         y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : control.visualPosition * (control.availableHeight - height))
 
-        width: Meui.Units.iconSizes.medium
+        width: FishUI.Units.iconSizes.medium
         height: width
         radius: width / 2
         color: "white"
@@ -53,7 +53,7 @@ T.Slider {
             width: control.horizontal ? parent.width : sliderTrackHeight
             height: !control.horizontal ? parent.height : sliderTrackHeight
             radius: !control.horizontal ? parent.width / 2 : sliderTrackHeight / 2
-            color: Meui.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.5) : Qt.rgba(0, 0, 0, 0.15)
+            color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.5) : Qt.rgba(0, 0, 0, 0.15)
         }
 
         Rectangle {
@@ -62,7 +62,7 @@ T.Slider {
             width: control.horizontal ? control.position * parent.width : sliderTrackHeight
             height: !control.horizontal ? control.position * parent.height : sliderTrackHeight
             radius: !control.horizontal ? parent.width / 2 : sliderTrackHeight / 2
-            color: control.Meui.Theme.highlightColor
+            color: control.FishUI.Theme.highlightColor
         }
     }
 }

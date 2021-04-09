@@ -2,13 +2,13 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.0
 
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 Item {
     id: control
 
-    property real radius: Meui.Theme.smallRadius
-    property var color: Meui.Theme.backgroundColor
+    property real radius: FishUI.Theme.smallRadius
+    property var color: FishUI.Theme.backgroundColor
 
     property bool animationEnabled: true
 
@@ -84,7 +84,7 @@ Item {
         anchors.margins: 1
         radius: control.radius - 1
         color: "transparent"
-        visible: Meui.Theme.darkMode
+        visible: FishUI.Theme.darkMode
         border.color: Qt.rgba(255, 255, 255, 0.3)
         border.width: 1
         smooth: true

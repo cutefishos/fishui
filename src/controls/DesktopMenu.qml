@@ -1,28 +1,28 @@
 import QtQuick 2.12
 import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.12
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
-Meui.MenuPopupWindow {
+FishUI.MenuPopupWindow {
     id: control
 
     default property alias content : _mainLayout.data
 
-    Meui.RoundedRect {
+    FishUI.RoundedRect {
         id: _background
         anchors.fill: parent
         // opacity: 0.6
-        // color: Meui.Theme.backgroundColor
-        // radius: Meui.Theme.mediumRadius
+        // color: FishUI.Theme.backgroundColor
+        // radius: FishUI.Theme.mediumRadius
         backgroundOpacity: 0.6
 
-        Meui.WindowShadow {
+        FishUI.WindowShadow {
             view: control
             geometry: Qt.rect(control.x, control.y, control.width, control.height)
             radius: _background.radius
         }
 
-        Meui.WindowBlur {
+        FishUI.WindowBlur {
             view: control
             geometry: Qt.rect(control.x, control.y, control.width, control.height)
             windowRadius: _background.radius

@@ -3,34 +3,34 @@ import QtQuick.Templates 2.12 as T
 import QtQuick.Controls 2.12
 import QtQuick.Controls.impl 2.12
 
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 T.MenuItem
 {
     id: control
 
-    property color hoveredColor: Meui.Theme.highlightColor
-    property color pressedColor: Qt.darker(Meui.Theme.highlightColor, 1.2)
+    property color hoveredColor: FishUI.Theme.highlightColor
+    property color pressedColor: Qt.darker(FishUI.Theme.highlightColor, 1.2)
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
     implicitHeight: visible ? Math.max(implicitBackgroundHeight + topInset + bottomInset,
                                        implicitContentHeight + topPadding + bottomPadding,
                                        implicitIndicatorHeight + topPadding + bottomPadding) : 0
-    verticalPadding: Meui.Units.smallSpacing
+    verticalPadding: FishUI.Units.smallSpacing
     hoverEnabled: true
 
-    icon.width: Meui.Units.iconSizes.medium
-    icon.height: Meui.Units.iconSizes.medium
+    icon.width: FishUI.Units.iconSizes.medium
+    icon.height: FishUI.Units.iconSizes.medium
 
-    icon.color: control.enabled ? (control.highlighted ? control.Meui.Theme.highlightColor : control.Meui.Theme.textColor) :
-                             control.Meui.Theme.disabledTextColor
+    icon.color: control.enabled ? (control.highlighted ? control.FishUI.Theme.highlightColor : control.FishUI.Theme.textColor) :
+                             control.FishUI.Theme.disabledTextColor
 
     contentItem: IconLabel {
         readonly property real arrowPadding: control.subMenu && control.arrow ? control.arrow.width + control.spacing : 0
         readonly property real indicatorPadding: control.checkable && control.indicator ? control.indicator.width + control.spacing : 0
-        leftPadding: !control.mirrored ? indicatorPadding + Meui.Units.smallSpacing * 2 : arrowPadding
-        rightPadding: control.mirrored ? indicatorPadding : arrowPadding + Meui.Units.smallSpacing * 2
+        leftPadding: !control.mirrored ? indicatorPadding + FishUI.Units.smallSpacing * 2 : arrowPadding
+        rightPadding: control.mirrored ? indicatorPadding : arrowPadding + FishUI.Units.smallSpacing * 2
 
         spacing: control.spacing
         mirrored: control.mirrored
@@ -40,20 +40,20 @@ T.MenuItem
         icon: control.icon
         text: control.text
         font: control.font
-        color: control.enabled ? control.pressed || control.hovered ? control.Meui.Theme.highlightedTextColor : 
-               Meui.Theme.textColor : control.Meui.Theme.disabledTextColor
+        color: control.enabled ? control.pressed || control.hovered ? control.FishUI.Theme.highlightedTextColor : 
+               FishUI.Theme.textColor : control.FishUI.Theme.disabledTextColor
     }
 
     background: Rectangle {
         implicitWidth: 200
-        implicitHeight: control.visible ? Meui.Units.rowHeightAlt : 0
+        implicitHeight: control.visible ? FishUI.Units.rowHeightAlt : 0
         radius: 4
         opacity: 1
 
         anchors {
             fill: parent
-            leftMargin: Meui.Units.smallSpacing
-            rightMargin: Meui.Units.smallSpacing
+            leftMargin: FishUI.Units.smallSpacing
+            rightMargin: FishUI.Units.smallSpacing
         }
 
         color: control.pressed ? control.pressedColor : control.hovered ? control.hoveredColor : "transparent"

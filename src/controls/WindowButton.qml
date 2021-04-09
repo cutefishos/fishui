@@ -1,7 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.4
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 Item {
     id: control
@@ -10,10 +10,10 @@ Item {
     height: size
     width: size
 
-    property color hoveredColor: Meui.Theme.darkMode ? Qt.lighter(Meui.Theme.backgroundColor, 1.5)
-                                                   : Qt.darker(Meui.Theme.backgroundColor, 1.2)
-    property color pressedColor: Meui.Theme.darkMode ? Qt.lighter(Meui.Theme.backgroundColor, 1.3)
-                                                     : Qt.darker(Meui.Theme.backgroundColor, 1.3)
+    property color hoveredColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 1.5)
+                                                   : Qt.darker(FishUI.Theme.backgroundColor, 1.2)
+    property color pressedColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 1.3)
+                                                     : Qt.darker(FishUI.Theme.backgroundColor, 1.3)
     property alias source: image.source
     signal clicked()
 

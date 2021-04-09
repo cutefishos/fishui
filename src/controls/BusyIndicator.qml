@@ -1,13 +1,13 @@
 import QtQuick 2.4
 import QtQuick.Controls 2.4
 import QtGraphicalEffects 1.0
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 Image {
     id: control
     width: 22
     height: width
-    source: "qrc:/meui/kit/images/refresh.svg"
+    source: "qrc:/fishui/kit/images/refresh.svg"
     sourceSize: Qt.size(width, height)
     visible: true
 
@@ -16,7 +16,7 @@ Image {
     ColorOverlay {
         anchors.fill: control
         source: control
-        color: Meui.Theme.textColor
+        color: FishUI.Theme.textColor
         opacity: 1
         visible: true
     }

@@ -1,4 +1,4 @@
-Source: cutefish-uikit
+Source: fishui
 Section: devel
 Priority: optional
 Maintainer: CutefishOS <cutefishos@foxmail.com>
@@ -16,7 +16,7 @@ Build-Depends: cmake,
 Standards-Version: 4.5.0
 Homepage: https://github.com/cutefishos/uikit
 
-Package: cutefish-uikit
+Package: fishui
 Architecture: any
 Depends: qml-module-qtquick-controls2,
          qml-module-qtquick2,

@@ -17,12 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MEUIKIT_H
-#define MEUIKIT_H
+#ifndef FISHUI_H
+#define FISHUI_H
 
 #include <QtQml/QQmlExtensionPlugin>
 
-class MeuiKit : public QQmlExtensionPlugin
+class FishUI : public QQmlExtensionPlugin
 {
     Q_OBJECT
     Q_PLUGIN_METADATA(IID QQmlExtensionInterface_iid)
@@ -40,4 +40,4 @@ private:
 
 };
 
-#endif // MEUIKIT_H
+#endif // FISHUI_H

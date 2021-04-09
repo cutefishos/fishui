@@ -4,7 +4,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 import QtQuick.Shapes 1.12
 import QtGraphicalEffects 1.0
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 Window {
     id: root
@@ -14,9 +14,9 @@ Window {
     flags: Qt.FramelessWindowHint
     color: "transparent"
 
-    property var backgroundColor: Meui.Theme.backgroundColor
+    property var backgroundColor: FishUI.Theme.backgroundColor
     property var backgroundOpacity: 1.0
-    property var windowRadius: Meui.Theme.bigRadius
+    property var windowRadius: FishUI.Theme.bigRadius
 
     property alias headerBarHeight: _titlebar.height
     property bool hideHeaderOnMaximize: false
@@ -33,7 +33,7 @@ Window {
         headerBar.anchors.fill = _header
     }
 
-    Meui.WindowHelper {
+    FishUI.WindowHelper {
         id: windowHelper
     }
 
@@ -164,7 +164,7 @@ Window {
     }
 
     // Window shadows
-    Meui.WindowShadow {
+    FishUI.WindowShadow {
         view: root
         geometry: Qt.rect(root.x, root.y, root.width, root.height)
         radius: _background.radius
@@ -202,9 +202,9 @@ Window {
             anchors.margins: 1
             color: "transparent"
             radius: parent.radius - 1
-            border.color: Meui.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3) : "transparent"
+            border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3) : "transparent"
             antialiasing: true
-            visible: !isMaximized && !isFullScreen && Meui.Theme.darkMode
+            visible: !isMaximized && !isFullScreen && FishUI.Theme.darkMode
             z: 999
         }
 
@@ -246,18 +246,18 @@ Window {
                     Item {
                         id: _windowControl
                         Layout.fillHeight: true
-                        width: _windowControlLayout.implicitWidth + Meui.Units.smallSpacing
+                        width: _windowControlLayout.implicitWidth + FishUI.Units.smallSpacing
 
                         RowLayout {
                             id: _windowControlLayout
                             anchors.fill: parent
-                            anchors.topMargin: Meui.Units.smallSpacing
-                            anchors.rightMargin: Meui.Units.smallSpacing
-                            spacing: Meui.Units.largeSpacing
+                            anchors.topMargin: FishUI.Units.smallSpacing
+                            anchors.rightMargin: FishUI.Units.smallSpacing
+                            spacing: FishUI.Units.largeSpacing
 
                             WindowButton {
                                 size: 35
-                                source: "qrc:/meui/kit/images/" + (Meui.Theme.darkMode ? "dark/" : "light/") + "minimize.svg"
+                                source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "minimize.svg"
                                 onClicked: windowHelper.minimizeWindow(root)
                                 visible: root.visibility !== Window.FullScreen
                                 Layout.alignment: Qt.AlignTop
@@ -265,8 +265,8 @@ Window {
 
                             WindowButton {
                                 size: 35
-                                source: "qrc:/meui/kit/images/" +
-                                    (Meui.Theme.darkMode ? "dark/" : "light/") +
+                                source: "qrc:/fishui/kit/images/" +
+                                    (FishUI.Theme.darkMode ? "dark/" : "light/") +
                                     (root.visibility === Window.Maximized ? "restore.svg" : "maximize.svg")
                                 onClicked: root.toggleMaximized()
                                 visible: root.visibility !== Window.FullScreen
@@ -275,7 +275,7 @@ Window {
 
                             WindowButton {
                                 size: 35
-                                source: "qrc:/meui/kit/images/" + (Meui.Theme.darkMode ? "dark/" : "light/") + "close.svg"
+                                source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "close.svg"
                                 onClicked: root.close()
                                 visible: root.visibility !== Window.FullScreen
                                 Layout.alignment: Qt.AlignTop
@@ -313,7 +313,7 @@ Window {
 
     function showPassiveNotification(message, timeout, actionText, callBack) {
         if (!internal.passiveNotification) {
-            var component = Qt.createComponent("qrc:/meui/kit/Toast.qml")
+            var component = Qt.createComponent("qrc:/fishui/kit/Toast.qml")
             internal.passiveNotification = component.createObject(root)
         }
 

@@ -1,8 +1,8 @@
-set(TARGET MeuiKit)
+set(TARGET FishUI)
 set(MODULE_VERSION "1.0")
 
 set(SOURCES
-    meuikit.cpp
+    fishui.cpp
     iconthemeprovider.cpp
     thememanager.cpp
     shadowhelper/windowshadow.cpp
@@ -16,8 +16,8 @@ set(SOURCES
 
     desktop/menupopupwindow.cpp
 
-    meuikit.qrc
-    meui-style/style.qrc
+    fishui.qrc
+    fish-style/style.qrc
 )
 
 add_library(${TARGET} SHARED ${SOURCES})
@@ -45,4 +45,4 @@ install(TARGETS ${TARGET} DESTINATION ${INSTALL_QMLDIR}/${TARGET})
 install(DIRECTORY controls/ DESTINATION ${INSTALL_QMLDIR}/${TARGET})
 
 # INSTALL STYLE
-install(DIRECTORY meui-style DESTINATION ${INSTALL_QMLDIR}/QtQuick/Controls.2)
+install(DIRECTORY fish-style DESTINATION ${INSTALL_QMLDIR}/QtQuick/Controls.2)

@@ -23,7 +23,7 @@
 import QtQuick 2.6
 import QtGraphicalEffects 1.0
 import QtQuick.Templates 2.3 as T
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 T.Dialog {
     id: control
@@ -36,7 +36,7 @@ T.Dialog {
     contentWidth: contentItem.implicitWidth || (contentChildren.length === 1 ? contentChildren[0].implicitWidth : 0)
     contentHeight: contentItem.implicitHeight || (contentChildren.length === 1 ? contentChildren[0].implicitHeight : 0) + header.implicitHeight + footer.implicitHeight
 
-    padding: Meui.Units.largeSpacing
+    padding: FishUI.Units.largeSpacing
 
     enter: Transition {
         NumberAnimation {
@@ -61,10 +61,10 @@ T.Dialog {
     contentItem: Item {}
 
     background: Rectangle {
-        radius: Meui.Theme.mediumRadius
-        color: Meui.Theme.backgroundColor
+        radius: FishUI.Theme.mediumRadius
+        color: FishUI.Theme.backgroundColor
         border.width: 1
-        border.color: Meui.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.2) : Qt.rgba(0, 0, 0, 0.1)
+        border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.2) : Qt.rgba(0, 0, 0, 0.1)
 
         layer.enabled: true
         layer.effect: DropShadow {
@@ -81,12 +81,12 @@ T.Dialog {
         text: control.title
         visible: control.title
         elide: Label.ElideRight
-        padding: Meui.Units.largeSpacing
+        padding: FishUI.Units.largeSpacing
         bottomPadding: 0
     }
 
     footer: DialogButtonBox {
         visible: count > 0
-        padding: Meui.Units.largeSpacing * 2
+        padding: FishUI.Units.largeSpacing * 2
     }
 }

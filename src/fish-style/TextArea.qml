@@ -24,7 +24,7 @@ import QtQuick 2.6
 import QtQuick.Window 2.2
 import QtQuick.Controls 2.6
 import QtQuick.Templates 2.6 as T
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 T.TextArea {
     id: control
@@ -41,9 +41,9 @@ T.TextArea {
 
     padding: 6
 
-    color: Meui.Theme.textColor
-    selectionColor: Meui.Theme.highlightColor
-    selectedTextColor: Meui.Theme.highlightedTextColor
+    color: FishUI.Theme.textColor
+    selectionColor: FishUI.Theme.highlightColor
+    selectedTextColor: FishUI.Theme.highlightedTextColor
     opacity: control.enabled ? 1 : 0.6
     wrapMode: Text.WordWrap
     verticalAlignment: TextEdit.AlignTop
@@ -64,7 +64,7 @@ T.TextArea {
 
         text: control.placeholderText
         font: control.font
-        color: Meui.Theme.disabledTextColor
+        color: FishUI.Theme.disabledTextColor
         horizontalAlignment: control.horizontalAlignment
         verticalAlignment: control.verticalAlignment
         visible: !control.length && !control.preeditText && (!control.activeFocus || control.horizontalAlignment !== Qt.AlignHCenter)
@@ -75,6 +75,6 @@ T.TextArea {
         y: parent.height - height - control.bottomPadding / 2
         implicitWidth: 120
         height: control.activeFocus ? 2 : 1
-        color: control.Meui.Theme.backgroundColor
+        color: control.FishUI.Theme.backgroundColor
     }
 }

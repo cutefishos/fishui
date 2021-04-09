@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/meui/kit">
+    <qresource prefix="/fishui/kit">
         <file alias="BusyIndicator.qml">controls/BusyIndicator.qml</file>
         <file alias="Icon.qml">controls/Icon.qml</file>
         <file alias="MouseHover.qml">controls/MouseHover.qml</file>

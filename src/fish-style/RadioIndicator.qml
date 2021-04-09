@@ -22,19 +22,19 @@
 
 import QtQuick 2.9
 import QtQuick.Controls 2.2
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 Rectangle {
-    implicitWidth: Meui.Units.iconSizes.small
-    implicitHeight: Meui.Units.iconSizes.small
+    implicitWidth: FishUI.Units.iconSizes.small
+    implicitHeight: FishUI.Units.iconSizes.small
 
     property Item control
 
     radius: width / 2
-    color: control.Meui.Theme.backgroundColor
+    color: control.FishUI.Theme.backgroundColor
     border.color: control.down
-        ? control.checked ? "transparent" : control.Meui.Theme.highlightColor
-        : control.checked ? control.Meui.Theme.highlightColor : control.Meui.Theme.disabledTextColor
+        ? control.checked ? "transparent" : control.FishUI.Theme.highlightColor
+        : control.checked ? control.FishUI.Theme.highlightColor : control.FishUI.Theme.disabledTextColor
 
     border.width: 1
     scale: control.down ? 0.91 : 1.0
@@ -44,7 +44,7 @@ Rectangle {
         radius: parent.radius
         scale: control.checked ? 1.0 : 0.0
 
-        color: control.Meui.Theme.highlightColor
+        color: control.FishUI.Theme.highlightColor
 
         Behavior on scale {
             NumberAnimation {

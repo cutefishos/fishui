@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "meuikit.h"
+#include "fishui.h"
 #include "thememanager.h"
 #include "iconthemeprovider.h"
 #include "shadowhelper/windowshadow.h"
@@ -31,9 +31,9 @@
 #include <QQmlEngine>
 #include <QQuickStyle>
 
-void MeuiKit::initializeEngine(QQmlEngine *engine, const char *uri)
+void FishUI::initializeEngine(QQmlEngine *engine, const char *uri)
 {
-    Q_ASSERT(QLatin1String(uri) == QLatin1String("MeuiKit"));
+    Q_ASSERT(QLatin1String(uri) == QLatin1String("FishUI"));
 
     // Set base URL to the plugin URL
     engine->setBaseUrl(baseUrl());
@@ -42,11 +42,11 @@ void MeuiKit::initializeEngine(QQmlEngine *engine, const char *uri)
     engine->addImageProvider(QStringLiteral("icontheme"), new IconThemeProvider());
 }
 
-void MeuiKit::registerTypes(const char *uri)
+void FishUI::registerTypes(const char *uri)
 {
-    Q_ASSERT(QLatin1String(uri) == QLatin1String("MeuiKit"));
+    Q_ASSERT(QLatin1String(uri) == QLatin1String("FishUI"));
 
-    qmlRegisterSingletonType<ThemeManager>("MeuiKit.Core", 1, 0, "ThemeManager", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
+    qmlRegisterSingletonType<ThemeManager>("FishUI.Core", 1, 0, "ThemeManager", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
         Q_UNUSED(engine)
         Q_UNUSED(scriptEngine)
         return new ThemeManager;
@@ -74,7 +74,7 @@ void MeuiKit::registerTypes(const char *uri)
     qmlProtectModule(uri, 1);
 }
 
-QUrl MeuiKit::componentUrl(const QString &fileName) const
+QUrl FishUI::componentUrl(const QString &fileName) const
 {
-    return QUrl(QStringLiteral("qrc:/meui/kit/") + fileName);
+    return QUrl(QStringLiteral("qrc:/fishui/kit/") + fileName);
 }

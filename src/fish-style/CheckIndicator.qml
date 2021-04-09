@@ -38,17 +38,17 @@ import QtQuick 2.4
 import QtQuick.Controls.Material 2.4
 import QtQuick.Controls.Material.impl 2.4
 
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 Rectangle {
     id: indicatorItem
     implicitWidth: 18
     implicitHeight: 18
 
-    color: !control.enabled ? control.Meui.Theme.backgroundColor
-                            : checked ? Meui.Theme.highlightColor : control.Meui.Theme.backgroundColor
-    border.color: !control.enabled ? control.Meui.Theme.disabledTextColor
-        : checked ? control.Meui.Theme.highlightColor: control.Meui.Theme.textColor
+    color: !control.enabled ? control.FishUI.Theme.backgroundColor
+                            : checked ? FishUI.Theme.highlightColor : control.FishUI.Theme.backgroundColor
+    border.color: !control.enabled ? control.FishUI.Theme.disabledTextColor
+        : checked ? control.FishUI.Theme.highlightColor: control.FishUI.Theme.textColor
     border.width: 1
     radius: control.autoExclusive ? Math.min(height, width) : 4
 

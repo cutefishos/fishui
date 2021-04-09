@@ -23,7 +23,7 @@
 import QtQuick 2.4
 import QtQuick.Templates 2.4 as T
 import QtQuick.Controls 2.4
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 T.CheckBox {
     id: controlRoot
@@ -36,7 +36,7 @@ T.CheckBox {
     baselineOffset: contentItem.y + contentItem.baselineOffset
 
     padding: 1
-    spacing: Meui.Units.smallSpacing
+    spacing: FishUI.Units.smallSpacing
 
     hoverEnabled: true
 

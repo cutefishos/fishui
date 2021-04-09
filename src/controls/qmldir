@@ -1,6 +1,6 @@
-module MeuiKit
-plugin MeuiKit
-classname MeuiKit
+module FishUI
+plugin FishUI
+classname FishUI
 depends QtQuick.Controls 2.12
 depends QtQuick.Controls.Private 2.10
 depends QtQuick.Controls 2.10

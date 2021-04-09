@@ -1,7 +1,7 @@
 import QtQuick 2.4
 import QtQuick.Templates 2.12 as T
 import QtQuick.Controls.Material 2.12
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 T.ScrollBar {
     id: control
@@ -16,12 +16,12 @@ T.ScrollBar {
     minimumSize: orientation == Qt.Horizontal ? height / width : width / height
 
     contentItem: Rectangle {
-        radius: Meui.Theme.smallRadius
+        radius: FishUI.Theme.smallRadius
         implicitWidth: control.interactive ? 6 : 4
         implicitHeight: control.interactive ? 6 : 4
 
-        color: control.pressed ? Meui.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.4) : Qt.rgba(0, 0, 0, 0.5)
-                               : Meui.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.5) : Qt.rgba(0, 0, 0, 0.4)
+        color: control.pressed ? FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.4) : Qt.rgba(0, 0, 0, 0.5)
+                               : FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.5) : Qt.rgba(0, 0, 0, 0.4)
         opacity: 0.0
     }
 

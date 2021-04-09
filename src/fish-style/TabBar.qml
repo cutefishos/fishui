@@ -1,12 +1,12 @@
 import QtQuick 2.6
 import QtQuick.Templates 2.3 as T
 import QtGraphicalEffects 1.0
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 T.TabBar {
     id: control
 
-    implicitWidth: Math.max(background.implicitWidth, contentItem.implicitWidth + Meui.Units.smallSpacing)
+    implicitWidth: Math.max(background.implicitWidth, contentItem.implicitWidth + FishUI.Units.smallSpacing)
     implicitHeight: contentItem.implicitHeight
 
     spacing: 0
@@ -37,8 +37,8 @@ T.TabBar {
                     fill: parent
                     margins: 2
                 }
-                color: Meui.Theme.darkMode ? Qt.lighter(Meui.Theme.backgroundColor, 2.2) : Meui.Theme.backgroundColor
-                radius: Meui.Theme.smallRadius
+                color: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 2.2) : FishUI.Theme.backgroundColor
+                radius: FishUI.Theme.smallRadius
 
                 layer.enabled: true
                 layer.effect: DropShadow {
@@ -54,7 +54,7 @@ T.TabBar {
     }
 
     background: Rectangle {
-        color: Meui.Theme.darkMode ? Qt.lighter(Meui.Theme.backgroundColor, 1.5) : Meui.Theme.secondBackgroundColor
-        radius: Meui.Theme.smallRadius + 2
+        color: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 1.5) : FishUI.Theme.secondBackgroundColor
+        radius: FishUI.Theme.smallRadius + 2
     }
 }

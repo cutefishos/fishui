@@ -1,6 +1,6 @@
 import QtQuick 2.4
 import QtQuick.Templates 2.12 as T
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 T.Switch {
     id: control
@@ -26,7 +26,7 @@ T.Switch {
 
         text: control.text
         font: control.font
-        color: control.enabled ? Meui.Theme.textColor : Meui.Theme.disabledTextColor
+        color: control.enabled ? FishUI.Theme.textColor : FishUI.Theme.disabledTextColor
         elide: Label.ElideRight
         verticalAlignment: Label.AlignVCenter
     }

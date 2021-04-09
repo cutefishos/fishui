@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 
-set(MEUIKIT_VERSION 1.0)
-project(meuikit VERSION ${MEUIKIT_VERSION})
+set(FISHUI_VERSION 1.0)
+project(fishui VERSION ${FISHUI_VERSION})
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
@@ -50,11 +50,11 @@ endif()
 add_subdirectory(src)
 
 # Install
-set(CMAKECONFIG_INSTALL_DIR "/usr/lib/cmake/MeuiKit")
+set(CMAKECONFIG_INSTALL_DIR "/usr/lib/cmake/FishUI")
 
 configure_package_config_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/MeuiKitConfig.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/MeuiKitConfig.cmake"
+    "${CMAKE_CURRENT_SOURCE_DIR}/FishUIConfig.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/FishUIConfig.cmake"
     INSTALL_DESTINATION
         "${CMAKECONFIG_INSTALL_DIR}"
     PATH_VARS
@@ -62,22 +62,22 @@ configure_package_config_file(
 )
 
 write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/MeuiKitConfigVersion.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/FishUIConfigVersion.cmake
     VERSION ${LIB_VERSION}
     COMPATIBILITY AnyNewerVersion
 )
 
 install(
     FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/MeuiKitConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/MeuiKitConfigVersion.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/FishUIConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/FishUIConfigVersion.cmake"
     DESTINATION
         "${CMAKECONFIG_INSTALL_DIR}"
     COMPONENT
         Devel
 )
 
-install(EXPORT MeuiKitTargets
+install(EXPORT FishUITargets
     DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
-    FILE MeuiKitTargets.cmake
+    FILE FishUITargets.cmake
 )

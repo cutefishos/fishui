@@ -22,7 +22,7 @@
 
 import QtQuick 2.6
 import QtQuick.Templates 2.3 as T
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 T.DialogButtonBox {
     id: control
@@ -30,8 +30,8 @@ T.DialogButtonBox {
     implicitWidth: contentItem.implicitWidth + leftPadding + rightPadding
     implicitHeight: contentItem.implicitHeight + topPadding + bottomPadding
 
-    spacing: Meui.Units.smallSpacing
-    padding: Meui.Units.smallSpacing
+    spacing: FishUI.Units.smallSpacing
+    padding: FishUI.Units.smallSpacing
     alignment: Qt.AlignRight
 
     delegate: Button {

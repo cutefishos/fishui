@@ -1,21 +1,21 @@
 pragma Singleton
 
 import QtQuick 2.4
-import MeuiKit.Core 1.0 as MeuiKitCore
+import FishUI.Core 1.0 as FishUICore
 
 QtObject {
     id: theme
 
-    property real devicePixelRatio: MeuiKitCore.ThemeManager.devicePixelRatio
+    property real devicePixelRatio: FishUICore.ThemeManager.devicePixelRatio
 
-    property bool darkMode: MeuiKitCore.ThemeManager.darkMode
+    property bool darkMode: FishUICore.ThemeManager.darkMode
 
-    property color blueColor: MeuiKitCore.ThemeManager.blueColor
-    property color redColor: MeuiKitCore.ThemeManager.redColor
-    property color greenColor: MeuiKitCore.ThemeManager.greenColor
-    property color purpleColor: MeuiKitCore.ThemeManager.purpleColor
-    property color pinkColor: MeuiKitCore.ThemeManager.pinkColor
-    property color orangeColor: MeuiKitCore.ThemeManager.orangeColor
+    property color blueColor: FishUICore.ThemeManager.blueColor
+    property color redColor: FishUICore.ThemeManager.redColor
+    property color greenColor: FishUICore.ThemeManager.greenColor
+    property color purpleColor: FishUICore.ThemeManager.purpleColor
+    property color pinkColor: FishUICore.ThemeManager.pinkColor
+    property color orangeColor: FishUICore.ThemeManager.orangeColor
 
     property color backgroundColor: darkMode ? "#3B3B3D" : "#FFFFFF"
     property color secondBackgroundColor: darkMode ? "#2E2E2E" : "#F5F5F5"
@@ -23,7 +23,7 @@ QtObject {
     property color textColor: darkMode ? "#FFFFFF" : "#333338"
     property color disabledTextColor: darkMode ? "#888888" : "#64646E"
 
-    property color highlightColor: MeuiKitCore.ThemeManager.accentColor
+    property color highlightColor: FishUICore.ThemeManager.accentColor
     property color highlightedTextColor: darkMode ? "#FFFFFF" : "#FFFFFF"
 
     property color activeTextColor: "#0176D3"

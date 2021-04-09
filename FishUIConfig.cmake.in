@@ -6,8 +6,8 @@ find_dependency(Qt5DBus @REQUIRED_QT_VERSION@)
 
 # Any changes in this ".cmake" file will be overwritten by CMake, the source is the ".cmake.in" file.
 
-include("${CMAKE_CURRENT_LIST_DIR}/MeuiKitTargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/FishUITargets.cmake")
 
-set(MeuiKit_INSTALL_PREFIX "@PACKAGE_CMAKE_INSTALL_PREFIX@")
+set(FishUI_INSTALL_PREFIX "@PACKAGE_CMAKE_INSTALL_PREFIX@")
 
 @PACKAGE_INCLUDE_QCHTARGETS@

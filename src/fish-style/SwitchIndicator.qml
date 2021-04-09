@@ -1,5 +1,5 @@
 import QtQuick 2.4
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 Item
 {
@@ -9,9 +9,9 @@ Item
 
     property Item control
     property alias handle: handle
-    property color bgColor : control.checked ? Meui.Theme.highlightColor : Qt.rgba(Meui.Theme.textColor.r, 
-                                                                                   Meui.Theme.textColor.g,
-                                                                                   Meui.Theme.textColor.b, 0.2)
+    property color bgColor : control.checked ? FishUI.Theme.highlightColor : Qt.rgba(FishUI.Theme.textColor.r, 
+                                                                                     FishUI.Theme.textColor.g,
+                                                                                     FishUI.Theme.textColor.b, 0.2)
     Rectangle {
         width: parent.width
         height: 20

@@ -1,7 +1,7 @@
 import QtQuick 2.4
 import QtQuick.Window 2.3
 import QtQuick.Controls 2.4
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 Window {
     id: control
@@ -14,23 +14,23 @@ Window {
     property alias backgroundColor: _background.color
 
     flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
-    width: label.implicitWidth + Meui.Units.largeSpacing * 2
-    height: label.implicitHeight + Meui.Units.largeSpacing * 2
+    width: label.implicitWidth + FishUI.Units.largeSpacing * 2
+    height: label.implicitHeight + FishUI.Units.largeSpacing * 2
 
-    Meui.WindowShadow {
+    FishUI.WindowShadow {
         view: control
         geometry: Qt.rect(control.x, control.y, control.width, control.height)
         radius: _background.radius
     }
 
-    Meui.WindowBlur {
+    FishUI.WindowBlur {
         view: control
         enabled: true
         windowRadius: _background.radius
         geometry: Qt.rect(_background.x, _background.y, _background.width, _background.height)
     }
 
-    Meui.RoundedRect {
+    FishUI.RoundedRect {
         id: _background
         anchors.fill: parent
 
@@ -38,7 +38,7 @@ Window {
             id: label
             anchors.centerIn: parent
             text: control.popupText
-            color: Meui.Theme.textColor
+            color: FishUI.Theme.textColor
         }
     }
 
@@ -50,11 +50,11 @@ Window {
 
         // left
         if (posX < 0)
-            posX = Meui.Units.smallSpacing
+            posX = FishUI.Units.smallSpacing
 
         // top
         if (posY < 0)
-            posY = Meui.Units.smallSpacing
+            posY = FishUI.Units.smallSpacing
 
         // right
         if (posX + control.width > Screen.width)

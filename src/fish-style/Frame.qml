@@ -1,7 +1,7 @@
 import QtQuick 2.6
 import QtQuick.Controls 2.3
 import QtQuick.Templates 2.3 as T
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 T.Frame {
     id: control
@@ -16,7 +16,7 @@ T.Frame {
 
     background: Rectangle {
         color: "transparent"
-        property color borderColor: Meui.Theme.textColor
+        property color borderColor: FishUI.Theme.textColor
         border.color: Qt.rgba(borderColor.r, borderColor.g, borderColor.b, 0.3)
     }
 }

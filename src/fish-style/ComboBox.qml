@@ -40,7 +40,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.12 as T
 import QtGraphicalEffects 1.0
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 T.ComboBox {
     id: control
@@ -51,10 +51,10 @@ T.ComboBox {
                              implicitContentHeight + topPadding + bottomPadding,
                              implicitIndicatorHeight + topPadding + bottomPadding)
 
-    topInset: Meui.Units.smallSpacing
-    bottomInset: Meui.Units.smallSpacing
+    topInset: FishUI.Units.smallSpacing
+    bottomInset: FishUI.Units.smallSpacing
 
-    spacing: Meui.Units.smallSpacing
+    spacing: FishUI.Units.smallSpacing
     leftPadding: padding + (!control.mirrored || !indicator || !indicator.visible ? 0 : indicator.width + spacing)
     rightPadding: padding + (control.mirrored || !indicator || !indicator.visible ? 0 : indicator.width + spacing)
 
@@ -69,7 +69,7 @@ T.ComboBox {
         x: control.mirrored ? control.leftPadding : control.width - width - control.rightPadding
         y: control.topPadding + (control.availableHeight - height) / 2
 
-        height: Meui.Units.iconSizes.small
+        height: FishUI.Units.iconSizes.small
         width: height
 
         source: "image://icontheme/go-down"
@@ -78,7 +78,7 @@ T.ComboBox {
     }
 
     contentItem: T.TextField {
-        padding: Meui.Units.smallSpacing
+        padding: FishUI.Units.smallSpacing
         leftPadding: control.editable ? 2 : control.mirrored ? 0 : 12
         rightPadding: control.editable ? 2 : control.mirrored ? 12 : 0
 
@@ -91,29 +91,29 @@ T.ComboBox {
         validator: control.validator
 
         font: control.font
-        color: control.enabled ? control.Meui.Theme.textColor : control.Meui.Theme.highlightColor
-        selectionColor:  control.Meui.Theme.highlightColor
-        selectedTextColor: control.Meui.Theme.highlightedTextColor
+        color: control.enabled ? control.FishUI.Theme.textColor : control.FishUI.Theme.highlightColor
+        selectionColor:  control.FishUI.Theme.highlightColor
+        selectedTextColor: control.FishUI.Theme.highlightedTextColor
         verticalAlignment: Text.AlignVCenter
     }
 
     background: Rectangle {
-        implicitWidth:  (Meui.Units.iconSizes.medium * 3) + Meui.Units.largeSpacing + Meui.Units.extendBorderWidth
-        implicitHeight: Meui.Units.iconSizes.medium + Meui.Units.smallSpacing + Meui.Units.extendBorderWidth
+        implicitWidth:  (FishUI.Units.iconSizes.medium * 3) + FishUI.Units.largeSpacing + FishUI.Units.extendBorderWidth
+        implicitHeight: FishUI.Units.iconSizes.medium + FishUI.Units.smallSpacing + FishUI.Units.extendBorderWidth
 
-        radius: Meui.Theme.smallRadius
+        radius: FishUI.Theme.smallRadius
 
-        color: !control.editable ? control.Meui.Theme.backgroundColor : "transparent"
+        color: !control.editable ? control.FishUI.Theme.backgroundColor : "transparent"
 
         Rectangle {
             id: _border
             anchors.fill: parent
             color: "transparent"
-            border.color: control.activeFocus ? Qt.rgba(Meui.Theme.highlightColor.r,
-                                                        Meui.Theme.highlightColor.g,
-                                                        Meui.Theme.highlightColor.b, 0.2) : "transparent"
-            border.width: Meui.Units.extendBorderWidth
-            radius: Meui.Theme.smallRadius + Meui.Units.extendBorderWidth
+            border.color: control.activeFocus ? Qt.rgba(FishUI.Theme.highlightColor.r,
+                                                        FishUI.Theme.highlightColor.g,
+                                                        FishUI.Theme.highlightColor.b, 0.2) : "transparent"
+            border.width: FishUI.Units.extendBorderWidth
+            radius: FishUI.Theme.smallRadius + FishUI.Units.extendBorderWidth
 
             Behavior on border.color {
                 ColorAnimation {
@@ -124,21 +124,21 @@ T.ComboBox {
 
         Rectangle {
             anchors.fill: parent
-            anchors.margins: Meui.Units.extendBorderWidth
-            radius: Meui.Theme.smallRadius
+            anchors.margins: FishUI.Units.extendBorderWidth
+            radius: FishUI.Theme.smallRadius
             color: "transparent"
-            border.color: control.activeFocus ? Meui.Theme.highlightColor : Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
+            border.color: control.activeFocus ? FishUI.Theme.highlightColor : Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r, FishUI.Theme.backgroundColor.g, FishUI.Theme.backgroundColor.b, 0.7))
             border.width: 1
         }
 
-        // border.color: control.activeFocus ? Meui.Theme.highlightColor : Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
+        // border.color: control.activeFocus ? FishUI.Theme.highlightColor : Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r, FishUI.Theme.backgroundColor.g, FishUI.Theme.backgroundColor.b, 0.7))
 
         // Rectangle {
         //     visible: control.editable
         //     y: parent.y + control.baselineOffset
         //     width: parent.width
         //     height: control.activeFocus ? 2 : 1
-        //     color: control.editable && control.activeFocus ? control.Meui.Theme.highlightColor : control.Meui.Theme.highlightedTextColor
+        //     color: control.editable && control.activeFocus ? control.FishUI.Theme.highlightColor : control.FishUI.Theme.highlightedTextColor
         // }
     }
 
@@ -146,8 +146,8 @@ T.ComboBox {
         width: Math.max(control.width, 150)
         implicitHeight: Math.min(contentItem.implicitHeight, control.Window.height - topMargin - bottomMargin)
         transformOrigin: Item.Top
-        topMargin: Meui.Units.largeSpacing
-        bottomMargin: Meui.Units.largeSpacing
+        topMargin: FishUI.Units.largeSpacing
+        bottomMargin: FishUI.Units.largeSpacing
 
         enter: Transition {
             NumberAnimation {
@@ -181,9 +181,9 @@ T.ComboBox {
         }
 
         background: Rectangle {
-            radius: Meui.Theme.smallRadius
-            color: parent.Meui.Theme.backgroundColor
-            border.color: Qt.tint(Meui.Theme.textColor, Qt.rgba(Meui.Theme.backgroundColor.r, Meui.Theme.backgroundColor.g, Meui.Theme.backgroundColor.b, 0.7))
+            radius: FishUI.Theme.smallRadius
+            color: parent.FishUI.Theme.backgroundColor
+            border.color: Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r, FishUI.Theme.backgroundColor.g, FishUI.Theme.backgroundColor.b, 0.7))
             layer.enabled: true
 
             layer.effect: DropShadow {

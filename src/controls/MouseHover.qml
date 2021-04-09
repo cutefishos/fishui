@@ -19,7 +19,7 @@
  */
 
 import QtQuick 2.12
-import MeuiKit 1.0 as Meui
+import FishUI 1.0 as FishUI
 
 Rectangle {
     id: background
@@ -30,15 +30,15 @@ Rectangle {
 
     anchors.fill: parent
 
-    radius: Meui.Theme.smallRadius
+    radius: FishUI.Theme.smallRadius
     color: "transparent"
 
     signal clicked(var mouse)
 
-    property color hoveredColor: Meui.Theme.darkMode ? Qt.lighter(Meui.Theme.backgroundColor, 1.1)
-                                                     : Qt.darker(Meui.Theme.backgroundColor, 1.2)
-    property color pressedColor: Meui.Theme.darkMode ? Qt.lighter(Meui.Theme.backgroundColor, 1.2)
-                                                     : Qt.darker(Meui.Theme.backgroundColor, 1.3)
+    property color hoveredColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 1.1)
+                                                     : Qt.darker(FishUI.Theme.backgroundColor, 1.2)
+    property color pressedColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 1.2)
+                                                     : Qt.darker(FishUI.Theme.backgroundColor, 1.3)
 
     Rectangle {
         id: press_item
