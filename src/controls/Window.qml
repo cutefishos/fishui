@@ -166,7 +166,6 @@ Window {
     // Window shadows
     FishUI.WindowShadow {
         view: root
-        geometry: Qt.rect(root.x, root.y, root.width, root.height)
         radius: _background.radius
     }
 
@@ -210,7 +209,8 @@ Window {
 
         ColumnLayout {
             anchors.fill: parent
-            anchors.margins: !isMaximized && !isFullScreen ? 1 : 0
+            // anchors.margins: !isMaximized && !isFullScreen ? 1 : 0
+            anchors.margins: 0
             spacing: 0
 
             Item {
