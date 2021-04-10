@@ -271,7 +271,7 @@ QMargins WindowShadow::shadowMargins(TileSet shadowTiles) const
     QRect boxRect(QPoint(0, 0), boxSize);
     boxRect.moveCenter(shadowRect.center());
 
-    int Shadow_Overlap = m_radius / 2;
+    int Shadow_Overlap = 4;
     QMargins margins(
         boxRect.left() - shadowRect.left() - Shadow_Overlap - params.offset.x(),
         boxRect.top() - shadowRect.top() - Shadow_Overlap - params.offset.y(),
