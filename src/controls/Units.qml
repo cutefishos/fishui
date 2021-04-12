@@ -50,7 +50,8 @@ QtObject {
      * the default font as rendered on the screen, so it takes user-configured font size and DPI
      * into account.
      */
-    property int smallSpacing: Math.floor(gridUnit / 4)
+    // property int smallSpacing: Math.floor(gridUnit / 4)
+    property int smallSpacing: 6
 
     /**
      * units.largeSpacing is the amount of spacing that should be used inside bigger UI elements,
