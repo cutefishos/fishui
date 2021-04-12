@@ -29,8 +29,8 @@ T.Slider {
         layer.enabled: true
         layer.effect: DropShadow {
             transparentBorder: true
-            radius: 5
-            samples: 3
+            radius: 3
+            samples: 5
             horizontalOffset: 0
             verticalOffset: 0
             color: Qt.rgba(0, 0, 0, 0.11)
