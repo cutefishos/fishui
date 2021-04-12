@@ -24,6 +24,7 @@
 #include "blurhelper/windowblur.h"
 #include "windowhelper.h"
 #include "iconitem.h"
+#include "newiconitem.h"
 
 #include "desktop/menupopupwindow.h"
 
@@ -55,7 +56,7 @@ void FishUI::registerTypes(const char *uri)
     qmlRegisterType<WindowShadow>(uri, 1, 0, "WindowShadow");
     qmlRegisterType<WindowBlur>(uri, 1, 0, "WindowBlur");
     qmlRegisterType<WindowHelper>(uri, 1, 0, "WindowHelper");
-    qmlRegisterType<IconItem>(uri, 1, 0, "IconItem");
+    qmlRegisterType<NewIconItem>(uri, 1, 0, "IconItem");
     qmlRegisterType<MenuPopupWindow>(uri, 1, 0, "MenuPopupWindow");
 
     qmlRegisterSingletonType(componentUrl(QStringLiteral("Theme.qml")), uri, 1, 0, "Theme");

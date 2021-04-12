@@ -12,6 +12,7 @@ set(SOURCES
     blurhelper/windowblur.h
     windowhelper.cpp
     iconitem.cpp
+    newiconitem.cpp
     managedtexturenode.cpp
 
     desktop/menupopupwindow.cpp
