@@ -77,12 +77,17 @@ T.Dialog {
         }
     }
 
-    header: Label {
-        text: control.title
-        visible: control.title
-        elide: Label.ElideRight
-        padding: FishUI.Units.largeSpacing
-        bottomPadding: 0
+    header: Item {
+        height: _headerLabel.visible ? _headerLabel.height + FishUI.Units.largeSpacing : 0
+
+        Label {
+            id: _headerLabel
+            anchors.centerIn: parent
+            text: control.title
+            visible: control.title != ""
+            elide: Label.ElideRight
+            bottomPadding: 0
+        }
     }
 
     footer: DialogButtonBox {
