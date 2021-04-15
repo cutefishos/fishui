@@ -34,9 +34,9 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.4
-import QtQuick.Controls.Material 2.4
-import QtQuick.Controls.Material.impl 2.4
+import QtQuick 2.9
+import QtQuick.Controls 2.12
+import QtQuick.Controls.impl 2.12
 
 import FishUI 1.0 as FishUI
 
