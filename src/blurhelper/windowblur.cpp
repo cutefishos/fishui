@@ -195,17 +195,18 @@ void WindowBlur::updateBlur()
     if (m_view) {
         if (m_enabled) {
             qreal devicePixelRatio = m_view->screen()->devicePixelRatio();
-            QRect rect = QRect(QPoint(0, 0), m_view->size() * devicePixelRatio);
 
             QPainterPath path;
-            path.addRoundedRect(rect.x(), rect.y(), rect.width(), rect.height(),
+            path.addRoundedRect(QRect(QPoint(0, 0), m_view->size() * devicePixelRatio),
                                 m_windowRadius * devicePixelRatio,
                                 m_windowRadius * devicePixelRatio);
 
             QVector<quint32> rects;
-            foreach(const QPolygonF &polygon, path.toFillPolygons()) {
-                foreach(const QRect &area, QRegion(polygon.toPolygon()).rects()) {
-                    rects << area.x() << area.y() << area.width() << area.height();
+            foreach (const QPolygonF &polygon, path.toFillPolygons()) {
+                polygon.toPolygon().boundingRect();
+                QRegion region = polygon.toPolygon();
+                for (auto i = region.begin(); i != region.end(); ++i) {
+                    rects << i->x() << i->y() << i->width() << i->height();
                 }
             }
 
