@@ -21,7 +21,13 @@
 
 #include <QApplication>
 #include <QPainterPath>
+#include <QScreen>
+#include <QX11Info>
+
 #include <KWindowEffects>
+
+#include <xcb/shape.h>
+#include <xcb/xcb.h>
 
 static QRegion roundedRegion(const QRect &rect, int radius, bool topLeft, bool topRight, bool bottomLeft, bool bottomRight)
 {
@@ -72,6 +78,31 @@ static QRegion roundedRegion(const QRect &rect, int radius, bool topLeft, bool t
     }
 
     return region;
+}
+
+static xcb_atom_t intern_atom(const char *name, bool only_if_exists)
+{
+    if (!name || *name == 0)
+        return XCB_NONE;
+
+    xcb_connection_t *connection = QX11Info::connection();
+    xcb_intern_atom_cookie_t cookie = xcb_intern_atom(connection, only_if_exists, strlen(name), name);
+    xcb_intern_atom_reply_t *reply = xcb_intern_atom_reply(connection, cookie, 0);
+
+    if (!reply)
+        return XCB_NONE;
+
+    xcb_atom_t atom = reply->atom;
+    free(reply);
+
+    return atom;
+}
+
+static void set_property(quint32 WId, xcb_atom_t propAtom, xcb_atom_t typeAtom, const void *data, quint32 len, uint8_t format)
+{
+    xcb_connection_t* conn = QX11Info::connection();
+    xcb_change_property(conn, XCB_PROP_MODE_REPLACE, WId, propAtom, typeAtom, format, len, data);
+    xcb_flush(conn);
 }
 
 WindowBlur::WindowBlur(QObject *parent) noexcept
@@ -163,8 +194,25 @@ void WindowBlur::updateBlur()
 {
     if (m_view) {
         if (m_enabled) {
-            QRect rect = QRect(0, 0, m_rect.width(), m_rect.height());
-            KWindowEffects::enableBlurBehind(m_view->winId(), true, roundedRegion(rect, m_windowRadius, true, true, true, true));
+            qreal devicePixelRatio = m_view->screen()->devicePixelRatio();
+            QRect rect = QRect(QPoint(0, 0), m_view->size() * devicePixelRatio);
+
+            QPainterPath path;
+            path.addRoundedRect(rect.x(), rect.y(), rect.width(), rect.height(),
+                                m_windowRadius * devicePixelRatio,
+                                m_windowRadius * devicePixelRatio);
+
+            QVector<quint32> rects;
+            foreach(const QPolygonF &polygon, path.toFillPolygons()) {
+                foreach(const QRect &area, QRegion(polygon.toPolygon()).rects()) {
+                    rects << area.x() << area.y() << area.width() << area.height();
+                }
+            }
+
+            xcb_atom_t atom = intern_atom(QT_STRINGIFY(_KDE_NET_WM_BLUR_BEHIND_REGION), false);
+            set_property(m_view->winId(), atom, XCB_ATOM_CARDINAL, rects.constData(), rects.size(), sizeof(quint32) * 8);
+
+            // KWindowEffects::enableBlurBehind(m_view->winId(), true);
         } else {
             KWindowEffects::enableBlurBehind(m_view->winId(), false);
         }
