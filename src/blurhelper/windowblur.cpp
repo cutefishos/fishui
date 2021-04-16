@@ -25,6 +25,8 @@
 #include <QX11Info>
 
 #include <xcb/xcb.h>
+#include <xcb/shape.h>
+#include <xcb/xcb_icccm.h>
 
 WindowBlur::WindowBlur(QObject *parent) noexcept
     : QObject(parent)

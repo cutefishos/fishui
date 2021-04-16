@@ -5,6 +5,7 @@ Maintainer: CutefishOS <cutefishos@foxmail.com>
 Build-Depends: cmake,
                debhelper (>= 9),
                extra-cmake-modules,
+               libxcb1-dev,
                libkf5windowsystem-dev,
                libqt5x11extras5-dev,
                qtbase5-dev,

@@ -34,9 +34,8 @@ T.Dialog {
                              contentWidth > 0 ? contentHeight + topPadding + bottomPadding : 0)
 
     contentWidth: contentItem.implicitWidth || (contentChildren.length === 1 ? contentChildren[0].implicitWidth : 0)
-    contentHeight: contentItem.implicitHeight || (contentChildren.length === 1 ? contentChildren[0].implicitHeight : 0) + header.implicitHeight + footer.implicitHeight
-
-    padding: FishUI.Units.largeSpacing
+    contentHeight: contentItem.implicitHeight + header.implicitHeight || (contentChildren.length === 1 ? contentChildren[0].implicitHeight : 0) + header.implicitHeight + footer.implicitHeight
+    padding: FishUI.Theme.hugeRadius
 
     enter: Transition {
         NumberAnimation {
@@ -61,7 +60,7 @@ T.Dialog {
     contentItem: Item {}
 
     background: Rectangle {
-        radius: FishUI.Theme.mediumRadius
+        radius: FishUI.Theme.hugeRadius
         color: FishUI.Theme.backgroundColor
         border.width: 1
         border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.2) : Qt.rgba(0, 0, 0, 0.1)
@@ -78,7 +77,8 @@ T.Dialog {
     }
 
     header: Item {
-        height: _headerLabel.visible ? _headerLabel.height + FishUI.Units.largeSpacing : 0
+        id: _headerItem
+        implicitHeight: _headerLabel.visible ? _headerLabel.implicitHeight + FishUI.Units.largeSpacing : 0
 
         Label {
             id: _headerLabel
