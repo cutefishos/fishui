@@ -55,8 +55,7 @@ T.ComboBox {
     bottomInset: FishUI.Units.smallSpacing
 
     spacing: FishUI.Units.smallSpacing
-    leftPadding: padding + (!control.mirrored || !indicator || !indicator.visible ? 0 : indicator.width + spacing)
-    rightPadding: padding + (control.mirrored || !indicator || !indicator.visible ? 0 : indicator.width + spacing)
+    padding: FishUI.Units.smallSpacing
 
     delegate: MenuItem {
         width: control.popup.width
@@ -79,8 +78,8 @@ T.ComboBox {
 
     contentItem: T.TextField {
         padding: FishUI.Units.smallSpacing
-        leftPadding: control.editable ? 2 : control.mirrored ? 0 : 12
-        rightPadding: control.editable ? 2 : control.mirrored ? 12 : 0
+        leftPadding: 0
+        rightPadding: FishUI.Units.smallSpacing
 
         text: control.editable ? control.editText : control.displayText
 
@@ -98,56 +97,20 @@ T.ComboBox {
     }
 
     background: Rectangle {
-        implicitWidth:  (FishUI.Units.iconSizes.medium * 3) + FishUI.Units.largeSpacing + FishUI.Units.extendBorderWidth
-        implicitHeight: FishUI.Units.iconSizes.medium + FishUI.Units.smallSpacing + FishUI.Units.extendBorderWidth
+        implicitWidth:  (FishUI.Units.iconSizes.medium * 3) + FishUI.Units.largeSpacing
+        implicitHeight: FishUI.Units.iconSizes.medium + FishUI.Units.smallSpacing
 
         radius: FishUI.Theme.smallRadius
+        color: FishUI.Theme.alternateBackgroundColor
 
-        color: !control.editable ? control.FishUI.Theme.backgroundColor : "transparent"
-
-        Rectangle {
-            id: _border
-            anchors.fill: parent
-            color: "transparent"
-            border.color: control.activeFocus ? Qt.rgba(FishUI.Theme.highlightColor.r,
-                                                        FishUI.Theme.highlightColor.g,
-                                                        FishUI.Theme.highlightColor.b, 0.2) : "transparent"
-            border.width: FishUI.Units.extendBorderWidth
-            radius: FishUI.Theme.smallRadius + FishUI.Units.extendBorderWidth
-
-            Behavior on border.color {
-                ColorAnimation {
-                    duration: 50
-                }
-            }
-        }
-
-        Rectangle {
-            anchors.fill: parent
-            anchors.margins: FishUI.Units.extendBorderWidth
-            radius: FishUI.Theme.smallRadius
-            color: "transparent"
-            border.color: control.activeFocus ? FishUI.Theme.highlightColor : Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r, FishUI.Theme.backgroundColor.g, FishUI.Theme.backgroundColor.b, 0.7))
-            border.width: 1
-        }
-
-        // border.color: control.activeFocus ? FishUI.Theme.highlightColor : Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r, FishUI.Theme.backgroundColor.g, FishUI.Theme.backgroundColor.b, 0.7))
-
-        // Rectangle {
-        //     visible: control.editable
-        //     y: parent.y + control.baselineOffset
-        //     width: parent.width
-        //     height: control.activeFocus ? 2 : 1
-        //     color: control.editable && control.activeFocus ? control.FishUI.Theme.highlightColor : control.FishUI.Theme.highlightedTextColor
-        // }
+        border.color: control.activeFocus ? FishUI.Theme.highlightColor : color
+        border.width: 1
     }
 
     popup: T.Popup {
         width: Math.max(control.width, 150)
-        implicitHeight: Math.min(contentItem.implicitHeight, control.Window.height - topMargin - bottomMargin)
+        implicitHeight: Math.min(contentItem.implicitHeight, control.Window.height - topMargin - bottomMargin) + FishUI.Units.largeSpacing
         transformOrigin: Item.Top
-        topMargin: FishUI.Units.largeSpacing
-        bottomMargin: FishUI.Units.largeSpacing
 
         enter: Transition {
             NumberAnimation {
@@ -175,6 +138,8 @@ T.ComboBox {
             model: control.delegateModel
             currentIndex: control.highlightedIndex
             highlightMoveDuration: 0
+            topMargin: FishUI.Units.smallSpacing
+            bottomMargin: FishUI.Units.smallSpacing
 
             T.ScrollBar.vertical: ScrollBar {}
             // T.ScrollIndicator.vertical: ScrollIndicator { }

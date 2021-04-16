@@ -77,33 +77,36 @@ T.TextField {
         implicitWidth: (FishUI.Units.iconSizes.medium * 3) + FishUI.Units.smallSpacing + FishUI.Units.extendBorderWidth
         implicitHeight: FishUI.Units.iconSizes.medium + FishUI.Units.smallSpacing + FishUI.Units.extendBorderWidth
         // color: control.activeFocus ? Qt.lighter(FishUI.Theme.backgroundColor, 1.4) : FishUI.Theme.backgroundColor
-        color: "transparent"
+        color: FishUI.Theme.alternateBackgroundColor
         radius: FishUI.Theme.smallRadius
 
-        Rectangle {
-            id: _border
-            anchors.fill: parent
-            color: "transparent"
-            border.color: control.activeFocus ? Qt.rgba(FishUI.Theme.highlightColor.r,
-                                                        FishUI.Theme.highlightColor.g,
-                                                        FishUI.Theme.highlightColor.b, 0.2) : "transparent"
-            border.width: FishUI.Units.extendBorderWidth
-            radius: FishUI.Theme.smallRadius + FishUI.Units.extendBorderWidth
+        border.width: 1
+        border.color: control.activeFocus ? FishUI.Theme.highlightColor : FishUI.Theme.alternateBackgroundColor
 
-            Behavior on border.color {
-                ColorAnimation {
-                    duration: 50
-                }
-            }
-        }
+        // Rectangle {
+        //     id: _border
+        //     anchors.fill: parent
+        //     color: "transparent"
+        //     border.color: control.activeFocus ? Qt.rgba(FishUI.Theme.highlightColor.r,
+        //                                                 FishUI.Theme.highlightColor.g,
+        //                                                 FishUI.Theme.highlightColor.b, 0.2) : "transparent"
+        //     border.width: FishUI.Units.extendBorderWidth
+        //     radius: FishUI.Theme.smallRadius + FishUI.Units.extendBorderWidth
 
-        Rectangle {
-            anchors.fill: parent
-            anchors.margins: FishUI.Units.extendBorderWidth
-            radius: FishUI.Theme.smallRadius
-            color: FishUI.Theme.backgroundColor
-            border.color: control.activeFocus ? FishUI.Theme.highlightColor : Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r, FishUI.Theme.backgroundColor.g, FishUI.Theme.backgroundColor.b, 0.7))
-            border.width: 1
-        }
+        //     Behavior on border.color {
+        //         ColorAnimation {
+        //             duration: 50
+        //         }
+        //     }
+        // }
+
+        // Rectangle {
+        //     anchors.fill: parent
+        //     anchors.margins: FishUI.Units.extendBorderWidth
+        //     radius: FishUI.Theme.smallRadius
+        //     color: FishUI.Theme.backgroundColor
+        //     border.color: control.activeFocus ? FishUI.Theme.highlightColor : Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r, FishUI.Theme.backgroundColor.g, FishUI.Theme.backgroundColor.b, 0.7))
+        //     border.width: 1
+        // }
     }
 }
