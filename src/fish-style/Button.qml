@@ -38,31 +38,18 @@ T.Button
     }
 
     background: Item {
-        implicitWidth:  (FishUI.Units.iconSizes.medium * 3) + FishUI.Units.largeSpacing + FishUI.Units.extendBorderWidth
-        implicitHeight: FishUI.Units.iconSizes.medium + FishUI.Units.smallSpacing + FishUI.Units.extendBorderWidth
+        implicitWidth:  (FishUI.Units.iconSizes.medium * 3) + FishUI.Units.largeSpacing
+        implicitHeight: FishUI.Units.iconSizes.medium + FishUI.Units.smallSpacing
 
         Rectangle {
             id: _border
             anchors.fill: parent
-            visible: control.activeFocus
-            color: "transparent"
-            border.color: Qt.rgba(FishUI.Theme.highlightColor.r,
-                                  FishUI.Theme.highlightColor.g,
-                                  FishUI.Theme.highlightColor.b, 0.3)
-            border.width: FishUI.Units.extendBorderWidth
             radius: FishUI.Theme.mediumRadius
-        }
-
-        Rectangle {
-            anchors.fill: parent
-            anchors.margins: FishUI.Units.extendBorderWidth
-            radius: FishUI.Theme.mediumRadius - FishUI.Units.extendBorderWidth
+            border.width: 1
             border.color: control.flat && control.enabled ? FishUI.Theme.highlightColor : control.activeFocus || control.pressed ? FishUI.Theme.highlightColor : 
                           Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r, FishUI.Theme.backgroundColor.g, FishUI.Theme.backgroundColor.b, 0.7))
-            border.width: 1
-
             color: control.flat && control.enabled ? control.pressed ? control.flatPressedColor : control.hovered ? control.flatHoveredColor : FishUI.Theme.highlightColor
-                                : control.pressed ? control.pressedColor : control.hovered ? control.hoveredColor : FishUI.Theme.backgroundColor
+                                                   : control.pressed ? control.pressedColor : control.hovered ? control.hoveredColor : FishUI.Theme.backgroundColor
         }
     }
 }
