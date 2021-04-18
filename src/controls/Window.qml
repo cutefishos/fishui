@@ -14,7 +14,7 @@ Window {
     flags: Qt.FramelessWindowHint
     color: "transparent"
 
-    property var backgroundColor: FishUI.Theme.backgroundColor
+    property color backgroundColor: FishUI.Theme.backgroundColor
     property var backgroundOpacity: 1.0
     property var windowRadius: FishUI.Theme.bigRadius
 
