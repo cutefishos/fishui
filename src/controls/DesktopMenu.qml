@@ -13,7 +13,7 @@ FishUI.MenuPopupWindow {
         anchors.fill: parent
         // opacity: 0.6
         // color: FishUI.Theme.backgroundColor
-        // radius: FishUI.Theme.mediumRadius
+        radius: FishUI.Theme.hugeRadius
         backgroundOpacity: 0.6
 
         FishUI.WindowShadow {

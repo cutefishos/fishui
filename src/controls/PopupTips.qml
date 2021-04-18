@@ -14,8 +14,8 @@ Window {
     property alias backgroundColor: _background.color
 
     flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
-    width: label.implicitWidth + FishUI.Units.largeSpacing
-    height: FishUI.Units.fontMetrics.height + FishUI.Units.largeSpacing
+    width: label.implicitWidth + FishUI.Units.largeSpacing * 1.5
+    height: FishUI.Units.fontMetrics.height + FishUI.Units.largeSpacing * 1.5
 
     FishUI.WindowShadow {
         view: control
