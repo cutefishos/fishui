@@ -9,8 +9,10 @@ T.MenuItem
 {
     id: control
 
-    property color hoveredColor: FishUI.Theme.highlightColor
-    property color pressedColor: Qt.darker(FishUI.Theme.highlightColor, 1.2)
+    property color hoveredColor: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.2)
+                                                       : Qt.rgba(0, 0, 0, 0.1)
+    property color pressedColor: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.1)
+                                                       : Qt.rgba(0, 0, 0, 0.2)
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
@@ -40,14 +42,14 @@ T.MenuItem
         icon: control.icon
         text: control.text
         font: control.font
-        color: control.enabled ? control.pressed || control.hovered ? control.FishUI.Theme.highlightedTextColor : 
+        color: control.enabled ? control.pressed || control.hovered ? control.FishUI.Theme.textColor : 
                FishUI.Theme.textColor : control.FishUI.Theme.disabledTextColor
     }
 
     background: Rectangle {
         implicitWidth: 200
         implicitHeight: control.visible ? FishUI.Units.rowHeightAlt : 0
-        radius: 4
+        radius: FishUI.Theme.mediumRadius
         opacity: 1
 
         anchors {

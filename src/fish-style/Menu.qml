@@ -71,6 +71,7 @@ T.Menu
     }
 
     background: FishUI.RoundedRect {
+        radius: FishUI.Theme.hugeRadius
         opacity: 1
 
         layer.enabled: true
