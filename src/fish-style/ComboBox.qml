@@ -140,6 +140,7 @@ T.ComboBox {
             highlightMoveDuration: 0
             topMargin: FishUI.Units.smallSpacing
             bottomMargin: FishUI.Units.smallSpacing
+            spacing: FishUI.Units.smallSpacing
 
             T.ScrollBar.vertical: ScrollBar {}
             // T.ScrollIndicator.vertical: ScrollIndicator { }

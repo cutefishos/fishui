@@ -5,11 +5,14 @@ import FishUI 1.0 as FishUI
 T.TabButton {
     id: control
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
-                            implicitContentWidth + leftPadding + rightPadding)
-    implicitHeight: FishUI.Units.iconSizes.medium + FishUI.Units.smallSpacing
-
+    property int standardHeight: FishUI.Units.iconSizes.medium + FishUI.Units.smallSpacing
     property color pressedColor: Qt.rgba(FishUI.Theme.textColor.r, FishUI.Theme.textColor.g, FishUI.Theme.textColor.b, 0.5)
+
+    implicitWidth: Math.max(background ? background.implicitWidth : 0,
+                            contentItem.implicitWidth + leftPadding + rightPadding)
+    implicitHeight: Math.max(background ? background.implicitHeight : 0,
+                             standardHeight)
+    baselineOffset: contentItem.y + contentItem.baselineOffset
 
     padding: 0
     spacing: 0

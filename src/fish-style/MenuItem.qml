@@ -58,6 +58,6 @@ T.MenuItem
             rightMargin: FishUI.Units.smallSpacing
         }
 
-        color: control.pressed ? control.pressedColor : control.hovered ? control.hoveredColor : "transparent"
+        color: control.pressed || highlighted ? control.pressedColor : control.hovered ? control.hoveredColor : "transparent"
     }
 }
