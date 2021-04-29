@@ -14,6 +14,7 @@ set(SOURCES
     iconitem.cpp
     newiconitem.cpp
     managedtexturenode.cpp
+    wheelhandler.cpp
 
     desktop/menupopupwindow.cpp
 

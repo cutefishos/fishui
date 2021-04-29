@@ -25,6 +25,7 @@
 #include "windowhelper.h"
 #include "iconitem.h"
 #include "newiconitem.h"
+#include "wheelhandler.h"
 
 #include "desktop/menupopupwindow.h"
 
@@ -58,6 +59,7 @@ void FishUI::registerTypes(const char *uri)
     qmlRegisterType<WindowHelper>(uri, 1, 0, "WindowHelper");
     qmlRegisterType<NewIconItem>(uri, 1, 0, "IconItem");
     qmlRegisterType<MenuPopupWindow>(uri, 1, 0, "MenuPopupWindow");
+    qmlRegisterType<WheelHandler>(uri, 1, 0, "WheelHandler");
 
     qmlRegisterSingletonType(componentUrl(QStringLiteral("Theme.qml")), uri, 1, 0, "Theme");
     qmlRegisterSingletonType(componentUrl(QStringLiteral("Units.qml")), uri, 1, 0, "Units");
