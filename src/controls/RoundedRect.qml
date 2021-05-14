@@ -11,45 +11,7 @@ Item {
     property var color: FishUI.Theme.backgroundColor
 
     property bool animationEnabled: true
-
     property alias backgroundOpacity: _background.opacity
-
-    property QtObject sourceItem: null
-    property bool blurEnabled: false
-    property real blurRadius: 100
-    property int startX: 0
-    property int startY: 0
-
-    onStartXChanged: {
-        var jx = eff.mapToItem(sourceItem.parent, control.x, control.y)
-        control.startX = jx.x
-        control.startY = jx.y
-        eff.sourceRect = Qt.rect(control.startX, control.startY, control.width, control.height)
-    }
-
-    ShaderEffectSource {
-        id: eff
-        anchors.fill: parent
-        sourceItem: control.sourceItem
-        sourceRect: Qt.rect(control.startX, control.startY, control.width, control.height)
-        visible: false
-    }
-
-    FastBlur {
-        id: fastBlur
-        anchors.fill: parent
-        source: eff
-        radius: control.blurRadius
-        cached: true
-        visible: true
-    }
-
-    OpacityMask {
-        id: mask
-        anchors.fill: _background
-        source: fastBlur
-        maskSource: _background
-    }
 
     Rectangle {
         id: _background
