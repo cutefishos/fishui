@@ -33,7 +33,7 @@ static const QString Interface = "org.cutefish.Theme";
 ThemeManager::ThemeManager(QObject *parent) 
     : QObject(parent)
     , m_darkMode(false)
-    , m_accentColorID(-1)
+    , m_accentColorIndex(-1)
 {
     QDBusServiceWatcher *serviceWatcher = new QDBusServiceWatcher(Service, QDBusConnection::sessionBus(),
                                                                   QDBusServiceWatcher::WatchForRegistration);
@@ -91,11 +91,10 @@ void ThemeManager::onDBusAccentColorChanged(int accentColorID)
 
 void ThemeManager::setAccentColor(int accentColorID)
 {
-    // Need to set m_accentColorID to -1 during initialization
-    if (m_accentColorID == accentColorID)
+    if (m_accentColorIndex == accentColorID)
         return;
 
-    m_accentColorID = accentColorID;
+    m_accentColorIndex = accentColorID;
 
     switch (accentColorID) {
     case ACCENTCOLOR_BLUE:

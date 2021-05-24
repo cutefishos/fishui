@@ -74,7 +74,7 @@ private:
 
 private:
     bool m_darkMode;
-    int m_accentColorID;
+    int m_accentColorIndex;
 
     QColor m_accentColor;
     QColor m_blueColor   = QColor(51,  133, 255);   // #3385FF
