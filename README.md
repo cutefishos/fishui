@@ -4,13 +4,13 @@ FishUI is a GUI library based on QQC2 (Qt Quick Controls 2), every Cutefish appl
 
 ## Features
 
-Light and Dark Mode 
-Borderless window (XCB Window move & resize)
-Blurred window
-Window shadow
-Desktop-level menu
-The style of the Qt Quick control
-...
+* Light and Dark Mode
+* Borderless window (XCB Window move & resize)
+* Blurred window
+* Window shadow
+* Desktop-level menu
+* The style of the Qt Quick control
+* ...
 
 ## Dependencies
 
