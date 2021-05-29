@@ -49,26 +49,10 @@ Item {
     }
 
     Rectangle {
-        id: _border
         anchors.fill: parent
-        radius: control.radius
         color: "transparent"
-        border.width: 1
-        border.color: Qt.rgba(0, 0, 0, 0.3)
-        smooth: true
-        antialiasing: true
-    }
-
-    Rectangle {
-        id: _border2
-        anchors.fill: parent
-        anchors.margins: 1
-        radius: control.radius - 1
-        color: "transparent"
-        visible: FishUI.Theme.darkMode
-        border.color: Qt.rgba(255, 255, 255, 0.3)
-        border.width: 1
-        smooth: true
+        radius: _background.radius
+        border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3) : Qt.rgba(0, 0, 0, 0.1)
         antialiasing: true
     }
 }

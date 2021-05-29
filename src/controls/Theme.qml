@@ -40,7 +40,7 @@ QtObject {
     property color secondBackgroundColor: darkMode ? "#2E2E2E" : "#F5F5F5"
     property color alternateBackgroundColor: darkMode ? "#565659" : "#F2F2F2"
 
-    property color textColor: darkMode ? "#FFFFFF" : "#333338"
+    property color textColor: darkMode ? "#FFFFFF" : "#323238"
     property color disabledTextColor: darkMode ? "#888888" : "#64646E"
 
     property color highlightColor: FishUICore.ThemeManager.accentColor

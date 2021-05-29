@@ -209,20 +209,9 @@ Window {
             anchors.fill: parent
             color: "transparent"
             radius: parent.radius
-            border.color: Qt.rgba(0, 0, 0, 0.3)
+            border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3) : Qt.rgba(0, 0, 0, 0.1)
             antialiasing: true
             visible: !isMaximized && !isFullScreen
-            z: 999
-        }
-
-        Rectangle {
-            anchors.fill: parent
-            anchors.margins: 1
-            color: "transparent"
-            radius: parent.radius - 1
-            border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3) : "transparent"
-            antialiasing: true
-            visible: !isMaximized && !isFullScreen && FishUI.Theme.darkMode
             z: 999
         }
 
