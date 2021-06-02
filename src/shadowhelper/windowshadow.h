@@ -127,7 +127,7 @@ private:
     QVector<KWindowShadowTile::Ptr> m_tile;
     TileSet m_shadowTiles;
     qreal m_radius = 10;
-    qreal m_strength = 1.3;
+    qreal m_strength = 1.2;
 };
 
 #endif

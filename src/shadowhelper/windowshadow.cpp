@@ -50,8 +50,8 @@ const CompositeShadowParams s_shadowParams[] = {
     // Very Large
     CompositeShadowParams(
         QPoint(0, 6),
-        ShadowParams(QPoint(0, 0), 32, 0.2),
-        ShadowParams(QPoint(0, -3), 16, 0.1))
+        ShadowParams(QPoint(0, 0), 32, 0.1),
+        ShadowParams(QPoint(0, -3), 16, 0.05))
 };
 
 WindowShadow::WindowShadow(QObject *parent) noexcept
