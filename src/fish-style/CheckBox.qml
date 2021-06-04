@@ -61,5 +61,6 @@ T.CheckBox {
         visible: controlRoot.text
         horizontalAlignment: Text.AlignLeft
         verticalAlignment: Text.AlignVCenter
+        color: FishUI.Theme.textColor
     }
 }
