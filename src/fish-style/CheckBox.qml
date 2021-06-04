@@ -20,9 +20,8 @@
  */
 
 
-import QtQuick 2.4
-import QtQuick.Templates 2.4 as T
-import QtQuick.Controls 2.4
+import QtQuick 2.9
+import QtQuick.Templates 2.2 as T
 import FishUI 1.0 as FishUI
 
 T.CheckBox {
@@ -31,8 +30,8 @@ T.CheckBox {
     implicitWidth: Math.max(background ? background.implicitWidth : 0,
                             contentItem.implicitWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(background ? background.implicitHeight : 0,
-                             Math.max(contentItem.implicitHeight,
-                                      indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
+                            Math.max(contentItem.implicitHeight,
+                                        indicator ? indicator.implicitHeight : 0) + topPadding + bottomPadding)
     baselineOffset: contentItem.y + contentItem.baselineOffset
 
     padding: 1
@@ -41,18 +40,18 @@ T.CheckBox {
     hoverEnabled: true
 
     indicator: Item {
-        width: controlRoot.height
-        height: controlRoot.height
+        width: FishUI.Units.iconSizes.smallMedium + FishUI.Units.smallSpacing
+        height: FishUI.Units.iconSizes.smallMedium + FishUI.Units.smallSpacing
 
         CheckIndicator {
             anchors.centerIn: parent
-            width: parent.height * 0.8
-            height: parent.height * 0.8
+            width: parent.width - FishUI.Units.smallSpacing
+            height: parent.height - FishUI.Units.smallSpacing
             control: controlRoot
         }
     }
 
-    contentItem: Label {
+    contentItem: Text {
         leftPadding: controlRoot.indicator && !controlRoot.mirrored ? controlRoot.indicator.width + controlRoot.spacing : 0
         rightPadding: controlRoot.indicator && controlRoot.mirrored ? controlRoot.indicator.width + controlRoot.spacing : 0
         opacity: controlRoot.enabled ? 1 : 0.6

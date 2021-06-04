@@ -28,7 +28,7 @@ Item {
 
     property real radius: FishUI.Theme.smallRadius
     property var color: FishUI.Theme.backgroundColor
-    property bool borderEnabled: false
+    property bool borderEnabled: true
 
     property bool animationEnabled: true
     property alias backgroundOpacity: _background.opacity
@@ -53,7 +53,7 @@ Item {
         anchors.fill: parent
         color: "transparent"
         radius: _background.radius
-        border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3) : Qt.rgba(0, 0, 0, 0.1)
+        border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.1) : Qt.rgba(0, 0, 0, 0.1)
         visible: control.borderEnabled
         antialiasing: true
     }

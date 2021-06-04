@@ -40,8 +40,8 @@ public:
     virtual void setParentItem(QQuickItem *);
 
 public slots:
-    void show();
-    void dismissPopup();
+    Q_INVOKABLE void show();
+    Q_INVOKABLE void dismissPopup();
 
 signals:
     void popupDismissed();

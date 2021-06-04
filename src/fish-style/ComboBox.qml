@@ -143,7 +143,6 @@ T.ComboBox {
             spacing: FishUI.Units.smallSpacing
 
             T.ScrollBar.vertical: ScrollBar {}
-            // T.ScrollIndicator.vertical: ScrollIndicator { }
         }
 
         background: Rectangle {
