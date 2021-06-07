@@ -22,7 +22,10 @@ option(COMPONENT_SYNCING "Build syncing component" ON)
 find_package(ECM 5.45.0 NO_MODULE)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH}  ${ECM_KDE_MODULE_DIR})
 
-set(QT Core Widgets Quick QuickControls2 X11Extras DBus)
+set(QT Core Widgets Quick QuickControls2 DBus)
+if (UNIX)
+    set(QT ${QT} X11Extras)
+endif ()
 find_package(Qt5 REQUIRED ${QT})
 find_package(KF5WindowSystem REQUIRED)
 
@@ -47,10 +50,21 @@ else()
     message(FATAL_ERROR "qml directory cannot be detected.")
 endif()
 
+# Install
+if (MSVC)
+    # Install FishUI to vcpkg installed dir
+    # for example.
+    # _VCPKG_INSTALLED_DIR:PATH=C:/app/vcpkg/installed
+    # VCPKG_TARGET_TRIPLET:STRING=x64-windows
+    # The final installed dir is C:/app/vcpkg/installed/x64-windows/share/FishUI
+    set(CMAKECONFIG_INSTALL_DIR "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/share/FishUI")
+    set(CMAKE_INSTALL_PREFIX "${_VCPKG_INSTALLED_DIR}")
+else()
+    set(CMAKECONFIG_INSTALL_DIR "/usr/lib/cmake/FishUI")
+endif ()
+message(STATUS "install directory:" "${CMAKECONFIG_INSTALL_DIR}")
 add_subdirectory(src)
 
-# Install
-set(CMAKECONFIG_INSTALL_DIR "/usr/lib/cmake/FishUI")
 
 configure_package_config_file(
     "${CMAKE_CURRENT_SOURCE_DIR}/FishUIConfig.cmake.in"

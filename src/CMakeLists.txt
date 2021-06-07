@@ -1,29 +1,38 @@
 set(TARGET FishUI)
 set(MODULE_VERSION "1.0")
 
-set(SOURCES
-    fishui.cpp
-    iconthemeprovider.cpp
-    thememanager.cpp
-    shadowhelper/windowshadow.cpp
-    shadowhelper/boxshadowrenderer.cpp
-    shadowhelper/tileset.cpp
-    blurhelper/windowblur.cpp
-    blurhelper/windowblur.h
-    windowhelper.cpp
-    iconitem.cpp
-    newiconitem.cpp
-    managedtexturenode.cpp
-    wheelhandler.cpp
+add_library(${TARGET} SHARED "")
+target_sources(${TARGET} PRIVATE
+        fishui.cpp
+        iconthemeprovider.cpp
+        thememanager.cpp
+        shadowhelper/windowshadow.cpp
+        shadowhelper/boxshadowrenderer.cpp
+        shadowhelper/tileset.cpp
 
-    desktop/menupopupwindow.cpp
+        iconitem.cpp
+        newiconitem.cpp
+        managedtexturenode.cpp
+        wheelhandler.cpp
 
-    fishui.qrc
-    fish-style/style.qrc
-)
+        desktop/menupopupwindow.cpp
 
-add_library(${TARGET} SHARED ${SOURCES})
-
+        fishui.qrc
+        fish-style/style.qrc
+        )
+if (MSVC)
+    target_sources(${TARGET} PRIVATE
+            platforms/windows/windowhelper.cpp platforms/windows/windowhelper.h
+            platforms/windows/blurhelper/windowblur.cpp platforms/windows/blurhelper/windowblur.h
+            )
+    target_include_directories(${TARGET} PRIVATE platforms/windows)
+else()
+    target_sources(${TARGET} PRIVATE
+            platforms/linux/windowhelper.cpp platforms/linux/windowhelper.h
+            platforms/linux/blurhelper/windowblur.cpp platforms/linux/blurhelper/windowblur.h
+            )
+    target_include_directories(${TARGET} PRIVATE platforms/linux)
+endif ()
 target_link_libraries (${TARGET}
     PUBLIC
         Qt5::Core
@@ -34,13 +43,14 @@ target_link_libraries (${TARGET}
         Qt5::Quick
         Qt5::QuickControls2
         Qt5::GuiPrivate
-        Qt5::X11Extras
         KF5::WindowSystem
 )
+if (UNIX)
+    target_link_libraries(${TARGET} PRIVATE Qt5::X11Extras)
+endif ()
 
 generate_export_header(${TARGET} BASE_NAME ${TARGET})
 install(TARGETS ${TARGET} EXPORT ${TARGET}Targets ${INSTALL_TARGETS_DEFAULT_ARGS})
-
 install(TARGETS ${TARGET} DESTINATION ${INSTALL_QMLDIR}/${TARGET})
 
 # Install Controls
