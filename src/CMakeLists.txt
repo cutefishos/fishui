@@ -26,25 +26,25 @@ if (MSVC)
             platforms/windows/blurhelper/windowblur.cpp platforms/windows/blurhelper/windowblur.h
             )
     target_include_directories(${TARGET} PRIVATE platforms/windows)
-else()
+else ()
     target_sources(${TARGET} PRIVATE
             platforms/linux/windowhelper.cpp platforms/linux/windowhelper.h
             platforms/linux/blurhelper/windowblur.cpp platforms/linux/blurhelper/windowblur.h
             )
     target_include_directories(${TARGET} PRIVATE platforms/linux)
 endif ()
-target_link_libraries (${TARGET}
-    PUBLIC
+target_link_libraries(${TARGET}
+        PUBLIC
         Qt5::Core
         Qt5::Gui
         Qt5::DBus
-    PRIVATE
+        PRIVATE
         Qt5::Qml
         Qt5::Quick
         Qt5::QuickControls2
         Qt5::GuiPrivate
         KF5::WindowSystem
-)
+        )
 if (UNIX)
     target_link_libraries(${TARGET} PRIVATE Qt5::X11Extras)
 endif ()

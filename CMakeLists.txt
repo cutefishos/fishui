@@ -20,7 +20,7 @@ option(COMPONENT_TAGGING "Build tagging component" ON)
 option(COMPONENT_SYNCING "Build syncing component" ON)
 
 find_package(ECM 5.45.0 NO_MODULE)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH}  ${ECM_KDE_MODULE_DIR})
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
 set(QT Core Widgets Quick QuickControls2 DBus)
 if (UNIX)
@@ -36,19 +36,19 @@ include(ECMGenerateHeaders)
 
 # Get the installation directory from qmake
 get_target_property(QT_QMAKE_EXECUTABLE ${Qt5Core_QMAKE_EXECUTABLE} IMPORTED_LOCATION)
-if(NOT QT_QMAKE_EXECUTABLE)
+if (NOT QT_QMAKE_EXECUTABLE)
     message(FATAL_ERROR "qmake is not found.")
-endif()
+endif ()
 
 execute_process(COMMAND ${QT_QMAKE_EXECUTABLE} -query QT_INSTALL_QML
-    OUTPUT_VARIABLE INSTALL_QMLDIR
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-)
-if(INSTALL_QMLDIR)
+        OUTPUT_VARIABLE INSTALL_QMLDIR
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+if (INSTALL_QMLDIR)
     message(STATUS "qml directory:" "${INSTALL_QMLDIR}")
-else()
+else ()
     message(FATAL_ERROR "qml directory cannot be detected.")
-endif()
+endif ()
 
 # Install
 if (MSVC)
@@ -59,7 +59,7 @@ if (MSVC)
     # The final installed dir is C:/app/vcpkg/installed/x64-windows/share/FishUI
     set(CMAKECONFIG_INSTALL_DIR "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/share/FishUI")
     set(CMAKE_INSTALL_PREFIX "${_VCPKG_INSTALLED_DIR}")
-else()
+else ()
     set(CMAKECONFIG_INSTALL_DIR "/usr/lib/cmake/FishUI")
 endif ()
 message(STATUS "install directory:" "${CMAKECONFIG_INSTALL_DIR}")
@@ -67,31 +67,31 @@ add_subdirectory(src)
 
 
 configure_package_config_file(
-    "${CMAKE_CURRENT_SOURCE_DIR}/FishUIConfig.cmake.in"
-    "${CMAKE_CURRENT_BINARY_DIR}/FishUIConfig.cmake"
-    INSTALL_DESTINATION
+        "${CMAKE_CURRENT_SOURCE_DIR}/FishUIConfig.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/FishUIConfig.cmake"
+        INSTALL_DESTINATION
         "${CMAKECONFIG_INSTALL_DIR}"
-    PATH_VARS
+        PATH_VARS
         CMAKECONFIG_INSTALL_DIR CMAKE_INSTALL_PREFIX
 )
 
 write_basic_package_version_file(
-    ${CMAKE_CURRENT_BINARY_DIR}/FishUIConfigVersion.cmake
-    VERSION ${LIB_VERSION}
-    COMPATIBILITY AnyNewerVersion
+        ${CMAKE_CURRENT_BINARY_DIR}/FishUIConfigVersion.cmake
+        VERSION ${LIB_VERSION}
+        COMPATIBILITY AnyNewerVersion
 )
 
 install(
-    FILES
+        FILES
         "${CMAKE_CURRENT_BINARY_DIR}/FishUIConfig.cmake"
         "${CMAKE_CURRENT_BINARY_DIR}/FishUIConfigVersion.cmake"
-    DESTINATION
+        DESTINATION
         "${CMAKECONFIG_INSTALL_DIR}"
-    COMPONENT
+        COMPONENT
         Devel
 )
 
 install(EXPORT FishUITargets
-    DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
-    FILE FishUITargets.cmake
-)
+        DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
+        FILE FishUITargets.cmake
+        )
