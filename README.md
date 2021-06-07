@@ -15,13 +15,15 @@ FishUI is a GUI library based on QQC2 (Qt Quick Controls 2), every Cutefish appl
 ## Dependencies
 
 ```bash
-sudo apt install libqt5x11extras5-dev libkf5windowsystem-dev -y
+sudo apt install libqt5x11extras5-dev libkf5windowsystem-dev qtbase5-private-dev libxcb1-dev libxcb-shape0-dev libxcb-icccm4-dev -y
 ```
 
 ## Build
 Before build, make sure you have necessary Qt environment.
 
 ```bash
+mkdir build
+cd build
 cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr ..
 make
 sudo make install
