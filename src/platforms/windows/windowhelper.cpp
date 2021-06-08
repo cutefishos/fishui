@@ -23,7 +23,6 @@
 #include <QCursor>
 #include <QDebug>
 
-#include <KWindowSystem>
 
 WindowHelper::WindowHelper(QObject *parent)
     : QObject(parent)
@@ -42,7 +41,7 @@ void WindowHelper::startSystemResize(QWindow *w, Qt::Edges edges)
 
 void WindowHelper::minimizeWindow(QWindow *w)
 {
-    KWindowSystem::minimizeWindow(w->winId());
+    qWarning() << "not implement";
 }
 
 void WindowHelper::doStartSystemMoveResize(QWindow *w, int edges)
