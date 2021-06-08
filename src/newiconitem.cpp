@@ -20,7 +20,7 @@
 #include "newiconitem.h"
 
 #include <QQuickWindow>
-#include <QApplication>
+#include <QGuiApplication>
 #include <QImageReader>
 #include <QPainter>
 #include <QIcon>

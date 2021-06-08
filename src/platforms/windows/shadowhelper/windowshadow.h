@@ -23,7 +23,7 @@
 #include "tileset.h"
 
 
-#include <QApplication>
+#include <QGuiApplication>
 #include <QMap>
 #include <QObject>
 #include <QPainter>

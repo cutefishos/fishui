@@ -19,7 +19,7 @@
 
 #include "windowblur.h"
 
-#include <QApplication>
+#include <QGuiApplication>
 #include <QPainterPath>
 #include <QScreen>
 #include <QDebug>

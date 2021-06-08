@@ -19,7 +19,7 @@
 
 #include "thememanager.h"
 
-#include <QApplication>
+#include <QGuiApplication>
 
 #include <QDBusConnection>
 #include <QDBusServiceWatcher>

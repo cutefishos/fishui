@@ -19,7 +19,7 @@
 
 #include "windowhelper.h"
 
-#include <QApplication>
+#include <QGuiApplication>
 #include <QCursor>
 #include <QDebug>
 

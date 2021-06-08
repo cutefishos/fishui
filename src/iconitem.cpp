@@ -21,7 +21,7 @@
 #include <QDebug>
 #include <QPainter>
 #include <QPaintEngine>
-#include <QApplication>
+#include <QGuiApplication>
 #include <QQuickWindow>
 #include <QPixmap>
 #include <QImageReader>
