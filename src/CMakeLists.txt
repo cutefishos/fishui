@@ -1,46 +1,58 @@
 set(TARGET FishUI)
 set(MODULE_VERSION "1.0")
 
-set(SOURCES
-    fishui.cpp
-    iconthemeprovider.cpp
-    thememanager.cpp
-    shadowhelper/windowshadow.cpp
-    shadowhelper/boxshadowrenderer.cpp
-    shadowhelper/tileset.cpp
-    blurhelper/windowblur.cpp
-    blurhelper/windowblur.h
-    windowhelper.cpp
-    iconitem.cpp
-    newiconitem.cpp
-    managedtexturenode.cpp
-    wheelhandler.cpp
+add_library(${TARGET} SHARED "")
+target_sources(${TARGET} PRIVATE
+        fishui.cpp
+        iconthemeprovider.cpp
+        thememanager.cpp
 
-    desktop/menupopupwindow.cpp
+        iconitem.cpp
+        newiconitem.cpp
+        managedtexturenode.cpp
+        wheelhandler.cpp
 
-    fishui.qrc
-    fish-style/style.qrc
-)
+        desktop/menupopupwindow.cpp
 
-add_library(${TARGET} SHARED ${SOURCES})
-
-target_link_libraries (${TARGET}
-    PUBLIC
+        fishui.qrc
+        fish-style/style.qrc
+        )
+if (MSVC)
+    target_sources(${TARGET} PRIVATE
+            platforms/windows/windowhelper.cpp platforms/windows/windowhelper.h
+            platforms/windows/blurhelper/windowblur.cpp platforms/windows/blurhelper/windowblur.h
+            platforms/windows/shadowhelper/boxshadowrenderer.cpp platforms/windows/shadowhelper/boxshadowrenderer.h
+            platforms/windows/shadowhelper/tileset.cpp platforms/windows/shadowhelper/tileset.h
+            platforms/windows/shadowhelper/windowshadow.cpp platforms/windows/shadowhelper/windowshadow.h
+            )
+    target_include_directories(${TARGET} PRIVATE platforms/windows)
+else ()
+    target_sources(${TARGET} PRIVATE
+            platforms/linux/windowhelper.cpp platforms/linux/windowhelper.h
+            platforms/linux/blurhelper/windowblur.cpp platforms/linux/blurhelper/windowblur.h
+            platforms/linux/shadowhelper/boxshadowrenderer.cpp platforms/linux/shadowhelper/boxshadowrenderer.h
+            platforms/linux/shadowhelper/tileset.cpp platforms/linux/shadowhelper/tileset.h
+            platforms/linux/shadowhelper/windowshadow.cpp platforms/linux/shadowhelper/windowshadow.h
+            )
+    target_include_directories(${TARGET} PRIVATE platforms/linux)
+endif ()
+target_link_libraries(${TARGET}
+        PUBLIC
         Qt5::Core
         Qt5::Gui
         Qt5::DBus
-    PRIVATE
+        PRIVATE
         Qt5::Qml
         Qt5::Quick
         Qt5::QuickControls2
         Qt5::GuiPrivate
-        Qt5::X11Extras
-        KF5::WindowSystem
-)
+        )
+if (UNIX)
+    target_link_libraries(${TARGET} PRIVATE Qt5::X11Extras KF5::WindowSystem)
+endif ()
 
 generate_export_header(${TARGET} BASE_NAME ${TARGET})
 install(TARGETS ${TARGET} EXPORT ${TARGET}Targets ${INSTALL_TARGETS_DEFAULT_ARGS})
-
 install(TARGETS ${TARGET} DESTINATION ${INSTALL_QMLDIR}/${TARGET})
 
 # Install Controls
