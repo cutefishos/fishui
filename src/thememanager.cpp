@@ -34,6 +34,7 @@ ThemeManager::ThemeManager(QObject *parent)
     : QObject(parent)
     , m_darkMode(false)
     , m_accentColorIndex(-1)
+    , m_accentColor(m_blueColor) // The default is blue
 {
     QDBusServiceWatcher *serviceWatcher = new QDBusServiceWatcher(Service, QDBusConnection::sessionBus(),
                                                                   QDBusServiceWatcher::WatchForRegistration);

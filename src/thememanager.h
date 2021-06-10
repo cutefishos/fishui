@@ -76,13 +76,13 @@ private:
     bool m_darkMode;
     int m_accentColorIndex;
 
-    QColor m_accentColor;
     QColor m_blueColor   = QColor(51,  133, 255);   // #3385FF
-    QColor m_redColor    = QColor(232, 46,  62 );   // #E82E3E
-    QColor m_greenColor  = QColor(53,  191, 86 );   // #35BF56
+    QColor m_redColor    = QColor(232, 46,  62);    // #E82E3E
+    QColor m_greenColor  = QColor(53,  191, 86);    // #35BF56
     QColor m_purpleColor = QColor(130, 102, 255);   // #8266FF
     QColor m_pinkColor   = QColor(202, 100, 172);   // #CA64AC
     QColor m_orangeColor = QColor(218, 124, 67 );   // #DA7C43
+    QColor m_accentColor;
 };
 
 #endif // THEMEMANAGER_H
