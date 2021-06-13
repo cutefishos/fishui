@@ -24,11 +24,15 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_D
 
 set(QT Core Widgets Quick QuickControls2 DBus)
 if (UNIX)
-    set(QT ${QT} X11Extras)
+    if (NOT APPLE)
+        set(QT ${QT} X11Extras)
+    endif ()
 endif ()
 find_package(Qt5 REQUIRED ${QT})
 if (UNIX)
-    find_package(KF5WindowSystem REQUIRED)
+    if (NOT APPLE)
+        find_package(KF5WindowSystem REQUIRED)
+    endif ()
 endif ()
 
 include(GenerateExportHeader)
@@ -82,7 +86,7 @@ write_basic_package_version_file(
         VERSION ${LIB_VERSION}
         COMPATIBILITY AnyNewerVersion
 )
-
+if(NOT APPLE)
 install(
         FILES
         "${CMAKE_CURRENT_BINARY_DIR}/FishUIConfig.cmake"
@@ -97,3 +101,4 @@ install(EXPORT FishUITargets
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
         FILE FishUITargets.cmake
         )
+endif()

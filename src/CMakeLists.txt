@@ -26,6 +26,15 @@ if (MSVC)
             platforms/windows/shadowhelper/windowshadow.cpp platforms/windows/shadowhelper/windowshadow.h
             )
     target_include_directories(${TARGET} PRIVATE platforms/windows)
+elseif (APPLE)
+    target_sources(${TARGET} PRIVATE
+            platforms/mac/windowhelper.cpp platforms/mac/windowhelper.h
+            platforms/mac/blurhelper/windowblur.cpp platforms/mac/blurhelper/windowblur.h
+            platforms/mac/shadowhelper/boxshadowrenderer.cpp platforms/mac/shadowhelper/boxshadowrenderer.h
+            platforms/mac/shadowhelper/tileset.cpp platforms/mac/shadowhelper/tileset.h
+            platforms/mac/shadowhelper/windowshadow.cpp platforms/mac/shadowhelper/windowshadow.h
+            )
+    target_include_directories(${TARGET} PRIVATE platforms/mac)
 else ()
     target_sources(${TARGET} PRIVATE
             platforms/linux/windowhelper.cpp platforms/linux/windowhelper.h
@@ -48,7 +57,9 @@ target_link_libraries(${TARGET}
         Qt5::GuiPrivate
         )
 if (UNIX)
-    target_link_libraries(${TARGET} PRIVATE Qt5::X11Extras KF5::WindowSystem)
+    if (NOT APPLE)
+        target_link_libraries(${TARGET} PRIVATE Qt5::X11Extras KF5::WindowSystem)
+    endif ()
 endif ()
 
 generate_export_header(${TARGET} BASE_NAME ${TARGET})
