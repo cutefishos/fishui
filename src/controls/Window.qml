@@ -193,17 +193,10 @@ Window {
         id: _background
         anchors.fill: parent
         anchors.margins: 0
-        radius: !isMaximized && !isFullScreen ? root.windowRadius : 0
+        radius: !isMaximized && !isFullScreen && windowHelper.compositing ? root.windowRadius : 0
         color: Qt.rgba(root.backgroundColor.r, root.backgroundColor.g,
                        root.backgroundColor.b, root.backgroundOpacity)
         antialiasing: true
-
-        Behavior on color {
-            ColorAnimation {
-                duration: 200
-                easing.type: Easing.Linear
-            }
-        }
 
         Rectangle {
             anchors.fill: parent
@@ -213,6 +206,13 @@ Window {
             antialiasing: true
             visible: !isMaximized && !isFullScreen
             z: 999
+        }
+
+        Behavior on color {
+            ColorAnimation {
+                duration: 200
+                easing.type: Easing.Linear
+            }
         }
 
         ColumnLayout {

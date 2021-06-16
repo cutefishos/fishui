@@ -29,12 +29,16 @@ Window {
 
     property string popupText
     property point position: Qt.point(0, 0)
-    property alias backgroundOpacity: _background.backgroundOpacity
+    property alias backgroundOpacity: _background.opacity
     property alias backgroundColor: _background.color
 
     flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
     width: label.implicitWidth + FishUI.Units.largeSpacing * 1.5
     height: label.implicitHeight + FishUI.Units.largeSpacing * 1.5
+
+    FishUI.WindowHelper {
+        id: windowHelper
+    }
 
     FishUI.WindowShadow {
         view: control
@@ -49,16 +53,25 @@ Window {
         geometry: Qt.rect(_background.x, _background.y, _background.width, _background.height)
     }
 
-    FishUI.RoundedRect {
+    Rectangle {
         id: _background
         anchors.fill: parent
+        color: FishUI.Theme.backgroundColor
+        radius: windowHelper.compositing ? FishUI.Theme.mediumRadius : 0
 
-        Label {
-            id: label
-            anchors.centerIn: parent
-            text: control.popupText
-            color: FishUI.Theme.textColor
+        Behavior on color {
+            ColorAnimation {
+                duration: control.animationEnabled ? 200 : 0
+                easing.type: Easing.Linear
+            }
         }
+    }
+
+    Label {
+        id: label
+        anchors.centerIn: parent
+        text: control.popupText
+        color: FishUI.Theme.textColor
     }
 
     onPositionChanged: adjustCorrectLocation()

@@ -50,13 +50,23 @@ static uint qtEdgesToXcbMoveResizeDirection(Qt::Edges edges)
 WindowHelper::WindowHelper(QObject *parent)
     : QObject(parent)
     , m_moveResizeAtom(0)
+    , m_compositing(false)
 {
     // create move-resize atom
+    // ref: https://github.com/qt/qtbase/blob/9db7cc79a26ced4997277b5c206ca15949133240/src/plugins/platforms/xcb/qxcbwindow.cpp
     xcb_connection_t* connection(QX11Info::connection());
     const QString atomName(QStringLiteral("_NET_WM_MOVERESIZE"));
     xcb_intern_atom_cookie_t cookie(xcb_intern_atom(connection, false, atomName.size(), qPrintable(atomName)));
     QScopedPointer<xcb_intern_atom_reply_t> reply(xcb_intern_atom_reply(connection, cookie, nullptr));
     m_moveResizeAtom = reply ? reply->atom : 0;
+
+    onCompositingChanged(KWindowSystem::compositingActive());
+    connect(KWindowSystem::self(), &KWindowSystem::compositingChanged, this, &WindowHelper::onCompositingChanged);
+}
+
+bool WindowHelper::compositing() const
+{
+    return m_compositing;
 }
 
 void WindowHelper::startSystemMove(QWindow *w)
@@ -99,4 +109,12 @@ void WindowHelper::doStartSystemMoveResize(QWindow *w, int edges)
     xcb_send_event(connection, false, QX11Info::appRootWindow(),
                    XCB_EVENT_MASK_SUBSTRUCTURE_REDIRECT | XCB_EVENT_MASK_SUBSTRUCTURE_NOTIFY,
                    (const char *)&xev);
+}
+
+void WindowHelper::onCompositingChanged(bool enabled)
+{
+    if (enabled != m_compositing) {
+        m_compositing = enabled;
+        emit compositingChanged();
+    }
 }

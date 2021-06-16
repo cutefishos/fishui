@@ -46,10 +46,10 @@ T.Button
             anchors.fill: parent
             radius: FishUI.Theme.mediumRadius
             border.width: 1
-            border.color: control.flat && control.enabled ? FishUI.Theme.highlightColor : control.activeFocus || control.pressed ? FishUI.Theme.highlightColor : 
-                          Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r, FishUI.Theme.backgroundColor.g, FishUI.Theme.backgroundColor.b, 0.7))
+            border.color: control.flat && control.enabled ? FishUI.Theme.highlightColor : control.activeFocus || control.pressed ? FishUI.Theme.highlightColor : "transparent"
+
             color: control.flat && control.enabled ? control.pressed ? control.flatPressedColor : control.hovered ? control.flatHoveredColor : FishUI.Theme.highlightColor
-                                                   : control.pressed ? control.pressedColor : control.hovered ? control.hoveredColor : FishUI.Theme.backgroundColor
+                                                   : control.pressed ? control.pressedColor : control.hovered ? control.hoveredColor : FishUI.Theme.alternateBackgroundColor
         }
     }
 }

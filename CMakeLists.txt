@@ -69,8 +69,17 @@ else ()
     set(CMAKECONFIG_INSTALL_DIR "/usr/lib/cmake/FishUI")
 endif ()
 message(STATUS "install directory:" "${CMAKECONFIG_INSTALL_DIR}")
-add_subdirectory(src)
 
+# Qt Widgets Style
+#if (UNIX)
+#    find_package(ECM REQUIRED NO_MODULE)
+#    set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+#    include(ECMQueryQmake)
+#    query_qmake(CMAKE_INSTALL_QTPLUGINDIR QT_INSTALL_PLUGINS)
+#    add_subdirectory(qtwidgets-style)
+#endif ()
+
+add_subdirectory(src)
 
 configure_package_config_file(
         "${CMAKE_CURRENT_SOURCE_DIR}/FishUIConfig.cmake.in"

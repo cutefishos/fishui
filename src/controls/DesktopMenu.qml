@@ -27,13 +27,16 @@ FishUI.MenuPopupWindow {
 
     default property alias content : _mainLayout.data
 
-    FishUI.RoundedRect {
+    Rectangle {
         id: _background
         anchors.fill: parent
-        // opacity: 0.6
-        // color: FishUI.Theme.backgroundColor
-        radius: FishUI.Theme.hugeRadius
-        backgroundOpacity: 0.6
+        color: FishUI.Theme.backgroundColor
+        radius: windowHelper.compositing ? FishUI.Theme.hugeRadius : 0
+        opacity: 0.6
+
+        FishUI.WindowHelper {
+            id: windowHelper
+        }
 
         FishUI.WindowShadow {
             view: control
@@ -52,8 +55,8 @@ FishUI.MenuPopupWindow {
     ColumnLayout {
         id: _mainLayout
         anchors.fill: parent
-        anchors.topMargin: 8
-        anchors.bottomMargin: 8
+        anchors.topMargin: 4
+        anchors.bottomMargin: 4
     }
 
     function open() {

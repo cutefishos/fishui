@@ -21,6 +21,8 @@ T.MenuItem
                                        implicitIndicatorHeight + topPadding + bottomPadding) : 0
     verticalPadding: FishUI.Units.smallSpacing
     hoverEnabled: true
+    topPadding: FishUI.Units.smallSpacing
+    bottomPadding: FishUI.Units.smallSpacing
 
     icon.width: FishUI.Units.iconSizes.medium
     icon.height: FishUI.Units.iconSizes.medium
