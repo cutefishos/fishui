@@ -32,7 +32,7 @@ FishUI.MenuPopupWindow {
         anchors.fill: parent
         color: FishUI.Theme.backgroundColor
         radius: windowHelper.compositing ? FishUI.Theme.hugeRadius : 0
-        opacity: 0.6
+        opacity: windowHelper.compositing ? 0.6 : 1
 
         FishUI.WindowHelper {
             id: windowHelper
