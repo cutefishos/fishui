@@ -23,23 +23,30 @@ T.Slider {
         color: "white"
         opacity: 1
         antialiasing: true
+        border.width: 0
 
-        border.color: "#E3E3E3"
+        scale: control.pressed ? 0.9 : 1.0
+
+        Behavior on scale {
+            NumberAnimation {
+                duration: 150
+            }
+        }
 
         layer.enabled: true
         layer.effect: DropShadow {
             transparentBorder: true
-            radius: 3
-            samples: 5
+            radius: 8
+            samples: 12
             horizontalOffset: 0
             verticalOffset: 0
-            color: Qt.rgba(0, 0, 0, 0.11)
+            color: Qt.rgba(0, 0, 0, 0.15)
         }
     }
 
     background: Item {
-        implicitWidth: control.horizontal ? 200 : 18
-        implicitHeight: control.horizontal ? 18 : 200
+        implicitWidth: control.horizontal ? 200 : 16
+        implicitHeight: control.horizontal ? 16 : 200
 
         x: control.leftPadding + (control.horizontal ? 0 : (control.availableWidth - width) / 2)
         y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : 0)

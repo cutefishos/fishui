@@ -38,7 +38,7 @@ T.Button
     }
 
     background: Item {
-        implicitWidth:  (FishUI.Units.iconSizes.medium * 3) + FishUI.Units.largeSpacing
+        implicitWidth: (FishUI.Units.iconSizes.medium * 3) + FishUI.Units.largeSpacing
         implicitHeight: FishUI.Units.iconSizes.medium + FishUI.Units.smallSpacing
 
         Rectangle {

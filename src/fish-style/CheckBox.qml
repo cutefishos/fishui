@@ -45,8 +45,8 @@ T.CheckBox {
 
         CheckIndicator {
             anchors.centerIn: parent
-            width: parent.width - FishUI.Units.smallSpacing
-            height: parent.height - FishUI.Units.smallSpacing
+            width: FishUI.Units.iconSizes.smallMedium
+            height: FishUI.Units.iconSizes.smallMedium
             control: controlRoot
         }
     }

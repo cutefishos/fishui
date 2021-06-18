@@ -50,7 +50,7 @@ const CompositeShadowParams s_shadowParams[] = {
     // Very Large
     CompositeShadowParams(
         QPoint(0, 6),
-        ShadowParams(QPoint(0, 0), 36, 0.1),
+        ShadowParams(QPoint(0, 0), 36, 0.12),
         ShadowParams(QPoint(0, -3), 20, 0.05))
 };
 
