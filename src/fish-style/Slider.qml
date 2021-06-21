@@ -17,7 +17,7 @@ T.Slider {
         x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
         y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : control.visualPosition * (control.availableHeight - height))
 
-        width: FishUI.Units.iconSizes.medium
+        width: 26
         height: width
         radius: width / 2
         color: "white"

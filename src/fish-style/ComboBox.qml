@@ -148,16 +148,16 @@ T.ComboBox {
         background: Rectangle {
             radius: FishUI.Theme.smallRadius
             color: parent.FishUI.Theme.backgroundColor
-            border.color: Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r, FishUI.Theme.backgroundColor.g, FishUI.Theme.backgroundColor.b, 0.7))
-            layer.enabled: true
+            border.width: 0
 
+            layer.enabled: true
             layer.effect: DropShadow {
                 transparentBorder: true
                 radius: 32
                 samples: 32
                 horizontalOffset: 0
                 verticalOffset: 0
-                color: Qt.rgba(0, 0, 0, 0.11)
+                color: Qt.rgba(0, 0, 0, 0.15)
             }
         }
     }

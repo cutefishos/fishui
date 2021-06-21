@@ -62,8 +62,7 @@ T.Dialog {
     background: Rectangle {
         radius: FishUI.Theme.hugeRadius
         color: FishUI.Theme.backgroundColor
-        border.width: 1
-        border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.2) : Qt.rgba(0, 0, 0, 0.1)
+        border.width: 0
 
         layer.enabled: true
         layer.effect: DropShadow {
@@ -72,7 +71,7 @@ T.Dialog {
             samples: 32
             horizontalOffset: 0
             verticalOffset: 0
-            color: Qt.rgba(0, 0, 0, 0.11)
+            color: Qt.rgba(0, 0, 0, 0.15)
         }
     }
 
