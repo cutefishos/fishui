@@ -197,8 +197,7 @@ Window {
         anchors.fill: parent
         anchors.margins: 0
         radius: !isMaximized && !isFullScreen && windowHelper.compositing ? control.windowRadius : 0
-        color: Qt.rgba(control.backgroundColor.r, control.backgroundColor.g,
-                       control.backgroundColor.b, control.backgroundOpacity)
+        color: FishUI.Theme.backgroundColor
         antialiasing: true
 
         Rectangle {
