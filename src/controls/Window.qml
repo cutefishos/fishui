@@ -26,34 +26,43 @@ import QtGraphicalEffects 1.0
 import FishUI 1.0 as FishUI
 
 Window {
-    id: root
+    id: control
     width: 640
     height: 480
     visible: true
     flags: Qt.FramelessWindowHint
     color: "transparent"
 
-    property color backgroundColor: FishUI.Theme.backgroundColor
-    property var backgroundOpacity: 1.0
+    default property alias content : _content.data
+    property alias background: _background
+    property alias header: _header
+    property Item headerItem
+
+    // Window helper
+    property alias compositing: windowHelper.compositing
+    property var contentTopMargin: _header.height
     property var windowRadius: FishUI.Theme.bigRadius
 
-    property alias headerBarHeight: _titlebar.height
-    property bool hideHeaderOnMaximize: false
-    property bool isMaximized: root.visibility === Window.Maximized
-    property bool isFullScreen: root.visibility === Window.FullScreen
-
+    // Other
+    property bool isMaximized: control.visibility === Window.Maximized
+    property bool isFullScreen: control.visibility === Window.FullScreen
     property var edgeSize: windowRadius / 2
 
-    default property alias content : _content.data
-    property Item headerBar
-
-    onHeaderBarChanged: {
-        headerBar.parent = _header
-        headerBar.anchors.fill = _header
+    onHeaderItemChanged: {
+        if (headerItem) {
+            headerItem.parent = _headerContent
+            headerItem.anchors.fill = _headerContent
+        }
     }
 
     FishUI.WindowHelper {
         id: windowHelper
+    }
+
+    // Window shadows
+    FishUI.WindowShadow {
+        view: control
+        radius: _background.radius
     }
 
     // Left bottom edge
@@ -73,7 +82,7 @@ Window {
         DragHandler {
             grabPermissions: TapHandler.CanTakeOverFromAnything
             target: null
-            onActiveChanged: if (active) { windowHelper.startSystemResize(root, Qt.LeftEdge | Qt.BottomEdge) }
+            onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.LeftEdge | Qt.BottomEdge) }
         }
     }
 
@@ -94,7 +103,7 @@ Window {
         DragHandler {
             grabPermissions: TapHandler.CanTakeOverFromAnything
             target: null
-            onActiveChanged: if (active) { windowHelper.startSystemResize(root, Qt.RightEdge | Qt.BottomEdge) }
+            onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.RightEdge | Qt.BottomEdge) }
         }
     }
 
@@ -115,7 +124,7 @@ Window {
         DragHandler {
             grabPermissions: TapHandler.CanTakeOverFromAnything
             target: null
-            onActiveChanged: if (active) { windowHelper.startSystemResize(root, Qt.TopEdge) }
+            onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.TopEdge) }
         }
     }
 
@@ -136,7 +145,7 @@ Window {
         DragHandler {
             grabPermissions: TapHandler.CanTakeOverFromAnything
             target: null
-            onActiveChanged: if (active) { windowHelper.startSystemResize(root, Qt.BottomEdge) }
+            onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.BottomEdge) }
         }
     }
 
@@ -157,7 +166,7 @@ Window {
         DragHandler {
             grabPermissions: TapHandler.CanTakeOverFromAnything
             target: null
-            onActiveChanged: if (active) { windowHelper.startSystemResize(root, Qt.LeftEdge) }
+            onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.LeftEdge) }
         }
     }
 
@@ -178,24 +187,18 @@ Window {
         DragHandler {
             grabPermissions: TapHandler.CanTakeOverFromAnything
             target: null
-            onActiveChanged: if (active) { windowHelper.startSystemResize(root, Qt.RightEdge) }
+            onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.RightEdge) }
         }
     }
 
-    // Window shadows
-    FishUI.WindowShadow {
-        view: root
-        radius: _background.radius
-    }
-
-    // background
+    // Background
     Rectangle {
         id: _background
         anchors.fill: parent
         anchors.margins: 0
-        radius: !isMaximized && !isFullScreen && windowHelper.compositing ? root.windowRadius : 0
-        color: Qt.rgba(root.backgroundColor.r, root.backgroundColor.g,
-                       root.backgroundColor.b, root.backgroundOpacity)
+        radius: !isMaximized && !isFullScreen && windowHelper.compositing ? control.windowRadius : 0
+        color: Qt.rgba(control.backgroundColor.r, control.backgroundColor.g,
+                       control.backgroundColor.b, control.backgroundOpacity)
         antialiasing: true
 
         Rectangle {
@@ -214,100 +217,111 @@ Window {
                 easing.type: Easing.Linear
             }
         }
+    }
 
-        ColumnLayout {
-            anchors.fill: parent
-            anchors.margins: 0
-            spacing: 0
+    // Content
+    Item {
+        id: _contentItem
+        anchors.fill: parent
 
-            Item {
-                id: _titlebar
-                Layout.fillWidth: true
-                height: 40
+        // Header
+        Item {
+            id: _header
+            z: 2
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.top: parent.top
+            height: 40
+
+            TapHandler {
+                onTapped: if (tapCount === 2) toggleMaximized()
+                gesturePolicy: TapHandler.DragThreshold
+            }
+
+            DragHandler {
+                acceptedDevices: PointerDevice.GenericPointer
+                grabPermissions: PointerHandler.CanTakeOverFromItems | PointerHandler.CanTakeOverFromHandlersOfDifferentType | PointerHandler.ApprovesTakeOverByAnything
+                onActiveChanged: if (active) { windowHelper.startSystemMove(control) }
+            }
+
+            RowLayout {
+                anchors.fill: parent
+                spacing: 0
 
                 Item {
-                    anchors.fill: parent
-
-                    TapHandler {
-                        onTapped: if (tapCount === 2) toggleMaximized()
-                        gesturePolicy: TapHandler.DragThreshold
-                    }
-
-                    DragHandler {
-                        acceptedDevices: PointerDevice.GenericPointer
-                        grabPermissions: PointerHandler.CanTakeOverFromItems | PointerHandler.CanTakeOverFromHandlersOfDifferentType | PointerHandler.ApprovesTakeOverByAnything
-                        onActiveChanged: if (active) { windowHelper.startSystemMove(root) }
-                    }
+                    id: _headerContent
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
                 }
 
-                RowLayout {
-                    anchors.fill: parent
-                    spacing: 0
+                // Window buttons
+                WindowButton {
+                    size: 35
+                    source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "minimize.svg"
+                    onClicked: windowHelper.minimizeWindow(control)
+                    visible: control.visibility !== Window.FullScreen
+                    Layout.alignment: Qt.AlignTop
+                    Layout.topMargin: FishUI.Units.smallSpacing
+                }
 
-                    Item {
-                        id: _header
-                        Layout.fillHeight: true
-                        Layout.fillWidth: true
-                    }
+                Item {
+                    width: FishUI.Units.largeSpacing
+                }
 
-                    Item {
-                        id: _windowControl
-                        Layout.fillHeight: true
-                        width: _windowControlLayout.implicitWidth + FishUI.Units.smallSpacing
+                WindowButton {
+                    size: 35
+                    source: "qrc:/fishui/kit/images/" +
+                        (FishUI.Theme.darkMode ? "dark/" : "light/") +
+                        (control.visibility === Window.Maximized ? "restore.svg" : "maximize.svg")
+                    onClicked: control.toggleMaximized()
+                    visible: control.visibility !== Window.FullScreen
+                    Layout.alignment: Qt.AlignTop
+                    Layout.topMargin: FishUI.Units.smallSpacing
+                }
 
-                        RowLayout {
-                            id: _windowControlLayout
-                            anchors.fill: parent
-                            anchors.topMargin: FishUI.Units.smallSpacing
-                            anchors.rightMargin: FishUI.Units.smallSpacing
-                            spacing: FishUI.Units.largeSpacing
+                Item {
+                    width: FishUI.Units.largeSpacing
+                }
 
-                            WindowButton {
-                                size: 35
-                                source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "minimize.svg"
-                                onClicked: windowHelper.minimizeWindow(root)
-                                visible: root.visibility !== Window.FullScreen
-                                Layout.alignment: Qt.AlignTop
-                            }
+                WindowButton {
+                    size: 35
+                    source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "close.svg"
+                    onClicked: control.close()
+                    visible: control.visibility !== Window.FullScreen
+                    Layout.alignment: Qt.AlignTop
+                    Layout.topMargin: FishUI.Units.smallSpacing
+                }
 
-                            WindowButton {
-                                size: 35
-                                source: "qrc:/fishui/kit/images/" +
-                                    (FishUI.Theme.darkMode ? "dark/" : "light/") +
-                                    (root.visibility === Window.Maximized ? "restore.svg" : "maximize.svg")
-                                onClicked: root.toggleMaximized()
-                                visible: root.visibility !== Window.FullScreen
-                                Layout.alignment: Qt.AlignTop
-                            }
-
-                            WindowButton {
-                                size: 35
-                                source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "close.svg"
-                                onClicked: root.close()
-                                visible: root.visibility !== Window.FullScreen
-                                Layout.alignment: Qt.AlignTop
-                            }
-                        }
-                    }
+                Item {
+                    width: FishUI.Units.smallSpacing
                 }
             }
+        }
+
+        // Content item.
+        ColumnLayout {
+            id: _contentLayout
+            anchors.fill: parent
+            anchors.topMargin: control.contentTopMargin
+            spacing: 0
 
             Item {
                 id: _content
                 Layout.fillHeight: true
                 Layout.fillWidth: true
             }
+        }
 
-            layer.enabled: true
-            layer.effect: OpacityMask {
-                maskSource: Item {
-                    width: _background.width
-                    height: _background.height
+        // Mask
+        layer.enabled: _background.radius > 0
+        layer.effect: OpacityMask {
+            maskSource: Item {
+                width: _contentItem.width
+                height: _contentItem.height
 
-                    Rectangle {
-                        anchors.fill: parent
-                        radius: _background.radius
-                    }
+                Rectangle {
+                    anchors.fill: parent
+                    radius: _background.radius
                 }
             }
         }
@@ -321,7 +335,7 @@ Window {
     function showPassiveNotification(message, timeout, actionText, callBack) {
         if (!internal.passiveNotification) {
             var component = Qt.createComponent("qrc:/fishui/kit/Toast.qml")
-            internal.passiveNotification = component.createObject(root)
+            internal.passiveNotification = component.createObject(control)
         }
 
         internal.passiveNotification.showNotification(message, timeout, actionText, callBack)
@@ -329,9 +343,9 @@ Window {
 
     function toggleMaximized() {
         if (isMaximized) {
-            root.showNormal();
+            control.showNormal();
         } else {
-            root.showMaximized();
+            control.showMaximized();
         }
     }
 }
