@@ -24,6 +24,7 @@
         <file>images/toast/info.svg</file>
         <file>images/toast/success.svg</file>
         <file>images/toast/warn.svg</file>
+        <file alias="ActionTextField.qml">controls/ActionTextField.qml</file>
     </qresource>
     <qresource prefix="/"/>
 </RCC>
