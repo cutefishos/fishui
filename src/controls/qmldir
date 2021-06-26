@@ -12,6 +12,7 @@ typeinfo plugins.qmltypes
 singleton Theme 1.0 Theme.qml
 singleton Units 1.0 Units.qml
 
+ActionTextField 1.0 ActionTextField
 BusyIndicator 1.0 BusyIndicator.qml
 Icon 1.0 Icon.qml
 PopupTips 1.0 PopupTips.qml
