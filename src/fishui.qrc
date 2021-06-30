@@ -8,7 +8,7 @@
         <file alias="Toast.qml">controls/Toast.qml</file>
         <file alias="Units.qml">controls/Units.qml</file>
         <file alias="Window.qml">controls/Window.qml</file>
-        <file alias="WindowButton.qml">controls/WindowButton.qml</file>
+        <file alias="RoundImageButton.qml">controls/RoundImageButton.qml</file>
         <file alias="DesktopMenu.qml">controls/DesktopMenu.qml</file>
         <file>images/refresh.svg</file>
         <file>images/dark/close.svg</file>

@@ -254,7 +254,7 @@ Window {
                 }
 
                 // Window buttons
-                WindowButton {
+                RoundImageButton {
                     size: 35
                     source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "minimize.svg"
                     onClicked: windowHelper.minimizeWindow(control)
@@ -267,7 +267,7 @@ Window {
                     width: FishUI.Units.largeSpacing
                 }
 
-                WindowButton {
+                RoundImageButton {
                     size: 35
                     source: "qrc:/fishui/kit/images/" +
                         (FishUI.Theme.darkMode ? "dark/" : "light/") +
@@ -282,7 +282,7 @@ Window {
                     width: FishUI.Units.largeSpacing
                 }
 
-                WindowButton {
+                RoundImageButton {
                     size: 35
                     source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "close.svg"
                     onClicked: control.close()
