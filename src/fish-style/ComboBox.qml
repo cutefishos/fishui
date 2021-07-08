@@ -56,6 +56,8 @@ T.ComboBox {
 
     spacing: FishUI.Units.smallSpacing
     padding: FishUI.Units.smallSpacing
+    leftPadding: FishUI.Units.largeSpacing
+    rightPadding: FishUI.Units.largeSpacing
 
     delegate: MenuItem {
         width: control.popup.width
@@ -147,7 +149,7 @@ T.ComboBox {
 
         background: Rectangle {
             radius: FishUI.Theme.smallRadius
-            color: parent.FishUI.Theme.backgroundColor
+            color: parent.FishUI.Theme.secondBackgroundColor
             border.width: 0
 
             layer.enabled: true

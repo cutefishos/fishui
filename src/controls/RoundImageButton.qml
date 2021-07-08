@@ -29,9 +29,9 @@ Item {
     height: size
     width: size
 
-    property color hoveredColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 1.5)
+    property color hoveredColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 2)
                                                    : Qt.darker(FishUI.Theme.backgroundColor, 1.2)
-    property color pressedColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 1.3)
+    property color pressedColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 1.5)
                                                      : Qt.darker(FishUI.Theme.backgroundColor, 1.3)
     property alias source: image.source
     signal clicked()

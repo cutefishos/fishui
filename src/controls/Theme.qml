@@ -36,9 +36,9 @@ QtObject {
     property color pinkColor: FishUICore.ThemeManager.pinkColor
     property color orangeColor: FishUICore.ThemeManager.orangeColor
 
-    property color backgroundColor: darkMode ? "#3B3B3D" : "#FFFFFF"
-    property color secondBackgroundColor: darkMode ? "#2E2E2E" : "#F5F5F5"
-    property color alternateBackgroundColor: darkMode ? "#565659" : "#F2F4F5"
+    property color backgroundColor: darkMode ? "#1C1C1D" : "#F3F4F9"
+    property color secondBackgroundColor: darkMode ? "#2C2C2D" : "#FFFFFF"
+    property color alternateBackgroundColor: darkMode ? "#3C3C3D" : "#F2F4F5"
 
     property color textColor: darkMode ? "#FFFFFF" : "#323238"
     property color disabledTextColor: darkMode ? "#888888" : "#64646E"

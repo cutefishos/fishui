@@ -61,7 +61,7 @@ T.Dialog {
 
     background: Rectangle {
         radius: FishUI.Theme.hugeRadius
-        color: FishUI.Theme.backgroundColor
+        color: FishUI.Theme.secondBackgroundColor
         border.width: 0
 
         layer.enabled: true
