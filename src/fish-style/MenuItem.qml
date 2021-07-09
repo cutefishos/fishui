@@ -33,8 +33,11 @@ T.MenuItem
         implicitWidth: control.implicitIndicatorWidth
         implicitHeight: control.implicitIndicatorHeight
         
-        anchors.right: background.left
-        anchors.verticalCenter: control.verticalCenter
+        anchors {
+            leftMargin: 2
+            left: background.left
+            verticalCenter: control.verticalCenter
+        }
         
         Rectangle {
             width: 4
@@ -42,7 +45,7 @@ T.MenuItem
             anchors.centerIn: parent
             visible: control.highlighted
             color: FishUI.Theme.highlightColor
-            radius: 3
+            radius: FishUI.Theme.smallRadius
         }
     }
     
