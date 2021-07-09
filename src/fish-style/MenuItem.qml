@@ -13,7 +13,7 @@ T.MenuItem
                                                        : Qt.rgba(0, 0, 0, 0.1)
     property color pressedColor: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.1)
                                                        : Qt.rgba(0, 0, 0, 0.2)
-
+    
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
     implicitHeight: visible ? Math.max(implicitBackgroundHeight + topInset + bottomInset,
@@ -29,18 +29,34 @@ T.MenuItem
 
     icon.color: control.enabled ? (control.highlighted ? control.FishUI.Theme.highlightColor : control.FishUI.Theme.textColor) :
                              control.FishUI.Theme.disabledTextColor
-
+    indicator: Item {
+        implicitWidth: control.implicitIndicatorWidth
+        implicitHeight: control.implicitIndicatorHeight
+        
+        anchors.right: background.left
+        anchors.verticalCenter: control.verticalCenter
+        
+        Rectangle {
+            width: 4
+            height: control.height - 2 * FishUI.Units.smallSpacing
+            anchors.centerIn: parent
+            visible: control.highlighted
+            color: FishUI.Theme.highlightColor
+            radius: 3
+        }
+    }
+    
     contentItem: IconLabel {
         readonly property real arrowPadding: control.subMenu && control.arrow ? control.arrow.width + control.spacing : 0
         readonly property real indicatorPadding: control.checkable && control.indicator ? control.indicator.width + control.spacing : 0
         leftPadding: !control.mirrored ? indicatorPadding + FishUI.Units.smallSpacing * 2 : arrowPadding
         rightPadding: control.mirrored ? indicatorPadding : arrowPadding + FishUI.Units.smallSpacing * 2
-
+    
         spacing: control.spacing
         mirrored: control.mirrored
         display: control.display
         alignment: Qt.AlignLeft
-
+    
         icon: control.icon
         text: control.text
         font: control.font
