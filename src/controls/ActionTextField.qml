@@ -44,7 +44,6 @@ TextField {
                 anchors.verticalCenter: parent.verticalCenter
    
                 source: modelData.icon.name.length > 0 ? modelData.icon.name : modelData.icon.source
-                visible: modelData.visible
                 enabled: modelData.enabled
                 MouseArea {
                     id: actionArea
