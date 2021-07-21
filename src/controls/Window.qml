@@ -42,6 +42,7 @@ Window {
     property alias compositing: windowHelper.compositing
     property var contentTopMargin: _header.height
     property var windowRadius: FishUI.Theme.bigRadius
+    property alias helper: windowHelper
 
     // Other
     property bool isMaximized: control.visibility === Window.Maximized

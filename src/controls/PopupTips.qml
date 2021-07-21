@@ -81,20 +81,20 @@ Window {
         var posY = control.position.y
 
         // left
-        if (posX < 0)
+        if (posX < Screen.x)
             posX = FishUI.Units.smallSpacing
 
         // top
-        if (posY < 0)
+        if (posY < Screen.y)
             posY = FishUI.Units.smallSpacing
 
         // right
-        if (posX + control.width > Screen.width)
-            posX = Screen.width - control.width - 1
+        if (posX + control.width > Screen.x + Screen.width)
+            posX = Screen.x + Screen.width - control.width - 1
 
         // bottom
-        if (posY > control.height > Screen.width)
-            posY = Screen.width - control.width - 1
+        if (posY > control.height > Screen.y + Screen.width)
+            posY = Screen.y + Screen.width - control.width - 1
 
         control.x = posX
         control.y = posY
