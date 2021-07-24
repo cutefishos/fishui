@@ -195,8 +195,13 @@ KirigamiWheelEvent::~KirigamiWheelEvent()
 
 void KirigamiWheelEvent::initializeFromEvent(QWheelEvent *event)
 {
+ #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     m_x = event->position().x();
     m_y = event->position().y();
+#else
+    m_x = event->x();
+    m_y = event->y();
+#endif
     m_angleDelta = event->angleDelta();
     m_pixelDelta = event->pixelDelta();
     m_buttons = event->buttons();
