@@ -22,6 +22,7 @@
 
 #include <QQuickWindow>
 #include <QQuickItem>
+#include <QPointer>
 
 class MenuPopupWindow : public QQuickWindow
 {
