@@ -1,8 +1,7 @@
 import QtQuick 2.4
 import FishUI 1.0 as FishUI
 
-Item
-{
+Item {
     id: indicator
     implicitWidth: 38
     implicitHeight: 32

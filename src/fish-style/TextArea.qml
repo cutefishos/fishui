@@ -28,9 +28,6 @@ import FishUI 1.0 as FishUI
 
 T.TextArea {
     id: control
-    // palette: Kirigami.Theme.palette
-    // Kirigami.Theme.colorSet: Kirigami.Theme.View
-    // Kirigami.Theme.inherit: false
 
     implicitWidth: Math.max(contentWidth + leftPadding + rightPadding,
                             background ? background.implicitWidth : 0,

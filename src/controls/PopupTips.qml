@@ -56,7 +56,7 @@ Window {
     Rectangle {
         id: _background
         anchors.fill: parent
-        color: FishUI.Theme.backgroundColor
+        color: FishUI.Theme.secondBackgroundColor
         radius: windowHelper.compositing ? FishUI.Theme.mediumRadius : 0
 
         Behavior on color {

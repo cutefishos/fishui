@@ -45,8 +45,8 @@ Rectangle {
     implicitWidth: 18
     implicitHeight: 18
 
-    color: !control.enabled ? control.FishUI.Theme.backgroundColor
-                            : checked ? FishUI.Theme.highlightColor : control.FishUI.Theme.backgroundColor
+    color: !control.enabled ? control.FishUI.Theme.secondBackgroundColor
+                            : checked ? FishUI.Theme.highlightColor : control.FishUI.Theme.secondBackgroundColor
     border.color: !control.enabled ? control.FishUI.Theme.disabledTextColor
         : checked ? control.FishUI.Theme.highlightColor: control.FishUI.Theme.textColor
     border.width: 1

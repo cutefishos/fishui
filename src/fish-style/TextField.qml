@@ -56,21 +56,21 @@ T.TextField {
  	// cursorDelegate: CursorDelegate { }
 
     Controls.Label {
-		id: placeholder
-		x: control.leftPadding
-		y: control.topPadding
-		width: control.width - (control.leftPadding + control.rightPadding)
-		height: control.height - (control.topPadding + control.bottomPadding)
-		
-		text: control.placeholderText
-		font: control.font
+        id: placeholder
+        x: control.leftPadding
+        y: control.topPadding
+        width: control.width - (control.leftPadding + control.rightPadding)
+        height: control.height - (control.topPadding + control.bottomPadding)
+
+        text: control.placeholderText
+        font: control.font
         color: FishUI.Theme.textColor
-		opacity: 0.4
+        opacity: 0.4
         horizontalAlignment: Text.AlignLeft
-		verticalAlignment: control.verticalAlignment
+        verticalAlignment: control.verticalAlignment
         visible: !control.length && !control.preeditText && (!control.activeFocus || control.horizontalAlignment !== Qt.AlignHCenter)
         elide: Text.ElideRight
-		wrapMode: Text.NoWrap
+        wrapMode: Text.NoWrap
 	}
 
     background: Rectangle {

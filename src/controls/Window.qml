@@ -233,6 +233,9 @@ Window {
             anchors.top: parent.top
             height: 40
 
+            property int buttonSize: 35
+            property int spacing: (_header.height - _header.buttonSize) / 2
+
             TapHandler {
                 onTapped: if (tapCount === 2) toggleMaximized()
                 gesturePolicy: TapHandler.DragThreshold
@@ -256,40 +259,40 @@ Window {
 
                 // Window buttons
                 RoundImageButton {
-                    size: 35
+                    size: _header.buttonSize
                     source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "minimize.svg"
                     onClicked: windowHelper.minimizeWindow(control)
                     visible: control.visibility !== Window.FullScreen
                     Layout.alignment: Qt.AlignTop
-                    Layout.topMargin: FishUI.Units.smallSpacing
+                    Layout.topMargin: _header.spacing
                 }
 
                 Item {
-                    width: FishUI.Units.largeSpacing
+                    width: FishUI.Units.smallSpacing
                 }
 
                 RoundImageButton {
-                    size: 35
+                    size: _header.buttonSize
                     source: "qrc:/fishui/kit/images/" +
                         (FishUI.Theme.darkMode ? "dark/" : "light/") +
                         (control.visibility === Window.Maximized ? "restore.svg" : "maximize.svg")
                     onClicked: control.toggleMaximized()
                     visible: control.visibility !== Window.FullScreen
                     Layout.alignment: Qt.AlignTop
-                    Layout.topMargin: FishUI.Units.smallSpacing
+                    Layout.topMargin: _header.spacing
                 }
 
                 Item {
-                    width: FishUI.Units.largeSpacing
+                    width: FishUI.Units.smallSpacing
                 }
 
                 RoundImageButton {
-                    size: 35
+                    size: _header.buttonSize
                     source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "close.svg"
                     onClicked: control.close()
                     visible: control.visibility !== Window.FullScreen
                     Layout.alignment: Qt.AlignTop
-                    Layout.topMargin: FishUI.Units.smallSpacing
+                    Layout.topMargin: _header.spacing
                 }
 
                 Item {
