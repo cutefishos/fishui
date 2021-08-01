@@ -36,6 +36,7 @@ T.DialogButtonBox {
 
     delegate: Button {
         width: Math.min(implicitWidth, control.width / control.count - control.padding - control.spacing * control.count)
+
     }
 
     contentItem: ListView {
@@ -49,5 +50,7 @@ T.DialogButtonBox {
         snapMode: ListView.SnapToItem
     }
 
-    background: Item {}
+    background: Rectangle {
+        color: FishUI.Theme.backgroundColor
+    }
 }
