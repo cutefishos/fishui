@@ -26,6 +26,7 @@ Item {
     id: control
 
     property var size: 32
+    property var iconMargins: 0
     height: size
     width: size
 
@@ -56,6 +57,7 @@ Item {
         id: image
         objectName: "image"
         anchors.fill: parent
+        anchors.margins: control.iconMargins
         fillMode: Image.PreserveAspectFit
         sourceSize: Qt.size(width, height)
         cache: true

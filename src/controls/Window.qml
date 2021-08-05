@@ -296,7 +296,7 @@ Window {
                 }
 
                 Item {
-                    width: FishUI.Units.smallSpacing
+                    width: _header.spacing
                 }
             }
         }

@@ -9,6 +9,13 @@ T.Button
     implicitWidth: Math.max(background.implicitWidth, contentItem.implicitWidth + FishUI.Units.largeSpacing)
     implicitHeight: background.implicitHeight
     hoverEnabled: true
+    scale: control.pressed ? 0.95 : 1.0
+
+    Behavior on scale {
+        NumberAnimation {
+            duration: 100
+        }
+    }
 
     property color hoveredColor: Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r,
                                                                        FishUI.Theme.backgroundColor.g,
