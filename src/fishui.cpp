@@ -23,7 +23,6 @@
 #include "shadowhelper/windowshadow.h"
 #include "blurhelper/windowblur.h"
 #include "windowhelper.h"
-#include "iconitem.h"
 #include "newiconitem.h"
 #include "wheelhandler.h"
 

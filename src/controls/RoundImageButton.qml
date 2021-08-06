@@ -34,7 +34,8 @@ Item {
                                                    : Qt.darker(FishUI.Theme.backgroundColor, 1.2)
     property color pressedColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 1.5)
                                                      : Qt.darker(FishUI.Theme.backgroundColor, 1.3)
-    property alias source: image.source
+    property alias source: _image.source
+    property alias image: _image
     signal clicked()
 
     Rectangle {
@@ -54,7 +55,7 @@ Item {
     }
 
     Image {
-        id: image
+        id: _image
         objectName: "image"
         anchors.fill: parent
         anchors.margins: control.iconMargins

@@ -29,7 +29,7 @@ NewIconItem::NewIconItem(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
     setFlag(ItemHasContents, true);
-    setSmooth(true);
+    setSmooth(false);
 }
 
 void NewIconItem::setSource(const QVariant &source)

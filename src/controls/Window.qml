@@ -233,7 +233,7 @@ Window {
             anchors.top: parent.top
             height: 40
 
-            property int buttonSize: 35
+            property int buttonSize: 32
             property int spacing: (_header.height - _header.buttonSize) / 2
 
             TapHandler {
@@ -265,6 +265,7 @@ Window {
                     visible: control.visibility !== Window.FullScreen
                     Layout.alignment: Qt.AlignTop
                     Layout.topMargin: _header.spacing
+                    image.smooth: false
                 }
 
                 Item {
@@ -280,6 +281,7 @@ Window {
                     visible: control.visibility !== Window.FullScreen
                     Layout.alignment: Qt.AlignTop
                     Layout.topMargin: _header.spacing
+                    image.smooth: false
                 }
 
                 Item {
@@ -293,6 +295,7 @@ Window {
                     visible: control.visibility !== Window.FullScreen
                     Layout.alignment: Qt.AlignTop
                     Layout.topMargin: _header.spacing
+                    image.smooth: false
                 }
 
                 Item {
