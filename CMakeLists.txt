@@ -66,7 +66,7 @@ if (MSVC)
     set(CMAKECONFIG_INSTALL_DIR "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/share/FishUI")
     set(CMAKE_INSTALL_PREFIX "${_VCPKG_INSTALLED_DIR}")
 else ()
-    set(CMAKECONFIG_INSTALL_DIR "/usr/lib/cmake/FishUI")
+    set(CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/FishUI")
 endif ()
 message(STATUS "install directory:" "${CMAKECONFIG_INSTALL_DIR}")
 
