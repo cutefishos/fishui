@@ -76,6 +76,10 @@ void NewIconItem::setSource(const QVariant &source)
         m_image = source.value<QImage>();
         m_iconName.clear();
         m_icon = QIcon();
+    }  else if (source.canConvert<QPixmap>()) {
+        m_image = source.value<QPixmap>().toImage();
+        m_iconName.clear();
+        m_icon = QIcon();
     } else {
         // From icon theme.
         m_icon = QIcon();

@@ -1,4 +1,5 @@
 #include "iconthemeprovider.h"
+#include <QFile>
 #include <QIcon>
 
 IconThemeProvider::IconThemeProvider()
@@ -7,7 +8,7 @@ IconThemeProvider::IconThemeProvider()
 }
 
 QPixmap IconThemeProvider::requestPixmap(const QString &id, QSize *realSize,
-                                              const QSize &requestedSize)
+                                         const QSize &requestedSize)
 {
     // Sanitize requested size
     QSize size(requestedSize);
@@ -19,6 +20,10 @@ QPixmap IconThemeProvider::requestPixmap(const QString &id, QSize *realSize,
     // Return real size
     if (realSize)
         *realSize = size;
+
+    if (QFile::exists(id)) {
+        return QPixmap(id).scaled(size);
+    }
 
     // Is it a path?
     if (id.startsWith(QLatin1Char('/')))
