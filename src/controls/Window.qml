@@ -201,22 +201,25 @@ Window {
         color: FishUI.Theme.backgroundColor
         antialiasing: true
 
-        Rectangle {
-            anchors.fill: parent
-            color: "transparent"
-            radius: parent.radius
-            border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.05) : Qt.rgba(0, 0, 0, 0.05)
-            antialiasing: true
-            visible: !isMaximized && !isFullScreen
-            z: 999
-        }
-
         Behavior on color {
             ColorAnimation {
                 duration: 200
                 easing.type: Easing.Linear
             }
         }
+    }
+
+    // Border line
+    Rectangle {
+        property var borderColor: compositing ? FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.05) : Qt.rgba(0, 0, 0, 0.05) : FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.15) : Qt.rgba(0, 0, 0, 0.15)
+
+        anchors.fill: parent
+        color: "transparent"
+        radius: parent.radius
+        border.color: borderColor
+        antialiasing: true
+        visible: !isMaximized && !isFullScreen
+        z: 999
     }
 
     // Content
@@ -266,6 +269,7 @@ Window {
                     Layout.alignment: Qt.AlignTop
                     Layout.topMargin: _header.spacing
                     image.smooth: false
+                    image.antialiasing: true
                 }
 
                 Item {
@@ -278,10 +282,11 @@ Window {
                         (FishUI.Theme.darkMode ? "dark/" : "light/") +
                         (control.visibility === Window.Maximized ? "restore.svg" : "maximize.svg")
                     onClicked: control.toggleMaximized()
-                    visible: control.visibility !== Window.FullScreen
+                    visible: control.visibility !== Window.FullScreen && control.minimumWidth !== control.maximumWidth && control.maximumHeight !== control.minimumHeight 
                     Layout.alignment: Qt.AlignTop
                     Layout.topMargin: _header.spacing
                     image.smooth: false
+                    image.antialiasing: true
                 }
 
                 Item {
@@ -296,6 +301,7 @@ Window {
                     Layout.alignment: Qt.AlignTop
                     Layout.topMargin: _header.spacing
                     image.smooth: false
+                    image.antialiasing: true
                 }
 
                 Item {
