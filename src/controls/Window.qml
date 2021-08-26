@@ -215,7 +215,7 @@ Window {
 
         anchors.fill: parent
         color: "transparent"
-        radius: parent.radius
+        radius: _background.radius
         border.color: borderColor
         antialiasing: true
         visible: !isMaximized && !isFullScreen
