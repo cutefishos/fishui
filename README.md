@@ -29,6 +29,23 @@ make
 sudo make install
 ```
 
+## Packaging
+
+### Debian/Ubuntu
+
+Install compile dependencies:
+
+```bash
+$ sudo apt install equivs devscripts --no-install-recommends
+$ sudo mk-build-deps -i -t "apt-get --yes" -r
+```
+
+Start packing
+
+```bash
+$ dpkg-buildpackage -b -uc -us
+```
+
 ## License
 
 FishUI is licensed under GPLv3.
