@@ -59,6 +59,12 @@ T.ComboBox {
     leftPadding: FishUI.Units.largeSpacing
     rightPadding: FishUI.Units.largeSpacing
 
+    property bool darkMode: FishUI.Theme.darkMode
+
+    onDarkModeChanged: {
+        updateTimer.restart()
+    }
+
     delegate: MenuItem {
         width: control.popup.width
         text: control.textRole ? (Array.isArray(control.model) ? modelData[control.textRole] : model[control.textRole]) : modelData
@@ -67,15 +73,29 @@ T.ComboBox {
     }
 
     indicator: Image {
+        id: indicatorImage
         x: control.mirrored ? control.leftPadding : control.width - width - control.rightPadding
         y: control.topPadding + (control.availableHeight - height) / 2
 
         height: FishUI.Units.iconSizes.small
         width: height
 
+        cache: false
+
         source: "image://icontheme/go-down"
         sourceSize.width: width
         sourceSize.height: height
+    }
+
+    Timer {
+        id: updateTimer
+        triggeredOnStart: true
+        interval: 10
+
+        onTriggered: {
+            indicatorImage.source = ""
+            indicatorImage.source = "image://icontheme/go-down"
+        }
     }
 
     contentItem: T.TextField {
