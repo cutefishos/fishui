@@ -19,7 +19,6 @@
  * met: http://www.gnu.org/licenses/gpl-2.0.html.
  */
 
-
 import QtQuick 2.9
 import QtQuick.Templates 2.2 as T
 import FishUI 1.0 as FishUI
@@ -39,17 +38,21 @@ T.CheckBox {
 
     hoverEnabled: true
 
-    indicator: Item {
-        width: FishUI.Units.iconSizes.smallMedium + FishUI.Units.smallSpacing
-        height: FishUI.Units.iconSizes.smallMedium + FishUI.Units.smallSpacing
-
-        CheckIndicator {
-            anchors.centerIn: parent
-            width: FishUI.Units.iconSizes.smallMedium
-            height: FishUI.Units.iconSizes.smallMedium
-            control: controlRoot
-        }
+    indicator: CheckIndicator {
+        control: controlRoot
     }
+
+//    indicator: Item {
+//        width: FishUI.Units.iconSizes.smallMedium + FishUI.Units.smallSpacing
+//        height: FishUI.Units.iconSizes.smallMedium + FishUI.Units.smallSpacing
+
+//        CheckIndicator {
+//            anchors.centerIn: parent
+//            width: FishUI.Units.iconSizes.smallMedium
+//            height: FishUI.Units.iconSizes.smallMedium
+//            control: controlRoot
+//        }
+//    }
 
     contentItem: Text {
         leftPadding: controlRoot.indicator && !controlRoot.mirrored ? controlRoot.indicator.width + controlRoot.spacing : 0

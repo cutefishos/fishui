@@ -41,7 +41,7 @@ Window {
     // Window helper
     property alias compositing: windowHelper.compositing
     property var contentTopMargin: _header.height
-    property var windowRadius: FishUI.Theme.bigRadius
+    property var windowRadius: compositing ? FishUI.Theme.windowRadius : 0
     property alias helper: windowHelper
 
     // Other
@@ -215,7 +215,7 @@ Window {
 
         anchors.fill: parent
         color: "transparent"
-        radius: _background.radius
+        radius: control.windowRadius
         border.color: borderColor
         antialiasing: true
         visible: !isMaximized && !isFullScreen
@@ -240,6 +240,7 @@ Window {
             property int spacing: (_header.height - _header.buttonSize) / 2
 
             TapHandler {
+                enabled: !control.isFullScreen
                 onTapped: if (tapCount === 2) toggleMaximized()
                 gesturePolicy: TapHandler.DragThreshold
             }
@@ -265,7 +266,7 @@ Window {
                     size: _header.buttonSize
                     source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "minimize.svg"
                     onClicked: windowHelper.minimizeWindow(control)
-                    visible: control.visibility !== Window.FullScreen
+                    // visible: !control.isFullScreen
                     Layout.alignment: Qt.AlignTop
                     Layout.topMargin: _header.spacing
                     image.smooth: false
@@ -282,7 +283,7 @@ Window {
                         (FishUI.Theme.darkMode ? "dark/" : "light/") +
                         (control.visibility === Window.Maximized ? "restore.svg" : "maximize.svg")
                     onClicked: control.toggleMaximized()
-                    visible: control.visibility !== Window.FullScreen && control.minimumWidth !== control.maximumWidth && control.maximumHeight !== control.minimumHeight 
+                    visible: !control.isFullScreen &&  control.minimumWidth !== control.maximumWidth && control.maximumHeight !== control.minimumHeight 
                     Layout.alignment: Qt.AlignTop
                     Layout.topMargin: _header.spacing
                     image.smooth: false
@@ -297,7 +298,7 @@ Window {
                     size: _header.buttonSize
                     source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "close.svg"
                     onClicked: control.close()
-                    visible: control.visibility !== Window.FullScreen
+                    // visible: !control.isFullScreen
                     Layout.alignment: Qt.AlignTop
                     Layout.topMargin: _header.spacing
                     image.smooth: false
@@ -325,18 +326,18 @@ Window {
         }
 
         // Mask
-        layer.enabled: _background.radius > 0
-        layer.effect: OpacityMask {
-            maskSource: Item {
-                width: _contentItem.width
-                height: _contentItem.height
+       layer.enabled: _background.radius > 0
+       layer.effect: OpacityMask {
+           maskSource: Item {
+               width: _contentItem.width
+               height: _contentItem.height
 
-                Rectangle {
-                    anchors.fill: parent
-                    radius: _background.radius
-                }
-            }
-        }
+               Rectangle {
+                   anchors.fill: parent
+                   radius: _background.radius
+               }
+           }
+       }
     }
 
     QtObject {

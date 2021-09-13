@@ -20,18 +20,11 @@ T.Slider {
         width: 26
         height: width
         radius: width / 2
-        color: "white"
         opacity: 1
         antialiasing: true
         border.width: 0
 
-        scale: control.pressed ? 0.9 : 1.0
-
-        Behavior on scale {
-            NumberAnimation {
-                duration: 150
-            }
-        }
+        color: control.pressed ? "#FAFAFA" : "white"
 
         layer.enabled: true
         layer.effect: DropShadow {
@@ -60,7 +53,7 @@ T.Slider {
             width: control.horizontal ? parent.width : sliderTrackHeight
             height: !control.horizontal ? parent.height : sliderTrackHeight
             radius: !control.horizontal ? parent.width / 2 : sliderTrackHeight / 2
-            color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.5) : Qt.rgba(0, 0, 0, 0.15)
+            color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.5) : Qt.rgba(0, 0, 0, 0.1)
         }
 
         Rectangle {
