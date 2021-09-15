@@ -24,7 +24,7 @@ T.TabBar {
         flickableDirection: Flickable.AutoFlickIfNeeded
         snapMode: ListView.SnapToItem
 
-        highlightMoveDuration: 200
+        highlightMoveDuration: 0
         highlightResizeDuration: 0
         highlightFollowsCurrentItem: true
         highlightRangeMode: ListView.ApplyRange
