@@ -1,7 +1,7 @@
 Source: fishui
 Section: devel
 Priority: optional
-Maintainer: CutefishOS <cutefishos@foxmail.com>
+Maintainer: CutefishOS <support@cutefishos.com>
 Build-Depends: cmake,
                debhelper (>= 9),
                extra-cmake-modules,
@@ -17,7 +17,7 @@ Build-Depends: cmake,
                qttools5-dev,
                qttools5-dev-tools
 Standards-Version: 4.5.0
-Homepage: https://github.com/cutefishos/uikit
+Homepage: https://cutefishos.com
 
 Package: fishui
 Architecture: any
