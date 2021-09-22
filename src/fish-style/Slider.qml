@@ -9,7 +9,7 @@ T.Slider {
     property int sliderTrackHeight: 5
 
     implicitWidth: background.implicitWidth
-    implicitHeight: background.implicitHeight
+    implicitHeight: 22
     snapMode: T.Slider.SnapOnRelease
 
     handle: Rectangle {
@@ -17,7 +17,7 @@ T.Slider {
         x: control.leftPadding + (control.horizontal ? control.visualPosition * (control.availableWidth - width) : (control.availableWidth - width) / 2)
         y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : control.visualPosition * (control.availableHeight - height))
 
-        width: 26
+        width: control.implicitHeight
         height: width
         radius: width / 2
         opacity: 1
@@ -38,8 +38,8 @@ T.Slider {
     }
 
     background: Item {
-        implicitWidth: control.horizontal ? 200 : 16
-        implicitHeight: control.horizontal ? 16 : 200
+        implicitWidth: control.horizontal ? 200 : control.implicitHeight
+        implicitHeight: control.horizontal ? control.implicitHeight : 200
 
         x: control.leftPadding + (control.horizontal ? 0 : (control.availableWidth - width) / 2)
         y: control.topPadding + (control.horizontal ? (control.availableHeight - height) / 2 : 0)

@@ -36,6 +36,7 @@ Window {
     default property alias content : _content.data
     property alias background: _background
     property alias header: _header
+    property alias headerBackground: _headerBackground
     property Item headerItem
 
     // Window helper
@@ -234,10 +235,16 @@ Window {
             anchors.left: parent.left
             anchors.right: parent.right
             anchors.top: parent.top
-            height: 40
+            height: 35
 
-            property int buttonSize: 32
+            property int buttonSize: 31
             property int spacing: (_header.height - _header.buttonSize) / 2
+
+            Rectangle {
+                id: _headerBackground
+                anchors.fill: parent
+                color: "transparent"
+            }
 
             TapHandler {
                 enabled: !control.isFullScreen

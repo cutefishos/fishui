@@ -14,10 +14,11 @@ singleton Units 1.0 Units.qml
 
 ActionTextField 1.0 ActionTextField
 BusyIndicator 1.0 BusyIndicator.qml
+DesktopMenu 1.0 DesktopMenu.qml
+Dialog 1.0 Dialog.qml
 Icon 1.0 Icon.qml
 PopupTips 1.0 PopupTips.qml
 RoundedRect 1.0 RoundedRect.qml
 Window 1.0 Window.qml
-WindowButton 1.0 WindowButton.qml
+RoundImageButton 1.0 RoundImageButton.qml
 Toast 1.0 Toast.qml
-DesktopMenu 1.0 DesktopMenu.qml

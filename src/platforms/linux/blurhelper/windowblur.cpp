@@ -131,7 +131,7 @@ void WindowBlur::updateBlur()
     if (m_enabled) {
         qreal devicePixelRatio = m_view->screen()->devicePixelRatio();
         QPainterPath path;
-        path.addRoundedRect(QRect(QPoint(0, 0), m_view->size() * devicePixelRatio),
+        path.addRoundedRect(QRectF(QPoint(0, 0), m_view->size() * devicePixelRatio),
                             m_windowRadius * devicePixelRatio,
                             m_windowRadius * devicePixelRatio);
         QVector<uint32_t> data;

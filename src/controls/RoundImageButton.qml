@@ -30,6 +30,8 @@ Item {
     height: size
     width: size
 
+    property alias background: _background
+    property color backgroundColor: "transparent"
     property color hoveredColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 2)
                                                    : Qt.darker(FishUI.Theme.backgroundColor, 1.2)
     property color pressedColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 1.5)
@@ -39,11 +41,11 @@ Item {
     signal clicked()
 
     Rectangle {
-        id: background
+        id: _background
         anchors.fill: parent
         anchors.margins: size * 0.1
         radius: control.height / 2
-        color: mouseArea.pressed ? pressedColor : mouseArea.containsMouse ? control.hoveredColor : "transparent"
+        color: mouseArea.pressed ? pressedColor : mouseArea.containsMouse ? control.hoveredColor : control.backgroundColor
     }
 
     MouseArea {
