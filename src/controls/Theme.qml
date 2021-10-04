@@ -35,6 +35,7 @@ QtObject {
     property color purpleColor: FishUICore.ThemeManager.purpleColor
     property color pinkColor: FishUICore.ThemeManager.pinkColor
     property color orangeColor: FishUICore.ThemeManager.orangeColor
+    property color greyColor: FishUICore.ThemeManager.greyColor
 
     property color backgroundColor: darkMode ? "#1C1C1D" : "#F3F4F9"
     property color secondBackgroundColor: darkMode ? "#2C2C2D" : "#FFFFFF"

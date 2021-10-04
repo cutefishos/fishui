@@ -30,6 +30,7 @@
 #define ACCENTCOLOR_PURPLE 3
 #define ACCENTCOLOR_PINK   4
 #define ACCENTCOLOR_ORANGE 5
+#define ACCENTCOLOR_GREY   6
 
 class ThemeManager : public QObject
 {
@@ -42,6 +43,7 @@ class ThemeManager : public QObject
     Q_PROPERTY(QColor purpleColor READ purpleColor CONSTANT)
     Q_PROPERTY(QColor pinkColor READ pinkColor CONSTANT)
     Q_PROPERTY(QColor orangeColor READ orangeColor CONSTANT)
+    Q_PROPERTY(QColor greyColor READ greyColor CONSTANT)
     Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio CONSTANT)
 
 public:
@@ -58,6 +60,7 @@ public:
     QColor purpleColor() { return m_purpleColor; }
     QColor pinkColor() { return m_pinkColor; }
     QColor orangeColor() { return m_orangeColor; }
+    QColor greyColor() { return m_greyColor; }
 
 signals:
     void darkModeChanged();
@@ -81,7 +84,9 @@ private:
     QColor m_greenColor  = QColor(53,  191, 86);    // #35BF56
     QColor m_purpleColor = QColor(130, 102, 255);   // #8266FF
     QColor m_pinkColor   = QColor(202, 100, 172);   // #CA64AC
-    QColor m_orangeColor = QColor(254, 160, 66 );   // #FEA042
+    QColor m_orangeColor = QColor(254, 160, 66);    // #FEA042
+    QColor m_greyColor   = QColor(79, 89, 107);     // #4F596B
+
     QColor m_accentColor;
 };
 

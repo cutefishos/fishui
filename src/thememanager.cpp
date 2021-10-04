@@ -116,6 +116,9 @@ void ThemeManager::setAccentColor(int accentColorID)
     case ACCENTCOLOR_ORANGE:
         m_accentColor = m_orangeColor;
         break;
+    case ACCENTCOLOR_GREY:
+        m_accentColor = m_greyColor;
+        break;
     default:
         m_accentColor = m_blueColor;
         break;
