@@ -253,6 +253,7 @@ Window {
             }
 
             DragHandler {
+                target: null
                 acceptedDevices: PointerDevice.GenericPointer
                 grabPermissions: PointerHandler.CanTakeOverFromItems | PointerHandler.CanTakeOverFromHandlersOfDifferentType | PointerHandler.ApprovesTakeOverByAnything
                 onActiveChanged: if (active) { windowHelper.startSystemMove(control) }
