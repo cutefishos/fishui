@@ -33,9 +33,9 @@ Item {
     property alias background: _background
     property color backgroundColor: "transparent"
     property color hoveredColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 2)
-                                                   : Qt.darker(FishUI.Theme.backgroundColor, 1.2)
+                                                       : Qt.darker(FishUI.Theme.backgroundColor, 1.1)
     property color pressedColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.backgroundColor, 1.5)
-                                                     : Qt.darker(FishUI.Theme.backgroundColor, 1.3)
+                                                       : Qt.darker(FishUI.Theme.backgroundColor, 1.2)
     property alias source: _image.source
     property alias image: _image
     signal clicked()

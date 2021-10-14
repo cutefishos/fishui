@@ -12,6 +12,8 @@
         <file>RadioButton.qml</file>
         <file>RadioIndicator.qml</file>
         <file>Slider.qml</file>
+        <file>Switch.qml</file>
+        <file>SwitchIndicator.qml</file>
         <file>TabBar.qml</file>
         <file>TabButton.qml</file>
         <file>TextArea.qml</file>

@@ -49,7 +49,7 @@ T.Button
         implicitHeight: FishUI.Units.iconSizes.medium + FishUI.Units.smallSpacing
 
         Rectangle {
-            id: _border
+            id: _background
             anchors.fill: parent
             radius: FishUI.Theme.mediumRadius
             border.width: 1

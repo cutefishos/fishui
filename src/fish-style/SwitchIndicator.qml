@@ -33,11 +33,13 @@ Item {
         height: 16
         radius: width / 2
         color: control.enabled ? "white" : "transparent"
+
         Behavior on x {
             enabled: !control.pressed
-            SmoothedAnimation {
-                duration: 300
-                easing.type: Easing.InOutCubic
+
+            NumberAnimation {
+                duration: 250
+                easing.type: Easing.OutSine
             }
         }
     }
