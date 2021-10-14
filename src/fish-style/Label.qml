@@ -16,7 +16,7 @@ T.Label {
     font.family: FishUI.Theme.defaultFont.family
     font.italic: FishUI.Theme.defaultFont.italic
     font.letterSpacing: FishUI.Theme.defaultFont.letterSpacing
-    font.pointSize: FishUI.Theme.defaultFont.pointSize
+    font.pointSize: FishUI.Theme.fontSize
     font.strikeout: FishUI.Theme.defaultFont.strikeout
     font.underline: FishUI.Theme.defaultFont.underline
     font.weight: FishUI.Theme.defaultFont.weight

@@ -6,6 +6,7 @@
         <file>CheckIndicator.qml</file>
         <file>ComboBox.qml</file>
         <file>Control.qml</file>
+        <file>Label.qml</file>
         <file>Menu.qml</file>
         <file>MenuItem.qml</file>
         <file>Page.qml</file>

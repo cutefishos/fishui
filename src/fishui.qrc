@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/fishui/kit">
+        <file alias="AboutDialog.qml">controls/AboutDialog.qml</file>
         <file alias="BusyIndicator.qml">controls/BusyIndicator.qml</file>
         <file alias="Icon.qml">controls/Icon.qml</file>
         <file alias="PopupTips.qml">controls/PopupTips.qml</file>

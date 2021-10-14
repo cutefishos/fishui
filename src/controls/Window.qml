@@ -48,7 +48,7 @@ Window {
     // Other
     property bool isMaximized: control.visibility === Window.Maximized
     property bool isFullScreen: control.visibility === Window.FullScreen
-    property var edgeSize: windowRadius / 2
+    property var edgeSize: windowRadius <= 0 ? 8 : windowRadius / 2
 
     onHeaderItemChanged: {
         if (headerItem) {

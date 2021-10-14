@@ -35,6 +35,7 @@ ThemeManager::ThemeManager(QObject *parent)
     , m_darkMode(false)
     , m_accentColorIndex(-1)
     , m_accentColor(m_blueColor) // The default is blue
+    , m_fontSize(9.0)
 {
     QDBusServiceWatcher *serviceWatcher = new QDBusServiceWatcher(Service, QDBusConnection::sessionBus(),
                                                                   QDBusServiceWatcher::WatchForRegistration);
@@ -61,6 +62,9 @@ void ThemeManager::initData()
         int accentColorID = iface.property("accentColor").toInt();
         setAccentColor(accentColorID);
 
+        m_fontSize = iface.property("systemFontPointSize").toReal();
+        emit fontSizeChanged();
+
         emit darkModeChanged();
     }
 }
@@ -74,6 +78,8 @@ void ThemeManager::initDBusSignals()
                                               this, SLOT(onDBusDarkModeChanged(bool)));
         QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "accentColorChanged",
                                               this, SLOT(onDBusAccentColorChanged(int)));
+        QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "systemFontPointSizeChanged",
+                                              this, SLOT(onDBusFontSizeChanged()));
     }
 }
 
@@ -88,6 +94,17 @@ void ThemeManager::onDBusDarkModeChanged(bool darkMode)
 void ThemeManager::onDBusAccentColorChanged(int accentColorID)
 {
     setAccentColor(accentColorID);
+}
+
+void ThemeManager::onDBusFontSizeChanged()
+{
+    QDBusInterface iface(Service, ObjectPath, Interface, QDBusConnection::sessionBus(), this);
+
+    qreal size = iface.property("systemFontPointSize").toReal();
+    if (size != m_fontSize) {
+        m_fontSize = size;
+        emit fontSizeChanged();
+    }
 }
 
 void ThemeManager::setAccentColor(int accentColorID)

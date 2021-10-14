@@ -3,8 +3,7 @@ import QtQuick.Templates 2.4 as T
 import FishUI 1.0 as FishUI
 import QtQuick.Controls.impl 2.4
 
-T.Button
-{
+T.Button {
     id: control
     implicitWidth: Math.max(background.implicitWidth, contentItem.implicitWidth + FishUI.Units.largeSpacing)
     implicitHeight: background.implicitHeight
