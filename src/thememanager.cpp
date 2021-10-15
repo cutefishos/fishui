@@ -36,6 +36,7 @@ ThemeManager::ThemeManager(QObject *parent)
     , m_accentColorIndex(-1)
     , m_accentColor(m_blueColor) // The default is blue
     , m_fontSize(9.0)
+    , m_fontFamily("Noto Sans")
 {
     QDBusServiceWatcher *serviceWatcher = new QDBusServiceWatcher(Service, QDBusConnection::sessionBus(),
                                                                   QDBusServiceWatcher::WatchForRegistration);
@@ -65,6 +66,9 @@ void ThemeManager::initData()
         m_fontSize = iface.property("systemFontPointSize").toReal();
         emit fontSizeChanged();
 
+        m_fontFamily = iface.property("systemFont").toString();
+        emit fontFamilyChanged();
+
         emit darkModeChanged();
     }
 }
@@ -80,6 +84,8 @@ void ThemeManager::initDBusSignals()
                                               this, SLOT(onDBusAccentColorChanged(int)));
         QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "systemFontPointSizeChanged",
                                               this, SLOT(onDBusFontSizeChanged()));
+        QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "systemFontChanged",
+                                              this, SLOT(onDBusFontFamilyChanged()));
     }
 }
 
@@ -104,6 +110,17 @@ void ThemeManager::onDBusFontSizeChanged()
     if (size != m_fontSize) {
         m_fontSize = size;
         emit fontSizeChanged();
+    }
+}
+
+void ThemeManager::onDBusFontFamilyChanged()
+{
+    QDBusInterface iface(Service, ObjectPath, Interface, QDBusConnection::sessionBus(), this);
+
+    QString family = iface.property("systemFont").toString();
+    if (family != m_fontFamily) {
+        m_fontFamily = family;
+        emit fontFamilyChanged();
     }
 }
 

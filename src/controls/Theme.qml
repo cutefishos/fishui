@@ -56,6 +56,7 @@ QtObject {
     property color visitedLinkBackgroundColor: "#2196F3"
 
     property real fontSize: FishUICore.ThemeManager.fontSize
+    property string fontFamily: FishUICore.ThemeManager.fontFamily
 
     property real smallRadius: 8.0
     property real mediumRadius: 10.0

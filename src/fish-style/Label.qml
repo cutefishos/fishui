@@ -13,7 +13,7 @@ T.Label {
     renderType: Window.devicePixelRatio % 1 !== 0 ? Text.QtRendering : Text.NativeRendering
 
     font.capitalization: FishUI.Theme.defaultFont.capitalization
-    font.family: FishUI.Theme.defaultFont.family
+    font.family: FishUI.Theme.fontFamily
     font.italic: FishUI.Theme.defaultFont.italic
     font.letterSpacing: FishUI.Theme.defaultFont.letterSpacing
     font.pointSize: FishUI.Theme.fontSize

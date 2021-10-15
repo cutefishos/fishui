@@ -46,6 +46,7 @@ class ThemeManager : public QObject
     Q_PROPERTY(QColor greyColor READ greyColor CONSTANT)
     Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio CONSTANT)
     Q_PROPERTY(qreal fontSize READ fontSize NOTIFY fontSizeChanged)
+    Q_PROPERTY(QString fontFamily READ fontFamily NOTIFY fontFamilyChanged)
 
 public:
     explicit ThemeManager(QObject *parent = nullptr);
@@ -56,6 +57,7 @@ public:
     QColor accentColor() { return m_accentColor; }
 
     qreal fontSize() { return m_fontSize; }
+    QString fontFamily() { return m_fontFamily; }
 
     QColor blueColor() { return m_blueColor; }
     QColor redColor() { return m_redColor; }
@@ -69,6 +71,7 @@ signals:
     void darkModeChanged();
     void accentColorChanged();
     void fontSizeChanged();
+    void fontFamilyChanged();
 
 private slots:
     void initData();
@@ -76,6 +79,7 @@ private slots:
     void onDBusDarkModeChanged(bool darkMode);
     void onDBusAccentColorChanged(int accentColorID);
     void onDBusFontSizeChanged();
+    void onDBusFontFamilyChanged();
 
 private:
     void setAccentColor(int accentColorID);
@@ -94,6 +98,7 @@ private:
 
     QColor m_accentColor;
     qreal m_fontSize;
+    QString m_fontFamily;
 };
 
 #endif // THEMEMANAGER_H
