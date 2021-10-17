@@ -45,6 +45,7 @@ void MenuPopupWindow::applicationStateChanged(Qt::ApplicationState state)
 void MenuPopupWindow::show()
 {
     QPoint pos = QCursor::pos();
+    const int margin = 6;
     int w = m_contentItem->implicitWidth();
     int h = m_contentItem->implicitHeight() + 16;
     int posx = pos.x();
@@ -64,7 +65,7 @@ void MenuPopupWindow::show()
             int submenuOverlap = pw->x() + pw->width() - posx;
             posx -= pw->width() + w - 2 * submenuOverlap;
         } else {
-            posx = g.right() - w;
+            posx = g.right() - w - margin;
         }
     } else {
         posx = qMax(posx, g.left());
@@ -73,7 +74,7 @@ void MenuPopupWindow::show()
     m_mouseMoved = false;
     m_dismissed = false;
 
-    posy = qBound(g.top(), posy, g.bottom() - h);
+    posy = qBound(g.top(), posy, g.bottom() - h - margin);
 
     setGeometry(posx, posy, w, h);
 
