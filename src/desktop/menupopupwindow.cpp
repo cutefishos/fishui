@@ -68,7 +68,7 @@ void MenuPopupWindow::show()
             posx = g.right() - w - margin;
         }
     } else {
-        posx = qMax(posx, g.left());
+        posx = qMax(posx, g.left() + margin);
     }
 
     m_mouseMoved = false;
