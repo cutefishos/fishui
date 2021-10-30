@@ -8,7 +8,10 @@ FishUI.Window {
     id: control
 
     width: 300
-    height: 300
+    height: contentHeight
+
+    maximumHeight: contentHeight
+    minimumHeight: contentHeight
 
     modality: Qt.WindowModal
 
@@ -17,10 +20,19 @@ FishUI.Window {
     property var iconSource
     property string name
     property string description
+    property var contentHeight: _mainLayout.implicitHeight + control.header.height * 2
+
+    DragHandler {
+        target: null
+        acceptedDevices: PointerDevice.GenericPointer
+        grabPermissions: PointerHandler.CanTakeOverFromItems | PointerHandler.CanTakeOverFromHandlersOfDifferentType | PointerHandler.ApprovesTakeOverByAnything
+        onActiveChanged: if (active) { control.helper.startSystemMove(control) }
+    }
 
     ColumnLayout {
+        id: _mainLayout
         anchors.fill: parent
-        anchors.topMargin: FishUI.Units.largeSpacing * 2
+        anchors.bottomMargin: control.header.height
 
         Image {
             width: 64
@@ -31,12 +43,13 @@ FishUI.Window {
         }
 
         Item {
-            height: FishUI.Units.largeSpacing * 2
+            height: FishUI.Units.largeSpacing
         }
 
         Label {
             text: control.name
             Layout.alignment: Qt.AlignHCenter
+            font.pointSize: 14
         }
 
         Label {
