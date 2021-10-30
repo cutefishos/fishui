@@ -20,6 +20,7 @@ FishUI.Window {
     property var iconSource
     property string name
     property string description
+    property string link: "https://cutefishos.com"
     property var contentHeight: _mainLayout.implicitHeight + control.header.height * 2
 
     DragHandler {
@@ -55,6 +56,19 @@ FishUI.Window {
         Label {
             text: control.description
             Layout.alignment: Qt.AlignHCenter
+        }
+
+        Label {
+            text: "<a href=\"%1\">%1</a>".arg(control.link)
+            Layout.alignment: Qt.AlignHCenter
+            linkColor: FishUI.Theme.highlightColor
+            visible: Installer.homePage
+
+            MouseArea {
+                anchors.fill: parent
+                cursorShape: Qt.PointingHandCursor
+                onClicked: Qt.openUrlExternally(control.link)
+            }
         }
 
         Item {
