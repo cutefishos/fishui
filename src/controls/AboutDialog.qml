@@ -62,7 +62,6 @@ FishUI.Window {
             text: "<a href=\"%1\">%1</a>".arg(control.link)
             Layout.alignment: Qt.AlignHCenter
             linkColor: FishUI.Theme.highlightColor
-            visible: Installer.homePage
 
             MouseArea {
                 anchors.fill: parent
