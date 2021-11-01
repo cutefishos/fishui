@@ -11,9 +11,15 @@ T.ScrollBar {
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
                              implicitContentHeight + topPadding + bottomPadding)
 
+    hoverEnabled: true
     padding: control.interactive ? 1 : 2
     visible: control.policy !== T.ScrollBar.AlwaysOff
     minimumSize: orientation == Qt.Horizontal ? height / width : width / height
+
+    onHoveredChanged: {
+        if (hovered)
+            control.active = true
+    }
 
     contentItem: Rectangle {
         radius: FishUI.Theme.smallRadius
@@ -39,7 +45,7 @@ T.ScrollBar {
             from: "active"
             SequentialAnimation {
                 PropertyAction{ target: control.contentItem; property: "opacity"; value: 1.0 }
-                PauseAnimation { duration: 2450 }
+                PauseAnimation { duration: 1000 }
                 NumberAnimation { target: control.contentItem; property: "opacity"; to: 0.0 }
             }
         }
