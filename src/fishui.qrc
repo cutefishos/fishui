@@ -10,12 +10,18 @@
         <file alias="Units.qml">controls/Units.qml</file>
         <file alias="Window.qml">controls/Window.qml</file>
         <file alias="RoundImageButton.qml">controls/RoundImageButton.qml</file>
+        <file alias="TabBar.qml">controls/TabBar.qml</file>
+        <file alias="TabButton.qml">controls/TabButton.qml</file>
+        <file alias="TabCloseButton.qml">controls/TabCloseButton.qml</file>
+        <file alias="TabView.qml">controls/TabView.qml</file>
         <file alias="DesktopMenu.qml">controls/DesktopMenu.qml</file>
         <file>images/refresh.svg</file>
         <file>images/dark/close.svg</file>
         <file>images/dark/maximize.svg</file>
         <file>images/dark/minimize.svg</file>
         <file>images/dark/restore.svg</file>
+        <file>images/light/add.svg</file>
+        <file>images/dark/add.svg</file>
         <file>images/light/close.svg</file>
         <file>images/light/maximize.svg</file>
         <file>images/light/minimize.svg</file>

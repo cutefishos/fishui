@@ -22,4 +22,9 @@ PopupTips 1.0 PopupTips.qml
 RoundedRect 1.0 RoundedRect.qml
 Window 1.0 Window.qml
 RoundImageButton 1.0 RoundImageButton.qml
+TabBar 1.0 TabBar.qml
+TabButton 1.0 TabButton.qml
+TabCloseButton 1.0 TabCloseButton.qml
+TabView 1.0 TabView.qml
+
 Toast 1.0 Toast.qml
