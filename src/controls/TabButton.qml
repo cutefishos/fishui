@@ -10,8 +10,18 @@ Item {
 
     property bool checked: false
     property bool hovered: _mouseArea.containsMouse
+    property bool pressed: _mouseArea.pressed
+
     property alias font: _label.font
     property string text: ""
+
+    property var backgroundColor: FishUI.Theme.secondBackgroundColor
+    property var hoveredColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.secondBackgroundColor, 1.3)
+                                                     : Qt.darker(FishUI.Theme.secondBackgroundColor, 1.05)
+    property var pressedColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.secondBackgroundColor, 1.1)
+                                                     : Qt.darker(FishUI.Theme.secondBackgroundColor, 1.1)
+
+    property alias background: hoveredRect
 
     signal clicked()
     signal closeClicked()
@@ -29,8 +39,9 @@ Item {
         anchors.leftMargin: FishUI.Units.smallSpacing / 2
         anchors.rightMargin: FishUI.Units.smallSpacing / 2
         anchors.topMargin: FishUI.Units.smallSpacing / 2
-        color: _mouseArea.containsMouse ? FishUI.Theme.textColor : FishUI.Theme.secondBackgroundColor
-        opacity: _mouseArea.containsMouse ? _mouseArea.pressed ? 0.1 : 0.05 : 0.9
+        color: control.hovered ? control.pressed ? pressedColor
+                                                 : hoveredColor : backgroundColor
+        opacity: 0.5
         border.width: 0
         radius: FishUI.Theme.smallRadius
     }
