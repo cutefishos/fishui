@@ -14,6 +14,7 @@ FishUI.Window {
     minimumHeight: contentHeight
 
     modality: Qt.WindowModal
+    flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
 
     visible: false
 
