@@ -61,15 +61,16 @@ Item {
 
     RowLayout {
         anchors.fill: parent
-        anchors.leftMargin: FishUI.Units.smallSpacing / 2
-        anchors.rightMargin: FishUI.Units.smallSpacing / 2
+        anchors.leftMargin: FishUI.Units.smallSpacing
+        anchors.rightMargin: FishUI.Units.smallSpacing
         anchors.topMargin: FishUI.Units.smallSpacing / 2
         spacing: 0
 
         Label {
             id: _label
             text: control.text
-            leftPadding: FishUI.Units.smallSpacing / 2
+            leftPadding: 0
+            rightPadding: 0
             Layout.fillWidth: true
             Layout.fillHeight: true
             horizontalAlignment: Qt.AlignHCenter
