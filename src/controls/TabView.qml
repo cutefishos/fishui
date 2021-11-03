@@ -69,7 +69,9 @@ Container {
     function closeTab(index) {
         control.removeItem(control.takeItem(index))
         control.currentItemChanged()
-        control.currentItem.forceActiveFocus()
+
+        if (control.currentItem)
+            control.currentItem.forceActiveFocus()
     }
 
     function addTab(component, properties) {
