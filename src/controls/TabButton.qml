@@ -21,6 +21,10 @@ Item {
     property var pressedColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.secondBackgroundColor, 1.1)
                                                      : Qt.darker(FishUI.Theme.secondBackgroundColor, 1.1)
 
+    property var highlightColor: FishUI.Theme.highlightColor
+    property var highlightHoveredColor: Qt.lighter(control.highlightColor, 1.1)
+    property var highlightPressedColor: Qt.darker(control.highlightColor, 1.1)
+
     property alias background: hoveredRect
 
     signal clicked()
@@ -52,7 +56,10 @@ Item {
         anchors.rightMargin: FishUI.Units.smallSpacing / 2
         anchors.topMargin: FishUI.Units.smallSpacing / 2
         anchors.fill: parent
-        color: FishUI.Theme.highlightColor
+
+        color: control.hovered ? control.pressed ? highlightPressedColor
+                                                 : highlightHoveredColor : highlightColor
+
         opacity: _mouseArea.pressed ? 0.9 : 1
         border.width: 0
         visible: checked

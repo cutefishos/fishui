@@ -50,6 +50,12 @@ Window {
     property bool isFullScreen: control.visibility === Window.FullScreen
     property var edgeSize: windowRadius <= 0 ? 8 : windowRadius / 2
 
+    // Resize
+    property bool widthResizable: maximumWidth > minimumWidth
+    property bool heightResizable: maximumHeight > minimumHeight
+
+    property bool minimizeButtonVisible: true
+
     onHeaderItemChanged: {
         if (headerItem) {
             headerItem.parent = _headerContent
@@ -77,14 +83,18 @@ Window {
         propagateComposedEvents: true
         preventStealing: false
         visible: !isMaximized && !isFullScreen
+                              && control.widthResizable
+                              && control.heightResizable
         z: 999
 
         onPressed: mouse.accepted = false
 
         DragHandler {
-            grabPermissions: TapHandler.CanTakeOverFromAnything
+            grabPermissions: TapHandler.TakeOverForbidden
             target: null
-            onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.LeftEdge | Qt.BottomEdge) }
+            onActiveChanged: if (active) {
+                                 windowHelper.startSystemResize(control, Qt.LeftEdge | Qt.BottomEdge)
+                             }
         }
     }
 
@@ -98,12 +108,14 @@ Window {
         propagateComposedEvents: true
         preventStealing: false
         visible: !isMaximized && !isFullScreen
+                              && control.widthResizable
+                              && control.heightResizable
         z: 999
 
         onPressed: mouse.accepted = false
 
         DragHandler {
-            grabPermissions: TapHandler.CanTakeOverFromAnything
+            grabPermissions: TapHandler.TakeOverForbidden
             target: null
             onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.RightEdge | Qt.BottomEdge) }
         }
@@ -117,14 +129,14 @@ Window {
         anchors.top: parent.top
         anchors.leftMargin: edgeSize * 2
         anchors.rightMargin: edgeSize * 2
-        visible: !isMaximized && !isFullScreen
+        visible: !isMaximized && !isFullScreen && control.heightResizable
         cursorShape: Qt.SizeVerCursor
         z: 999
 
         onPressed: mouse.accepted = false
 
         DragHandler {
-            grabPermissions: TapHandler.CanTakeOverFromAnything
+            grabPermissions: TapHandler.TakeOverForbidden
             target: null
             onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.TopEdge) }
         }
@@ -139,13 +151,13 @@ Window {
         anchors.leftMargin: edgeSize * 2
         anchors.rightMargin: edgeSize * 2
         cursorShape: Qt.SizeVerCursor
-        visible: !isMaximized && !isFullScreen
+        visible: !isMaximized && !isFullScreen && control.heightResizable
         z: 999
 
         onPressed: mouse.accepted = false
 
         DragHandler {
-            grabPermissions: TapHandler.CanTakeOverFromAnything
+            grabPermissions: TapHandler.TakeOverForbidden
             target: null
             onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.BottomEdge) }
         }
@@ -160,13 +172,13 @@ Window {
         anchors.topMargin: edgeSize
         anchors.bottomMargin: edgeSize * 2
         cursorShape: Qt.SizeHorCursor
-        visible: !isMaximized && !isFullScreen
+        visible: !isMaximized && !isFullScreen && control.widthResizable
         z: 999
 
         onPressed: mouse.accepted = false
 
         DragHandler {
-            grabPermissions: TapHandler.CanTakeOverFromAnything
+            grabPermissions: TapHandler.TakeOverForbidden
             target: null
             onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.LeftEdge) }
         }
@@ -181,15 +193,17 @@ Window {
         anchors.leftMargin: edgeSize
         anchors.bottomMargin: edgeSize * 2
         cursorShape: Qt.SizeHorCursor
-        visible: !isMaximized && !isFullScreen
+        visible: !isMaximized && !isFullScreen && control.widthResizable
         z: 999
 
         onPressed: mouse.accepted = false
 
         DragHandler {
-            grabPermissions: TapHandler.CanTakeOverFromAnything
+            grabPermissions: TapHandler.TakeOverForbidden
             target: null
-            onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.RightEdge) }
+            onActiveChanged: if (active) {
+                                 windowHelper.startSystemResize(control, Qt.RightEdge)
+                             }
         }
     }
 
@@ -269,48 +283,44 @@ Window {
                     Layout.fillWidth: true
                 }
 
-                // Window buttons
-                RoundImageButton {
-                    size: _header.buttonSize
-                    source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "minimize.svg"
-                    onClicked: windowHelper.minimizeWindow(control)
-                    // visible: !control.isFullScreen
-                    Layout.alignment: Qt.AlignTop
-                    Layout.topMargin: _header.spacing
-                    image.smooth: false
-                    image.antialiasing: true
-                }
+                RowLayout {
+                    spacing: FishUI.Units.smallSpacing
 
-                Item {
-                    width: FishUI.Units.smallSpacing
-                }
+                    // Window buttons
+                    RoundImageButton {
+                        size: _header.buttonSize
+                        source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "minimize.svg"
+                        onClicked: windowHelper.minimizeWindow(control)
+                        visible: control.minimizeButtonVisible
+                        Layout.alignment: Qt.AlignTop
+                        Layout.topMargin: _header.spacing
+                        image.smooth: false
+                        image.antialiasing: true
+                    }
 
-                RoundImageButton {
-                    size: _header.buttonSize
-                    source: "qrc:/fishui/kit/images/" +
-                        (FishUI.Theme.darkMode ? "dark/" : "light/") +
-                        (control.visibility === Window.Maximized ? "restore.svg" : "maximize.svg")
-                    onClicked: control.toggleMaximized()
-                    visible: !control.isFullScreen &&  control.minimumWidth !== control.maximumWidth && control.maximumHeight !== control.minimumHeight 
-                    Layout.alignment: Qt.AlignTop
-                    Layout.topMargin: _header.spacing
-                    image.smooth: false
-                    image.antialiasing: true
-                }
+                    RoundImageButton {
+                        size: _header.buttonSize
+                        source: "qrc:/fishui/kit/images/" +
+                            (FishUI.Theme.darkMode ? "dark/" : "light/") +
+                            (control.visibility === Window.Maximized ? "restore.svg" : "maximize.svg")
+                        onClicked: control.toggleMaximized()
+                        visible: !control.isFullScreen &&  control.minimumWidth !== control.maximumWidth && control.maximumHeight !== control.minimumHeight
+                        Layout.alignment: Qt.AlignTop
+                        Layout.topMargin: _header.spacing
+                        image.smooth: false
+                        image.antialiasing: true
+                    }
 
-                Item {
-                    width: FishUI.Units.smallSpacing
-                }
-
-                RoundImageButton {
-                    size: _header.buttonSize
-                    source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "close.svg"
-                    onClicked: control.close()
-                    // visible: !control.isFullScreen
-                    Layout.alignment: Qt.AlignTop
-                    Layout.topMargin: _header.spacing
-                    image.smooth: false
-                    image.antialiasing: true
+                    RoundImageButton {
+                        size: _header.buttonSize
+                        source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "close.svg"
+                        onClicked: control.close()
+                        // visible: !control.isFullScreen
+                        Layout.alignment: Qt.AlignTop
+                        Layout.topMargin: _header.spacing
+                        image.smooth: false
+                        image.antialiasing: true
+                    }
                 }
 
                 Item {

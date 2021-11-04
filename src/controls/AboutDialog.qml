@@ -10,12 +10,16 @@ FishUI.Window {
     width: 300
     height: contentHeight
 
+    maximumWidth: control.width
+    minimumWidth: control.width
+
     maximumHeight: contentHeight
     minimumHeight: contentHeight
 
     modality: Qt.WindowModal
     flags: Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
 
+    minimizeButtonVisible: false
     visible: false
 
     property var iconSource
