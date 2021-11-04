@@ -15,6 +15,8 @@ Item {
     property alias font: _label.font
     property string text: ""
 
+    property var contentWidth: _contentLayout.implicitWidth + FishUI.Units.largeSpacing * 2
+
     property var backgroundColor: FishUI.Theme.secondBackgroundColor
     property var hoveredColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.secondBackgroundColor, 1.3)
                                                      : Qt.darker(FishUI.Theme.secondBackgroundColor, 1.05)
@@ -67,6 +69,7 @@ Item {
     }
 
     RowLayout {
+        id: _contentLayout
         anchors.fill: parent
         anchors.leftMargin: FishUI.Units.smallSpacing
         anchors.rightMargin: FishUI.Units.smallSpacing
@@ -89,6 +92,7 @@ Item {
         }
 
         FishUI.TabCloseButton {
+            id: _closeButton
             enabled: control.checked
             Layout.preferredHeight: 24
             Layout.preferredWidth: 24

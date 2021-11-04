@@ -70,7 +70,9 @@ TabBar {
                 visible: active
                 asynchronous: true
 
-                Layout.fillHeight: true
+                // Layout.fillHeight: true
+                Layout.alignment: Qt.AlignVCenter
+                Layout.preferredHeight: 31
                 Layout.preferredWidth: visible ? height : 0
 
                 sourceComponent: FishUI.RoundImageButton {

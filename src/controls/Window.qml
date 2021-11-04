@@ -285,6 +285,7 @@ Window {
 
                 RowLayout {
                     spacing: FishUI.Units.smallSpacing
+                    Layout.alignment: Qt.AlignTop
 
                     // Window buttons
                     RoundImageButton {
