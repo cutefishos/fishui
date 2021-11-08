@@ -35,12 +35,15 @@ T.Button {
     icon.color: control.enabled ? (control.highlighted ? control.FishUI.Theme.highlightColor : control.FishUI.Theme.textColor) : control.FishUI.Theme.disabledTextColor
     spacing: FishUI.Units.smallSpacing
 
-    property color hoveredColor: Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r,
-                                                                       FishUI.Theme.backgroundColor.g,
-                                                                       FishUI.Theme.backgroundColor.b, 0.9))
-    property color pressedColor: Qt.tint(FishUI.Theme.textColor, Qt.rgba(FishUI.Theme.backgroundColor.r,
-                                                                       FishUI.Theme.backgroundColor.g,
-                                                                       FishUI.Theme.backgroundColor.b, 0.8))
+    property color hoveredColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.alternateBackgroundColor, 1.2)
+                                                       : Qt.darker(FishUI.Theme.alternateBackgroundColor, 1.1)
+
+    property color pressedColor: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.alternateBackgroundColor, 1.1)
+                                                       : Qt.darker(FishUI.Theme.alternateBackgroundColor, 1.2)
+
+    property color borderColor: Qt.rgba(FishUI.Theme.highlightColor.r,
+                                        FishUI.Theme.highlightColor.g,
+                                        FishUI.Theme.highlightColor.b, 0.5)
 
     property color flatHoveredColor: Qt.lighter(FishUI.Theme.highlightColor, 1.1)
     property color flatPressedColor: Qt.darker(FishUI.Theme.highlightColor, 1.1)
