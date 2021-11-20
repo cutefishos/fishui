@@ -32,8 +32,8 @@ Item {
 
     property alias background: _background
     property color backgroundColor: "transparent"
-    property color hoveredColor: "#FF5C6D"
-    property color pressedColor: "#CC4A57"
+    property color hoveredColor: "#FF273D"
+    property color pressedColor: "#CF182B"
     property alias source: _image.source
     property alias image: _image
     signal clicked()

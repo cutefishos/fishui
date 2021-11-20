@@ -37,7 +37,6 @@ Rectangle {
         : control.checked ? control.FishUI.Theme.highlightColor : control.FishUI.Theme.disabledTextColor
 
     border.width: 1
-    scale: control.down ? 0.91 : 1.0
 
     Rectangle {
         anchors.fill: parent
