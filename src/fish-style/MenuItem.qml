@@ -16,9 +16,10 @@ T.MenuItem
 
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
-    implicitHeight: visible ? Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                                       implicitContentHeight + topPadding + bottomPadding,
-                                       implicitIndicatorHeight + topPadding + bottomPadding) : 0
+    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+                             implicitContentHeight + topPadding + bottomPadding,
+                             implicitIndicatorHeight + topPadding + bottomPadding)
+
     verticalPadding: FishUI.Units.smallSpacing
     hoverEnabled: true
     topPadding: FishUI.Units.smallSpacing
@@ -50,7 +51,7 @@ T.MenuItem
 
     background: Rectangle {
         implicitWidth: 200
-        implicitHeight: control.visible ? FishUI.Units.rowHeightAlt : 0
+        implicitHeight: control.visible ? FishUI.Units.gridUnit + FishUI.Units.largeSpacing : 0
         radius: FishUI.Theme.mediumRadius
         opacity: 1
 
