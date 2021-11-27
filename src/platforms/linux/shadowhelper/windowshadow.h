@@ -26,7 +26,7 @@
 #include <KWindowShadowTile>
 #include <KWindowSystem>
 
-#include <QApplication>
+#include <QtWidgets/QApplication>
 #include <QMap>
 #include <QObject>
 #include <QPainter>

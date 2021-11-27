@@ -20,7 +20,7 @@
 #ifndef WINDOWBLUR_H
 #define WINDOWBLUR_H
 
-#include <QApplication>
+#include <QtWidgets/QApplication>
 #include <QObject>
 #include <QQmlEngine>
 #include <QQmlParserStatus>
