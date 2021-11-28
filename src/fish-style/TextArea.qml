@@ -46,9 +46,7 @@ T.TextArea {
     verticalAlignment: TextEdit.AlignTop
     hoverEnabled: false
 
-    // https://bugreports.qt.io/browse/QTBUG-67007
-    // This bug has been fixed since 5.11.0 Beta 3.
-    renderType: Text.NativeRendering
+    renderType: FishUI.Theme.renderType
 
     selectByMouse: true
 

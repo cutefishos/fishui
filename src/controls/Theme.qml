@@ -64,6 +64,8 @@ QtObject {
     property real hugeRadius: 14.0
     property real windowRadius: 11.0
 
+    property var renderType: Text.QtRendering
+
     property font defaultFont: fontMetrics.font
     property font smallFont: {
         let font = fontMetrics.font

@@ -41,7 +41,8 @@ T.TextField {
     rightPadding: FishUI.Units.smallSpacing + FishUI.Units.extendBorderWidth
 
     //Text.NativeRendering is broken on non integer pixel ratios
-    renderType: Window.devicePixelRatio % 1 !== 0 ? Text.QtRendering : Text.NativeRendering
+    // renderType: Window.devicePixelRatio % 1 !== 0 ? Text.QtRendering : Text.NativeRendering
+    renderType: FishUI.Theme.renderType
 
     color: control.enabled ? FishUI.Theme.textColor : FishUI.Theme.disabledTextColor
     selectionColor: FishUI.Theme.highlightColor

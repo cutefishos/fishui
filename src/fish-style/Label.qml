@@ -12,7 +12,7 @@ T.Label {
     // Text.NativeRendering is broken on non integer pixel ratios
     // renderType: Window.devicePixelRatio % 1 !== 0 ? Text.QtRendering : Text.NativeRendering
 
-    renderType: Text.NativeRendering
+    renderType: FishUI.Theme.renderType
 
     font.capitalization: FishUI.Theme.defaultFont.capitalization
     font.family: FishUI.Theme.fontFamily
