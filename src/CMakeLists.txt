@@ -49,6 +49,7 @@ target_link_libraries(${TARGET}
         Qt5::Core
         Qt5::Gui
         Qt5::DBus
+        Qt5::Widgets
         PRIVATE
         Qt5::Qml
         Qt5::Quick
