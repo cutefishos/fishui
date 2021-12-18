@@ -71,7 +71,7 @@ Window {
     FishUI.WindowShadow {
         view: control
         radius: _background.radius
-        strength: control.active ? 1.3 : 0.5
+        strength: control.active ? 1.3 : 0.8
     }
 
     // Left bottom edge
@@ -298,6 +298,7 @@ Window {
                         Layout.topMargin: _header.spacing
                         image.smooth: false
                         image.antialiasing: true
+                        iconMargins: 2
                     }
 
                     RoundImageButton {
@@ -311,6 +312,7 @@ Window {
                         Layout.topMargin: _header.spacing
                         image.smooth: false
                         image.antialiasing: true
+                        iconMargins: 2
                     }
 
                     RoundImageButton {
@@ -322,6 +324,7 @@ Window {
                         Layout.topMargin: _header.spacing
                         image.smooth: false
                         image.antialiasing: true
+                        iconMargins: 2
                     }
                 }
 

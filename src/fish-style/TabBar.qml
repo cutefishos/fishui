@@ -37,7 +37,7 @@ T.TabBar {
                     fill: parent
                     margins: 2
                 }
-                color: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.secondBackgroundColor, 2) 
+                color: FishUI.Theme.darkMode ? Qt.lighter(FishUI.Theme.secondBackgroundColor, 2)
                                              : FishUI.Theme.secondBackgroundColor
                 radius: FishUI.Theme.smallRadius
 
