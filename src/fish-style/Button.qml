@@ -45,14 +45,18 @@ T.Button {
                                         FishUI.Theme.highlightColor.g,
                                         FishUI.Theme.highlightColor.b, 0.5)
 
-    property color flatHoveredColor: Qt.lighter(FishUI.Theme.highlightColor, 1.1)
-    property color flatPressedColor: Qt.darker(FishUI.Theme.highlightColor, 1.1)
+    property color flatHoveredColor: Qt.rgba(FishUI.Theme.highlightColor.r,
+                                             FishUI.Theme.highlightColor.g,
+                                             FishUI.Theme.highlightColor.b, 0.2)
+    property color flatPressedColor: Qt.rgba(FishUI.Theme.highlightColor.r,
+                                             FishUI.Theme.highlightColor.g,
+                                             FishUI.Theme.highlightColor.b, 0.25)
 
     contentItem: IconLabel {
         text: control.text
         font: control.font
         icon: control.icon
-        color: !control.enabled ? control.FishUI.Theme.disabledTextColor : control.flat ? FishUI.Theme.highlightedTextColor : FishUI.Theme.textColor
+        color: !control.enabled ? control.FishUI.Theme.disabledTextColor : control.flat ? FishUI.Theme.highlightColor : FishUI.Theme.textColor
         spacing: control.spacing
         mirrored: control.mirrored
         display: control.display
@@ -82,17 +86,9 @@ T.Button {
                 if (control.hovered)
                     return control.flatHoveredColor
 
-                return FishUI.Theme.highlightColor
-            }
-
-            gradient: Gradient {
-                orientation: Gradient.Vertical
-                GradientStop { position: 0.0; color: Qt.rgba(_flatBackground.color.r,
-                                                             _flatBackground.color.g,
-                                                             _flatBackground.color.b, 0.85) }
-                GradientStop { position: 1.0; color: Qt.rgba(_flatBackground.color.r,
-                                                             _flatBackground.color.g,
-                                                             _flatBackground.color.b, 1) }
+                return Qt.rgba(FishUI.Theme.highlightColor.r,
+                               FishUI.Theme.highlightColor.g,
+                               FishUI.Theme.highlightColor.b, 0.1)
             }
         }
 
