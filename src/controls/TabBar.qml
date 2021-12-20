@@ -24,62 +24,51 @@ import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import FishUI 1.0 as FishUI
 
-TabBar {
+Item {
     id: control
 
-    implicitWidth: _content.width
-
-    default property alias content : _content.data
     property bool newTabVisibile: true
+    property alias model: _listView.model
+    property alias delegate: _listView.delegate
+    property alias count: _listView.count
+    property alias currentIndex: _listView.currentIndex
 
     signal newTabClicked()
 
-    background: Rectangle {
-        color: "transparent"
-    }
+    RowLayout {
+        anchors.fill: parent
+        spacing: FishUI.Units.smallSpacing / 2
 
-    contentItem: Item {
-        RowLayout {
-            anchors.fill: parent
-            spacing: FishUI.Units.smallSpacing
+        ListView {
+            id: _listView
+            Layout.fillHeight: true
+            Layout.preferredWidth: _listView.childrenRect.width
+            Layout.alignment: Qt.AlignLeft
+            orientation: ListView.Horizontal
+            highlightMoveDuration: 0
+            highlightResizeDuration: 0
+            clip: true
+        }
 
-            ScrollView {
-                id: _scrollView
+        Loader {
+            active: control.newTabVisibile
+            visible: active
+            asynchronous: true
 
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+            // Layout.fillHeight: true
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft
+            Layout.preferredHeight: 31
+            Layout.preferredWidth: visible ? height : 0
 
-                ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
-                ScrollBar.vertical.policy: ScrollBar.AlwaysOff
-
-                clip: true
-
-                Flickable {
-                    id: _flickable
-
-                    Row {
-                        id: _content
-                        width: _scrollView.width
-                        height: _scrollView.height
-                    }
-                }
+            sourceComponent: FishUI.RoundImageButton {
+                source: "qrc:/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "add.svg"
+                onClicked: control.newTabClicked()
+                iconMargins: 2
             }
+        }
 
-            Loader {
-                active: control.newTabVisibile
-                visible: active
-                asynchronous: true
-
-                // Layout.fillHeight: true
-                Layout.alignment: Qt.AlignVCenter
-                Layout.preferredHeight: 31
-                Layout.preferredWidth: visible ? height : 0
-
-                sourceComponent: FishUI.RoundImageButton {
-                    source: "qrc:/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "add.svg"
-                    onClicked: control.newTabClicked()
-                }
-            }
+        Item {
+            Layout.fillWidth: true
         }
     }
 }

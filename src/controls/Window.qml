@@ -227,12 +227,16 @@ Window {
 
     // Border line
     Rectangle {
-        property var borderColor: compositing ? FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.05) : Qt.rgba(0, 0, 0, 0.05) : FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.15) : Qt.rgba(0, 0, 0, 0.15)
-
         anchors.fill: parent
+
+        property var borderColor: compositing ? FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3)
+                                                                      : Qt.rgba(0, 0, 0, 0.2) : FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.15)
+                                                                                                                      : Qt.rgba(0, 0, 0, 0.15)
         color: "transparent"
         radius: control.windowRadius
         border.color: borderColor
+        border.width: 1 / Screen.devicePixelRatio
+        border.pixelAligned: Screen.devicePixelRatio > 1 ? false : true
         antialiasing: true
         visible: !isMaximized && !isFullScreen
         z: 999
