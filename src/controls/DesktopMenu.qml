@@ -33,6 +33,13 @@ FishUI.MenuPopupWindow {
         color: FishUI.Theme.secondBackgroundColor
         radius: windowHelper.compositing ? FishUI.Theme.hugeRadius : 0
         opacity: windowHelper.compositing ? 0.6 : 1
+        border.color: _background.borderColor
+        border.width: 1 / FishUI.Units.devicePixelRatio
+        border.pixelAligned: FishUI.Units.devicePixelRatio > 1 ? false : true
+
+        property var borderColor: windowHelper.compositing ? FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3)
+                                                                      : Qt.rgba(0, 0, 0, 0.2) : FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.1)
+                                                                                                                      : Qt.rgba(0, 0, 0, 0.05)
 
         FishUI.WindowHelper {
             id: windowHelper
