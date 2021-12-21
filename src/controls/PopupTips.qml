@@ -31,7 +31,9 @@ Window {
     property point position: Qt.point(0, 0)
     property alias backgroundOpacity: _background.opacity
     property alias backgroundColor: _background.color
-
+    property var borderColor: compositing ? FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3)
+                                                                  : Qt.rgba(0, 0, 0, 0.2) : FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.1)
+                                                                                                                  : Qt.rgba(0, 0, 0, 0.05)
     flags: Qt.WindowStaysOnTopHint | Qt.WindowDoesNotAcceptFocus | Qt.ToolTip
     width: label.implicitWidth + FishUI.Units.largeSpacing * 1.5
     height: label.implicitHeight + FishUI.Units.largeSpacing * 1.5
@@ -58,6 +60,9 @@ Window {
         anchors.fill: parent
         color: FishUI.Theme.secondBackgroundColor
         radius: windowHelper.compositing ? FishUI.Theme.mediumRadius : 0
+        border.color: control.borderColor
+        border.width: 1 / Screen.devicePixelRatio
+        border.pixelAligned: Screen.devicePixelRatio > 1 ? false : true
 
         Behavior on color {
             ColorAnimation {

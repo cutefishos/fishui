@@ -67,7 +67,7 @@ QtObject {
      * use theme.mSize(theme.defaultFont), units.smallSpacing and units.largeSpacing.
      * The devicePixelRatio follows the definition of "device independent pixel" by Microsoft.
      */
-    property real devicePixelRatio: Math.max(1, ((fontMetrics.font.pixelSize * 0.75) / fontMetrics.font.pointSize))
+    property real devicePixelRatio: Screen.devicePixelRatio
 
     /**
      * metrics used by the default font
