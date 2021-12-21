@@ -3,7 +3,7 @@
 export QT_SELECT=5
 
 %:
-	dh $@
+	dh $@ --parallel
 
 override_dh_auto_configure:
 	dh_auto_configure -- -DEMBED_TRANSLATIONS=ON -DBUILD_TESTING=ON
