@@ -23,10 +23,11 @@ import FishUI 1.0 as FishUI
 
 TextField {
     id: control
-    
+
     property list<QtObject> rightActions
-    
+
     rightPadding: FishUI.Units.smallSpacing + rightActionsRow.width
+
     Row {
         id: rightActionsRow
         padding: FishUI.Units.smallSpacing
@@ -40,9 +41,9 @@ TextField {
             Icon {
                 implicitWidth: FishUI.Units.iconSizes.small
                 implicitHeight: FishUI.Units.iconSizes.small
-   
+
                 anchors.verticalCenter: parent.verticalCenter
-   
+
                 source: modelData.icon.name.length > 0 ? modelData.icon.name : modelData.icon.source
                 enabled: modelData.enabled
                 MouseArea {

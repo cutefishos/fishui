@@ -33,7 +33,7 @@ T.Slider {
             samples: 12
             horizontalOffset: 0
             verticalOffset: 0
-            color: Qt.rgba(0, 0, 0, 0.15)
+            color: Qt.rgba(0, 0, 0, control.pressed ? 0.25 : 0.15)
         }
     }
 
