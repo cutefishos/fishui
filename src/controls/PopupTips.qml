@@ -31,6 +31,7 @@ Window {
     property point position: Qt.point(0, 0)
     property alias backgroundOpacity: _background.opacity
     property alias backgroundColor: _background.color
+    property alias blurEnabled: windowBlur.enabled
     property var borderColor: windowHelper.compositing ? FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3)
                                                                   : Qt.rgba(0, 0, 0, 0.2) : FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.1)
                                                                                                                   : Qt.rgba(0, 0, 0, 0.05)
@@ -49,6 +50,7 @@ Window {
     }
 
     FishUI.WindowBlur {
+        id: windowBlur
         view: control
         enabled: true
         windowRadius: _background.radius
