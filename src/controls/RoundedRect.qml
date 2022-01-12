@@ -53,6 +53,8 @@ Item {
         anchors.fill: parent
         color: "transparent"
         radius: _background.radius
+        border.width: 1 / FishUI.Theme.devicePixelRatio
+        border.pixelAligned: FishUI.Theme.devicePixelRatio > 1 ? false : true
         border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.1) : Qt.rgba(0, 0, 0, 0.1)
         visible: control.borderEnabled
         antialiasing: true

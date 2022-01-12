@@ -97,6 +97,9 @@ void MenuPopupWindow::setPopupContentItem(QQuickItem *contentItem)
 
     contentItem->setParentItem(this->contentItem());
     m_contentItem = contentItem;
+
+    connect(contentItem, &QQuickItem::implicitWidthChanged, this, &MenuPopupWindow::updateGeometry);
+    connect(contentItem, &QQuickItem::implicitHeightChanged, this, &MenuPopupWindow::updateGeometry);
 }
 
 void MenuPopupWindow::dismissPopup()
@@ -104,6 +107,16 @@ void MenuPopupWindow::dismissPopup()
     m_dismissed = true;
     emit popupDismissed();
     hide();
+}
+
+void MenuPopupWindow::updateGeometry()
+{
+    int w = m_contentItem->implicitWidth();
+    int h = m_contentItem->implicitHeight() + 16;
+    int posx = geometry().x();
+    int posy = geometry().y();
+
+    setGeometry(posx, posy, w, h);
 }
 
 void MenuPopupWindow::mouseMoveEvent(QMouseEvent *e)

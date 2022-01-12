@@ -43,6 +43,7 @@ public:
 public slots:
     Q_INVOKABLE void show();
     Q_INVOKABLE void dismissPopup();
+    Q_INVOKABLE void updateGeometry();
 
 signals:
     void popupDismissed();
