@@ -33,6 +33,13 @@ Item {
         height: 16
         radius: width / 2
         color: control.enabled ? "white" : "transparent"
+        scale: control.pressed ? 0.8 : 1
+
+        Behavior on scale {
+            NumberAnimation {
+                duration: 100
+            }
+        }
 
         Behavior on x {
             enabled: !control.pressed
