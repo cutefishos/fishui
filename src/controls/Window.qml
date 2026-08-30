@@ -225,21 +225,26 @@ Window {
                 color: "transparent"
             }
 
-            // Wayland requires startSystemMove() to be requested while the
-            // button press is still being handled.  DragHandler calls it
-            // only after its drag threshold is crossed, which is too late for
-            // Wayland compositors and makes the window appear immovable.
-            MouseArea {
-                id: _headerMoveArea
-                anchors.fill: parent
+            // Pointer handlers rather than a MouseArea: the whole title bar has
+            // to start a window move, including the part covered by the window
+            // buttons, and an item would either sit under them and never see
+            // those presses or sit over them and swallow their clicks. A
+            // handler sees the events wherever they land and only takes the
+            // grab once the drag threshold is crossed, so a plain click still
+            // reaches the button underneath.
+            TapHandler {
                 enabled: !control.isFullScreen
-                acceptedButtons: Qt.LeftButton
+                onTapped: if (tapCount === 2) toggleMaximized()
+                gesturePolicy: TapHandler.DragThreshold
+            }
 
-                onPressed: {
-                    windowHelper.startSystemMove(control)
-                }
-
-                onDoubleClicked: toggleMaximized()
+            DragHandler {
+                target: null
+                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
+                grabPermissions: PointerHandler.CanTakeOverFromItems
+                                 | PointerHandler.CanTakeOverFromHandlersOfDifferentType
+                                 | PointerHandler.ApprovesTakeOverByAnything
+                onActiveChanged: if (active) { windowHelper.startSystemMove(control) }
             }
 
             RowLayout {
