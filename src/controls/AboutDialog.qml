@@ -37,13 +37,6 @@ FishUI.Window {
         enabled: control.compositing
     }
 
-    DragHandler {
-        target: null
-        acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-        grabPermissions: PointerHandler.CanTakeOverFromItems | PointerHandler.CanTakeOverFromHandlersOfDifferentType | PointerHandler.ApprovesTakeOverByAnything
-        onActiveChanged: if (active) { control.helper.startSystemMove(control) }
-    }
-
     ColumnLayout {
         id: _mainLayout
         anchors.fill: parent

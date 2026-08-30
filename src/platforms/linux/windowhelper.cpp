@@ -25,6 +25,7 @@
 #include <QCursor>
 
 #include <KX11Extras>
+#include <KWindowSystem>
 
 static xcb_connection_t *xcbConnection()
 {
@@ -67,8 +68,15 @@ static uint qtEdgesToXcbMoveResizeDirection(Qt::Edges edges)
 WindowHelper::WindowHelper(QObject *parent)
     : QObject(parent)
     , m_moveResizeAtom(0)
-    , m_compositing(false)
+    // Wayland always composites client surfaces.  KWindowSystem's X11
+    // compositingActive() is intentionally unavailable there, but the QML
+    // controls still need the compositor path for rounded/translucent
+    // surfaces such as the dock.
+    , m_compositing(!KWindowSystem::isPlatformX11())
 {
+    if (!KWindowSystem::isPlatformX11())
+        return;
+
     // create move-resize atom
     // ref: https://github.com/qt/qtbase/blob/9db7cc79a26ced4997277b5c206ca15949133240/src/plugins/platforms/xcb/qxcbwindow.cpp
     xcb_connection_t *connection = xcbConnection();
@@ -89,18 +97,38 @@ bool WindowHelper::compositing() const
     return m_compositing;
 }
 
+bool WindowHelper::isWayland() const
+{
+    return !KWindowSystem::isPlatformX11();
+}
+
 void WindowHelper::startSystemMove(QWindow *w)
 {
+    if (!KWindowSystem::isPlatformX11()) {
+        if (w)
+            w->startSystemMove();
+        return;
+    }
+
     doStartSystemMoveResize(w, 16);
 }
 
 void WindowHelper::startSystemResize(QWindow *w, Qt::Edges edges)
 {
+    if (!KWindowSystem::isPlatformX11()) {
+        if (w)
+            w->startSystemResize(edges);
+        return;
+    }
+
     doStartSystemMoveResize(w, edges);
 }
 
 void WindowHelper::minimizeWindow(QWindow *w)
 {
+    if (!KWindowSystem::isPlatformX11() || !w)
+        return;
+
     KX11Extras::minimizeWindow(w->winId());
 }
 

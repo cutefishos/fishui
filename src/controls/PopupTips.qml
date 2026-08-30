@@ -87,6 +87,16 @@ Window {
         var posX = control.position.x
         var posY = control.position.y
 
+        // Wayland has no global window coordinates: Qt reports every shell
+        // window at (0, 0), so `position` is relative to the parent surface and
+        // clamping it against the screen would drag the tip back into the
+        // panel. Keeping the surface on screen is the compositor's job here.
+        if (windowHelper.wayland) {
+            control.x = posX
+            control.y = posY
+            return
+        }
+
         // left
         if (posX <= Screen.virtualX)
             posX = Screen.virtualX + FishUI.Units.smallSpacing
@@ -100,8 +110,8 @@ Window {
             posX = Screen.virtualX + Screen.width - control.width - 1
 
         // bottom
-        if (posY > control.height > Screen.virtualY + Screen.width)
-            posY = Screen.virtualY + Screen.width - control.width - 1
+        if (posY + control.height > Screen.virtualY + Screen.height)
+            posY = Screen.virtualY + Screen.height - control.height - 1
 
         control.x = posX
         control.y = posY

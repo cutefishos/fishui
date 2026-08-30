@@ -64,7 +64,8 @@ WindowShadow::WindowShadow(QObject *parent) noexcept
 
 WindowShadow::~WindowShadow()
 {
-    m_shadow->destroy();
+    if (KWindowSystem::isPlatformX11())
+        m_shadow->destroy();
 }
 
 CompositeShadowParams WindowShadow::lookupShadowParams(int shadowSizeEnum)
@@ -177,6 +178,9 @@ void WindowShadow::onViewVisibleChanged(bool visible)
 
 void WindowShadow::configureTiles()
 {
+    if (!KWindowSystem::isPlatformX11())
+        return;
+
     m_shadow->destroy();
 
     if (!m_view)

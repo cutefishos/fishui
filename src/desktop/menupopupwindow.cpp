@@ -105,6 +105,14 @@ void MenuPopupWindow::setPopupContentItem(QQuickItem *contentItem)
 void MenuPopupWindow::dismissPopup()
 {
     m_dismissed = true;
+
+    // Popup windows take both grabs while they are visible.  Releasing only
+    // by hiding the window is not sufficient on Wayland/KWin: the hidden
+    // popup can keep receiving pointer and keyboard focus, leaving the rest
+    // of the desktop unresponsive after a dock context menu is dismissed.
+    setMouseGrabEnabled(false);
+    setKeyboardGrabEnabled(false);
+
     emit popupDismissed();
     hide();
 }

@@ -88,15 +88,7 @@ Window {
                               && control.heightResizable
         z: 999
 
-        onPressed: mouse.accepted = false
-
-        DragHandler {
-            grabPermissions: TapHandler.TakeOverForbidden
-            target: null
-            onActiveChanged: if (active) {
-                                 windowHelper.startSystemResize(control, Qt.LeftEdge | Qt.BottomEdge)
-                             }
-        }
+        onPressed: windowHelper.startSystemResize(control, Qt.LeftEdge | Qt.BottomEdge)
     }
 
     // Right bottom edge
@@ -113,13 +105,7 @@ Window {
                               && control.heightResizable
         z: 999
 
-        onPressed: mouse.accepted = false
-
-        DragHandler {
-            grabPermissions: TapHandler.TakeOverForbidden
-            target: null
-            onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.RightEdge | Qt.BottomEdge) }
-        }
+        onPressed: windowHelper.startSystemResize(control, Qt.RightEdge | Qt.BottomEdge)
     }
 
     // Top edge
@@ -134,13 +120,7 @@ Window {
         cursorShape: Qt.SizeVerCursor
         z: 999
 
-        onPressed: mouse.accepted = false
-
-        DragHandler {
-            grabPermissions: TapHandler.TakeOverForbidden
-            target: null
-            onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.TopEdge) }
-        }
+        onPressed: windowHelper.startSystemResize(control, Qt.TopEdge)
     }
 
     // Bottom edge
@@ -155,13 +135,7 @@ Window {
         visible: !isMaximized && !isFullScreen && control.heightResizable
         z: 999
 
-        onPressed: mouse.accepted = false
-
-        DragHandler {
-            grabPermissions: TapHandler.TakeOverForbidden
-            target: null
-            onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.BottomEdge) }
-        }
+        onPressed: windowHelper.startSystemResize(control, Qt.BottomEdge)
     }
 
     // Left edge
@@ -176,13 +150,7 @@ Window {
         visible: !isMaximized && !isFullScreen && control.widthResizable
         z: 999
 
-        onPressed: mouse.accepted = false
-
-        DragHandler {
-            grabPermissions: TapHandler.TakeOverForbidden
-            target: null
-            onActiveChanged: if (active) { windowHelper.startSystemResize(control, Qt.LeftEdge) }
-        }
+        onPressed: windowHelper.startSystemResize(control, Qt.LeftEdge)
     }
 
     // Right edge
@@ -197,15 +165,7 @@ Window {
         visible: !isMaximized && !isFullScreen && control.widthResizable
         z: 999
 
-        onPressed: mouse.accepted = false
-
-        DragHandler {
-            grabPermissions: TapHandler.TakeOverForbidden
-            target: null
-            onActiveChanged: if (active) {
-                                 windowHelper.startSystemResize(control, Qt.RightEdge)
-                             }
-        }
+        onPressed: windowHelper.startSystemResize(control, Qt.RightEdge)
     }
 
     // Background
@@ -265,17 +225,21 @@ Window {
                 color: "transparent"
             }
 
-            TapHandler {
+            // Wayland requires startSystemMove() to be requested while the
+            // button press is still being handled.  DragHandler calls it
+            // only after its drag threshold is crossed, which is too late for
+            // Wayland compositors and makes the window appear immovable.
+            MouseArea {
+                id: _headerMoveArea
+                anchors.fill: parent
                 enabled: !control.isFullScreen
-                onTapped: if (tapCount === 2) toggleMaximized()
-                gesturePolicy: TapHandler.DragThreshold
-            }
+                acceptedButtons: Qt.LeftButton
 
-            DragHandler {
-                target: null
-                acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
-                grabPermissions: PointerHandler.CanTakeOverFromItems | PointerHandler.CanTakeOverFromHandlersOfDifferentType | PointerHandler.ApprovesTakeOverByAnything
-                onActiveChanged: if (active) { windowHelper.startSystemMove(control) }
+                onPressed: {
+                    windowHelper.startSystemMove(control)
+                }
+
+                onDoubleClicked: toggleMaximized()
             }
 
             RowLayout {
