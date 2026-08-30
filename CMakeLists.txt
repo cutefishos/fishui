@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.16)
 
 set(FISHUI_VERSION 1.0)
 project(fishui VERSION ${FISHUI_VERSION})
@@ -22,8 +22,12 @@ option(COMPONENT_SYNCING "Build syncing component" ON)
 find_package(ECM 6.0.0 REQUIRED NO_MODULE)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH} ${ECM_KDE_MODULE_DIR})
 
-set(QT Core Widgets Quick QuickControls2 DBus Qml)
+set(QT Core Gui Widgets Quick QuickControls2 DBus Qml)
 find_package(Qt6 REQUIRED ${QT})
+find_package(Qt6Gui CONFIG QUIET COMPONENTS Private)
+if(NOT TARGET Qt6::GuiPrivate)
+    find_package(Qt6 REQUIRED COMPONENTS GuiPrivate)
+endif()
 if (UNIX)
     if (NOT APPLE)
         find_package(KF6WindowSystem REQUIRED)
@@ -84,7 +88,7 @@ configure_package_config_file(
 
 write_basic_package_version_file(
         ${CMAKE_CURRENT_BINARY_DIR}/FishUIConfigVersion.cmake
-        VERSION ${LIB_VERSION}
+        VERSION ${PROJECT_VERSION}
         COMPATIBILITY AnyNewerVersion
 )
 if(NOT APPLE)
