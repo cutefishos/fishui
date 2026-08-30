@@ -71,35 +71,51 @@ void QQmlSortFilterProxyModel::setFilterRoleName(const QString &filterRoleName)
 
 QString QQmlSortFilterProxyModel::filterPattern() const
 {
-    return filterRegExp().pattern();
+    return filterRegularExpression().pattern();
 }
 
 void QQmlSortFilterProxyModel::setFilterPattern(const QString &filterPattern)
 {
-    QRegExp regExp = filterRegExp();
-    if (regExp.pattern() == filterPattern)
+    QRegularExpression regularExpression = filterRegularExpression();
+    if (regularExpression.pattern() == filterPattern)
         return;
 
-    regExp.setPattern(filterPattern);
-    QSortFilterProxyModel::setFilterRegExp(regExp);
+    regularExpression.setPattern(filterPattern);
+    QSortFilterProxyModel::setFilterRegularExpression(regularExpression);
     emit filterPatternChanged();
 }
 
 QQmlSortFilterProxyModel::PatternSyntax QQmlSortFilterProxyModel::filterPatternSyntax() const
 {
-    return static_cast<PatternSyntax>(filterRegExp().patternSyntax());
+    return m_patternSyntax;
 }
 
 void QQmlSortFilterProxyModel::setFilterPatternSyntax(
     QQmlSortFilterProxyModel::PatternSyntax patternSyntax)
 {
-    QRegExp regExp = filterRegExp();
-    QRegExp::PatternSyntax patternSyntaxTmp = static_cast<QRegExp::PatternSyntax>(patternSyntax);
-    if (regExp.patternSyntax() == patternSyntaxTmp)
+    if (m_patternSyntax == patternSyntax)
         return;
 
-    regExp.setPatternSyntax(patternSyntaxTmp);
-    QSortFilterProxyModel::setFilterRegExp(regExp);
+    const QString pattern = filterPattern();
+    QRegularExpression regularExpression;
+    switch (patternSyntax) {
+    case Wildcard:
+    case WildcardUnix:
+        regularExpression = QRegularExpression::fromWildcard(
+            pattern, Qt::CaseSensitive, QRegularExpression::UnanchoredWildcardConversion);
+        break;
+    case FixedString:
+        regularExpression.setPattern(QRegularExpression::escape(pattern));
+        break;
+    case RegExp:
+    case RegExp2:
+    case W3CXmlSchema11:
+    default:
+        regularExpression.setPattern(pattern);
+        break;
+    }
+    QSortFilterProxyModel::setFilterRegularExpression(regularExpression);
+    m_patternSyntax = patternSyntax;
     emit filterPatternSyntaxChanged();
 }
 

@@ -20,13 +20,20 @@
 #include "windowblur.h"
 
 #include <QApplication>
+#include <QGuiApplication>
 #include <QPainterPath>
 #include <QScreen>
-#include <QX11Info>
+#include <QtGui/qguiapplication_platform.h>
 
 #include <xcb/xcb.h>
 #include <xcb/shape.h>
 #include <xcb/xcb_icccm.h>
+
+static xcb_connection_t *xcbConnection()
+{
+    const auto nativeInterface = qGuiApp->nativeInterface<QNativeInterface::QX11Application>();
+    return nativeInterface ? nativeInterface->connection() : nullptr;
+}
 
 WindowBlur::WindowBlur(QObject *parent) noexcept
     : QObject(parent)
@@ -118,7 +125,7 @@ void WindowBlur::updateBlur()
     if (!m_view)
         return;
 
-    xcb_connection_t *c = QX11Info::connection();
+    xcb_connection_t *c = xcbConnection();
     if (!c)
         return;
 

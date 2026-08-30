@@ -19,7 +19,7 @@
  
 import QtQuick 2.12
 import QtQuick.Controls 2.12 as QQC2
-import QtQuick.Layout 1.12
+import QtQuick.Layouts
 import FishUI 1.0 as FishUI
 
 QQC2.Popup {

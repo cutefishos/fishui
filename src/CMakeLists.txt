@@ -47,19 +47,19 @@ else ()
 endif ()
 target_link_libraries(${TARGET}
         PUBLIC
-        Qt5::Core
-        Qt5::Gui
-        Qt5::DBus
-        Qt5::Widgets
+        Qt6::Core
+        Qt6::Gui
+        Qt6::DBus
+        Qt6::Widgets
         PRIVATE
-        Qt5::Qml
-        Qt5::Quick
-        Qt5::QuickControls2
-        Qt5::GuiPrivate
+        Qt6::Qml
+        Qt6::Quick
+        Qt6::QuickControls2
+        Qt6::GuiPrivate
         )
 if (UNIX)
     if (NOT APPLE)
-        target_link_libraries(${TARGET} PRIVATE Qt5::X11Extras KF5::WindowSystem)
+        target_link_libraries(${TARGET} PRIVATE KF6::WindowSystem)
     endif ()
 endif ()
 

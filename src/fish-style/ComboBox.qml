@@ -39,7 +39,7 @@ import QtQuick.Window 2.4
 import QtQuick.Controls 2.4
 import QtQuick.Controls.impl 2.4
 import QtQuick.Templates 2.12 as T
-import QtGraphicalEffects 1.0
+import Qt5Compat.GraphicalEffects
 import FishUI 1.0 as FishUI
 
 T.ComboBox {

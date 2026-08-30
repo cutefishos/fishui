@@ -28,6 +28,7 @@
 #define QQMLSORTFILTERPROXYMODEL_H
 
 #include <QSortFilterProxyModel>
+#include <QRegularExpression>
 #include <QQmlExpression>
 
 class QQmlSortFilterProxyModel : public QSortFilterProxyModel
@@ -50,12 +51,12 @@ class QQmlSortFilterProxyModel : public QSortFilterProxyModel
 
 public:
     enum PatternSyntax {
-        RegExp = QRegExp::RegExp,
-        Wildcard = QRegExp::Wildcard,
-        FixedString = QRegExp::FixedString,
-        RegExp2 = QRegExp::RegExp2,
-        WildcardUnix = QRegExp::WildcardUnix,
-        W3CXmlSchema11 = QRegExp::W3CXmlSchema11
+        RegExp,
+        Wildcard,
+        FixedString,
+        RegExp2,
+        WildcardUnix,
+        W3CXmlSchema11
     };
     Q_ENUM(PatternSyntax)
 
@@ -116,6 +117,7 @@ private:
 
     QString m_filterRoleName;
     QString m_sortRoleName;
+    PatternSyntax m_patternSyntax = RegExp;
 
     QQmlScriptString m_filterScriptString;
     QQmlExpression *m_filterExpression;
