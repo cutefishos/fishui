@@ -39,7 +39,7 @@ FishUI.Window {
 
     DragHandler {
         target: null
-        acceptedDevices: PointerDevice.GenericPointer
+        acceptedDevices: PointerDevice.Mouse | PointerDevice.TouchPad
         grabPermissions: PointerHandler.CanTakeOverFromItems | PointerHandler.CanTakeOverFromHandlersOfDifferentType | PointerHandler.ApprovesTakeOverByAnything
         onActiveChanged: if (active) { control.helper.startSystemMove(control) }
     }
