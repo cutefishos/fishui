@@ -33,6 +33,10 @@ GlobalWheelFilter *GlobalWheelFilter::self()
 
 void GlobalWheelFilter::setItemHandlerAssociation(QQuickItem *item, WheelHandler *handler)
 {
+    if (!item || !handler) {
+        return;
+    }
+
     if (!m_handlersForItem.contains(handler->target())) {
         handler->target()->installEventFilter(this);
     }
@@ -118,7 +122,7 @@ void GlobalWheelFilter::manageWheel(QQuickItem *target, QWheelEvent *event)
     qreal contentY = target->property("contentY").toReal();
     qreal topMargin = target->property("topMargin").toReal();
     qreal bottomMargin = target->property("bottomMargin").toReal();
-    qreal leftMargin = target->property("leftMaring").toReal();
+    qreal leftMargin = target->property("leftMargin").toReal();
     qreal rightMargin = target->property("rightMargin").toReal();
     qreal originX = target->property("originX").toReal();
     qreal originY = target->property("originY").toReal();
