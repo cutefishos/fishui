@@ -15,7 +15,7 @@ target_sources(${TARGET} PRIVATE
         desktop/menupopupwindow.cpp
 
         fishui.qrc
-        fish-style/style.qrc
+
         )
 if (MSVC)
     target_sources(${TARGET} PRIVATE
@@ -71,4 +71,4 @@ install(TARGETS ${TARGET} DESTINATION ${INSTALL_QMLDIR}/${TARGET})
 install(DIRECTORY controls/ DESTINATION ${INSTALL_QMLDIR}/${TARGET})
 
 # INSTALL STYLE
-install(DIRECTORY fish-style DESTINATION ${INSTALL_QMLDIR}/QtQuick/Controls.2)
+install(DIRECTORY Fish DESTINATION ${INSTALL_QMLDIR})

@@ -1,6 +1,6 @@
-import QtQuick 2.4
-import QtQuick.Controls 2.4
-import QtQuick.Templates 2.4 as T
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Templates as T
 import FishUI 1.0 as FishUI
 
 T.RadioDelegate {
@@ -44,20 +44,10 @@ T.RadioDelegate {
     }
 
     background: Rectangle {
-        implicitHeight: control.Suru.units.gu(7)
-        color: control.Suru.backgroundColor
-
-        HighlightFocusRectangle {
-            control: control
-            width: parent.width
-            height: parent.height
-        }
-
-        Rectangle {
-            anchors.bottom: parent.bottom
-            width: parent.width
-            height: control.Suru.units.dp(1)
-            color: control.Suru.neutralColor
-        }
+        implicitHeight: FishUI.Units.fontMetrics.height + FishUI.Units.largeSpacing
+        radius: FishUI.Theme.smallRadius
+        color: control.down ? FishUI.Theme.alternateBackgroundColor
+                            : control.hovered ? FishUI.Theme.secondBackgroundColor
+                                              : "transparent"
     }
 }

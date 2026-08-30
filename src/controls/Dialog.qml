@@ -57,11 +57,11 @@ QQC2.Popup {
             }
 
             RowLayout {
-                Button {
+                QQC2.Button {
                     text: control.leftButtonText
                 }
 
-                Button {
+                QQC2.Button {
                     text: control.rightButtonText
                 }
             }

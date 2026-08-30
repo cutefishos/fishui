@@ -19,8 +19,8 @@
  * met: http://www.gnu.org/licenses/gpl-2.0.html.
  */
 
-import QtQuick 2.9
-import QtQuick.Templates 2.2 as T
+import QtQuick
+import QtQuick.Templates as T
 import FishUI 1.0 as FishUI
 
 T.CheckBox {

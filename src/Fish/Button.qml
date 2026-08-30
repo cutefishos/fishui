@@ -17,11 +17,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-import QtQuick 2.12
-import QtQuick.Templates 2.12 as T
+import QtQuick
+import QtQuick.Templates as T
 import Qt5Compat.GraphicalEffects
 import FishUI 1.0 as FishUI
-import QtQuick.Controls.impl 2.12
+import QtQuick.Controls.impl
 
 T.Button {
     id: control

@@ -34,9 +34,9 @@
 **
 ****************************************************************************/
 
-import QtQuick 2.9
-import QtQuick.Controls 2.12
-import QtQuick.Controls.impl 2.12
+import QtQuick
+import QtQuick.Controls
+import QtQuick.Controls.impl
 
 import FishUI 1.0 as FishUI
 
@@ -69,13 +69,33 @@ Rectangle {
         }
     }   
 
-    Image {
+    // Qt 6 no longer ships the Material style's check.png resource,
+    // so the check mark is drawn directly.
+    Canvas {
         id: checkImage
         width: parent.height * 0.6
         height: parent.height * 0.6
         anchors.centerIn: parent
-        source: "qrc:/qt-project.org/imports/QtQuick/Controls.2/Material/images/check.png"
-        fillMode: Image.PreserveAspectFit
+
+        property color strokeColor: !indicatorItem.control.enabled
+                                    ? indicatorItem.control.FishUI.Theme.disabledTextColor
+                                    : indicatorItem.control.FishUI.Theme.highlightedTextColor
+
+        onStrokeColorChanged: requestPaint()
+
+        onPaint: {
+            var ctx = getContext("2d")
+            ctx.reset()
+            ctx.strokeStyle = strokeColor
+            ctx.lineWidth = Math.max(1.5, width * 0.16)
+            ctx.lineCap = "round"
+            ctx.lineJoin = "round"
+            ctx.beginPath()
+            ctx.moveTo(width * 0.18, height * 0.52)
+            ctx.lineTo(width * 0.42, height * 0.75)
+            ctx.lineTo(width * 0.84, height * 0.25)
+            ctx.stroke()
+        }
 
         scale: checked ? 1 : 0
         Behavior on scale {

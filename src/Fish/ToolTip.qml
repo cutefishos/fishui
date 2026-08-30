@@ -20,10 +20,10 @@
  */
 
 
-import QtQuick 2.6
+import QtQuick
 import Qt5Compat.GraphicalEffects
-import QtQuick.Controls 2.3 as Controls
-import QtQuick.Templates 2.3 as T
+import QtQuick.Controls as Controls
+import QtQuick.Templates as T
 import FishUI 1.0 as FishUI
 
 T.ToolTip {

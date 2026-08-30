@@ -1,6 +1,6 @@
-import QtQuick 2.1
-import QtQuick.Window 2.2
-import QtQuick.Templates 2.3 as T
+import QtQuick
+import QtQuick.Window
+import QtQuick.Templates as T
 import FishUI 1.0 as FishUI
 
 T.Label {
