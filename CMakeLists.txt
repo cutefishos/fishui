@@ -31,6 +31,8 @@ endif()
 # KWindowShadow owns the Wayland shadow protocol and its native surface
 # lifecycle.
 find_package(KF6WindowSystem REQUIRED)
+# org_kde_kwin_blur, for the region behind a translucent window.
+find_package(KWayland REQUIRED)
 
 include(GenerateExportHeader)
 include(GNUInstallDirs)

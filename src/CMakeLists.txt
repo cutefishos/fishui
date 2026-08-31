@@ -20,6 +20,7 @@ target_sources(${TARGET} PRIVATE
 target_sources(${TARGET} PRIVATE
         platforms/linux/windowhelper.cpp platforms/linux/windowhelper.h
         platforms/linux/blurhelper/windowblur.cpp platforms/linux/blurhelper/windowblur.h
+        platforms/linux/blurhelper/waylandblurmanager.cpp platforms/linux/blurhelper/waylandblurmanager.h
         platforms/linux/shadowhelper/boxshadowrenderer.cpp platforms/linux/shadowhelper/boxshadowrenderer.h
         platforms/linux/shadowhelper/waylandshadowmanager.cpp platforms/linux/shadowhelper/waylandshadowmanager.h
         platforms/linux/shadowhelper/windowshadow.cpp platforms/linux/shadowhelper/windowshadow.h
@@ -37,6 +38,7 @@ target_link_libraries(${TARGET}
         Qt6::QuickControls2
         Qt6::GuiPrivate
         KF6::WindowSystem
+        Plasma::KWaylandClient
         )
 generate_export_header(${TARGET} BASE_NAME ${TARGET})
 install(TARGETS ${TARGET} EXPORT ${TARGET}Targets ${INSTALL_TARGETS_DEFAULT_ARGS})

@@ -5,6 +5,8 @@ Maintainer: CutefishOS <support@cutefishos.com>
 Build-Depends: cmake,
                debhelper (>= 9),
                extra-cmake-modules,
+               kwayland-dev,
+               libkf6windowsystem-dev,
                qt6-base-dev,
                qt6-base-private-dev,
                qt6-declarative-dev,

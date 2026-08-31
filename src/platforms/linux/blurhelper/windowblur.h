@@ -20,21 +20,30 @@
 #ifndef WINDOWBLUR_H
 #define WINDOWBLUR_H
 
-#include <QApplication>
 #include <QObject>
-#include <QQmlEngine>
+#include <QPointer>
 #include <QQmlParserStatus>
-#include <QRect>
-#include <QWindow>
-#include <QVector>
+#include <QRegion>
+
+class QWindow;
+
+namespace KWayland
+{
+namespace Client
+{
+class Blur;
+class Surface;
+}
+}
 
 /**
  * Blur behind a translucent window.
  *
- * The region is the window itself, rounded by windowRadius; there is nothing
- * for a caller to place. The property that used to say where the blur went was
- * bound to the window's own x, y, width and height in every user, which is a
- * binding loop as soon as one of those depends on the content's implicit size.
+ * The blurred region is the window itself, rounded off by windowRadius; there
+ * is nothing for a caller to place, which is why there is no geometry property.
+ * The one that used to be here was bound to the window's own x, y, width and
+ * height in every single user, and that is a binding loop as soon as one of
+ * them depends on the content's implicit size.
  */
 class WindowBlur : public QObject, public QQmlParserStatus
 {
@@ -60,21 +69,27 @@ public:
     void setWindowRadius(qreal radius);
     qreal windowRadius() const;
 
-private slots:
-    void onViewVisibleChanged(bool);
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override;
 
-private:
-    void updateBlur();
-
-signals:
+Q_SIGNALS:
     void viewChanged();
     void enabledChanged();
     void windowRadiusChanged();
 
 private:
-    QWindow *m_view;
-    bool m_enabled;
-    qreal m_windowRadius;
+    void scheduleUpdate();
+    void updateBlur();
+    void forget();
+    QRegion blurRegion() const;
+
+    QPointer<QWindow> m_view;
+    QPointer<KWayland::Client::Blur> m_blur;
+    KWayland::Client::Surface *m_surface = nullptr;
+    QRegion m_region;
+    bool m_enabled = false;
+    bool m_complete = false;
+    qreal m_windowRadius = 0.0;
 };
 
 #endif
