@@ -7,7 +7,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 #DEFAULT COMPONENTS DEFINITIONS
@@ -28,6 +28,10 @@ find_package(Qt6Gui CONFIG QUIET COMPONENTS Private)
 if(NOT TARGET Qt6::GuiPrivate)
     find_package(Qt6 REQUIRED COMPONENTS GuiPrivate)
 endif()
+# KWin composites the drop shadow of a client side decorated window from tiles
+# the client uploads through org_kde_kwin_shadow; KWayland wraps that protocol.
+find_package(KWayland REQUIRED)
+
 include(GenerateExportHeader)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
@@ -47,17 +51,7 @@ else ()
 endif ()
 
 # Install
-if (MSVC)
-    # Install FishUI to vcpkg installed dir
-    # for example.
-    # _VCPKG_INSTALLED_DIR:PATH=C:/app/vcpkg/installed
-    # VCPKG_TARGET_TRIPLET:STRING=x64-windows
-    # The final installed dir is C:/app/vcpkg/installed/x64-windows/share/FishUI
-    set(CMAKECONFIG_INSTALL_DIR "${_VCPKG_INSTALLED_DIR}/${VCPKG_TARGET_TRIPLET}/share/FishUI")
-    set(CMAKE_INSTALL_PREFIX "${_VCPKG_INSTALLED_DIR}")
-else ()
-    set(CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/FishUI")
-endif ()
+set(CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/FishUI")
 message(STATUS "install directory:" "${CMAKECONFIG_INSTALL_DIR}")
 
 # Qt Widgets Style
@@ -85,7 +79,6 @@ write_basic_package_version_file(
         VERSION ${PROJECT_VERSION}
         COMPATIBILITY AnyNewerVersion
 )
-if(NOT APPLE)
 install(
         FILES
         "${CMAKE_CURRENT_BINARY_DIR}/FishUIConfig.cmake"
@@ -100,4 +93,3 @@ install(EXPORT FishUITargets
         DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
         FILE FishUITargets.cmake
         )
-endif()

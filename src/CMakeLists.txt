@@ -17,32 +17,14 @@ target_sources(${TARGET} PRIVATE
         fishui.qrc
 
         )
-if (MSVC)
-    target_sources(${TARGET} PRIVATE
-            platforms/windows/windowhelper.cpp platforms/windows/windowhelper.h
-            platforms/windows/blurhelper/windowblur.cpp platforms/windows/blurhelper/windowblur.h
-            platforms/windows/shadowhelper/boxshadowrenderer.cpp platforms/windows/shadowhelper/boxshadowrenderer.h
-            platforms/windows/shadowhelper/tileset.cpp platforms/windows/shadowhelper/tileset.h
-            platforms/windows/shadowhelper/windowshadow.cpp platforms/windows/shadowhelper/windowshadow.h
-            )
-    target_include_directories(${TARGET} PRIVATE platforms/windows)
-elseif (APPLE)
-    target_sources(${TARGET} PRIVATE
-            platforms/mac/windowhelper.cpp platforms/mac/windowhelper.h
-            platforms/mac/blurhelper/windowblur.cpp platforms/mac/blurhelper/windowblur.h
-            platforms/mac/shadowhelper/boxshadowrenderer.cpp platforms/mac/shadowhelper/boxshadowrenderer.h
-            platforms/mac/shadowhelper/tileset.cpp platforms/mac/shadowhelper/tileset.h
-            platforms/mac/shadowhelper/windowshadow.cpp platforms/mac/shadowhelper/windowshadow.h
-            )
-    target_include_directories(${TARGET} PRIVATE platforms/mac)
-else ()
-    target_sources(${TARGET} PRIVATE
-            platforms/linux/windowhelper.cpp platforms/linux/windowhelper.h
-            platforms/linux/blurhelper/windowblur.cpp platforms/linux/blurhelper/windowblur.h
-            platforms/linux/shadowhelper/windowshadow.cpp platforms/linux/shadowhelper/windowshadow.h
-            )
-    target_include_directories(${TARGET} PRIVATE platforms/linux)
-endif ()
+target_sources(${TARGET} PRIVATE
+        platforms/linux/windowhelper.cpp platforms/linux/windowhelper.h
+        platforms/linux/blurhelper/windowblur.cpp platforms/linux/blurhelper/windowblur.h
+        platforms/linux/shadowhelper/boxshadowrenderer.cpp platforms/linux/shadowhelper/boxshadowrenderer.h
+        platforms/linux/shadowhelper/waylandshadowmanager.cpp platforms/linux/shadowhelper/waylandshadowmanager.h
+        platforms/linux/shadowhelper/windowshadow.cpp platforms/linux/shadowhelper/windowshadow.h
+        )
+target_include_directories(${TARGET} PRIVATE platforms/linux)
 target_link_libraries(${TARGET}
         PUBLIC
         Qt6::Core
@@ -54,6 +36,7 @@ target_link_libraries(${TARGET}
         Qt6::Quick
         Qt6::QuickControls2
         Qt6::GuiPrivate
+        Plasma::KWaylandClient
         )
 generate_export_header(${TARGET} BASE_NAME ${TARGET})
 install(TARGETS ${TARGET} EXPORT ${TARGET}Targets ${INSTALL_TARGETS_DEFAULT_ARGS})
