@@ -69,7 +69,7 @@ Window {
     // Window shadows
     FishUI.WindowShadow {
         view: control
-        radius: _background.radius
+        radius: control.windowRadius
         strength: control.active ? 1.5 : 0.9
     }
 

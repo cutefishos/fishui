@@ -5,16 +5,10 @@
 #include <QPointer>
 #include <QQmlParserStatus>
 #include <QRect>
+#include <QTimer>
 
 class QWindow;
-
-namespace KWayland
-{
-namespace Client
-{
-class Shadow;
-}
-}
+class KWindowShadow;
 
 /**
  * Drop shadow for a client side decorated window.
@@ -33,6 +27,7 @@ class WindowShadow : public QObject, public QQmlParserStatus
     Q_PROPERTY(QRect geometry READ geometry WRITE setGeometry NOTIFY geometryChanged)
     Q_PROPERTY(qreal radius READ radius WRITE setRadius NOTIFY radiusChanged)
     Q_PROPERTY(qreal strength READ strength WRITE setStrength NOTIFY strengthChanged)
+    Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
 
 public:
     explicit WindowShadow(QObject *parent = nullptr) noexcept;
@@ -53,13 +48,18 @@ public:
     qreal strength() const { return m_strength; }
     void setStrength(qreal strength);
 
+    bool enabled() const { return m_enabled; }
+    void setEnabled(bool enabled);
+
 signals:
     void geometryChanged();
     void viewChanged();
     void radiusChanged();
     void strengthChanged();
+    void enabledChanged();
 
 private:
+    void scheduleUpdate();
     void update();
     void clear();
 
@@ -67,8 +67,10 @@ private:
     QRect m_rect;
     qreal m_radius = 10;
     qreal m_strength = 1.2;
+    bool m_enabled = true;
     bool m_complete = false;
-    KWayland::Client::Shadow *m_shadow = nullptr;
+    QTimer m_updateTimer;
+    KWindowShadow *m_shadow = nullptr;
 };
 
 #endif

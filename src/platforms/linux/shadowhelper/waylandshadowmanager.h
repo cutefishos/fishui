@@ -2,46 +2,34 @@
 #define WAYLANDSHADOWMANAGER_H
 
 #include <QMap>
-#include <QMarginsF>
+#include <QImage>
+#include <QMargins>
 #include <QObject>
 
-#include <KWayland/Client/buffer.h>
-
-namespace KWayland
-{
-namespace Client
-{
-class ConnectionThread;
-class Registry;
-class ShadowManager;
-class ShmPool;
-}
-}
-
 /**
- * One shadow rendered into the eight tiles org_kde_kwin_shadow expects, plus
- * the offsets that say how far the tiles stick out of the window.
+ * One shadow rendered into the eight tiles KWindowShadow expects, plus the
+ * padding that says how far the tiles stick out of the window.
  *
  * KWin does not synthesise a shadow for client side decorated windows: it only
- * composites the tiles a client hands it, the same way the X11 protocol takes
- * _KDE_NET_WM_SHADOW. So the blur is rendered here, uploaded to shared memory
- * once, and then shared by every window using the same parameters.
+ * composites the tiles a client hands it. The blur is rendered here once and
+ * then shared by every window using the same parameters; KWindowShadow owns
+ * the shared-memory upload and Wayland protocol objects.
  */
 struct ShadowTiles
 {
     // topLeft, top, topRight, right, bottomRight, bottom, bottomLeft, left.
-    KWayland::Client::Buffer::Ptr tiles[8];
-    QMarginsF offsets;
+    QImage tiles[8];
+    QMargins offsets;
 
     bool isValid() const { return !tiles[0].isNull(); }
 };
 
 /**
- * Process wide access to the KWin shadow protocol.
+ * Process-wide cache for the images used by KWindowShadow.
  *
- * The registry, the shm pool and the rendered tile sets are shared, because a
- * single application usually shows many windows with identical shadows and
- * every tile set costs shared memory on both sides of the connection.
+ * A single application usually shows many windows with identical shadows, so
+ * the rendered tile sets are shared while KWindowShadow owns their native
+ * Wayland buffers and protocol objects.
  */
 class WaylandShadowManager : public QObject
 {
@@ -58,18 +46,12 @@ public:
      */
     const ShadowTiles &tiles(qreal radius, qreal strength, qreal dpr);
 
-    KWayland::Client::ShadowManager *shadowManager() const { return m_shadowManager; }
-
 private:
     explicit WaylandShadowManager(QObject *parent = nullptr);
 
     ShadowTiles renderTiles(qreal radius, qreal strength, qreal dpr);
 
-    KWayland::Client::ConnectionThread *m_connection = nullptr;
-    KWayland::Client::Registry *m_registry = nullptr;
-    KWayland::Client::ShadowManager *m_shadowManager = nullptr;
-    KWayland::Client::ShmPool *m_shmPool = nullptr;
-
+    bool m_valid = false;
     QMap<QString, ShadowTiles> m_cache;
 };
 

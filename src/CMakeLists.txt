@@ -36,7 +36,7 @@ target_link_libraries(${TARGET}
         Qt6::Quick
         Qt6::QuickControls2
         Qt6::GuiPrivate
-        Plasma::KWaylandClient
+        KF6::WindowSystem
         )
 generate_export_header(${TARGET} BASE_NAME ${TARGET})
 install(TARGETS ${TARGET} EXPORT ${TARGET}Targets ${INSTALL_TARGETS_DEFAULT_ARGS})

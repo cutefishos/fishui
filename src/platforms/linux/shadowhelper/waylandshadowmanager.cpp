@@ -5,13 +5,6 @@
 #include <QImage>
 #include <QPainter>
 
-#include <KWayland/Client/connection_thread.h>
-#include <KWayland/Client/registry.h>
-#include <KWayland/Client/shadow.h>
-#include <KWayland/Client/shm_pool.h>
-
-using namespace KWayland::Client;
-
 namespace {
 
 struct ShadowParams
@@ -73,36 +66,12 @@ WaylandShadowManager *WaylandShadowManager::instance()
 WaylandShadowManager::WaylandShadowManager(QObject *parent)
     : QObject(parent)
 {
-    if (!QGuiApplication::platformName().contains(QLatin1String("wayland")))
-        return;
-
-    m_connection = ConnectionThread::fromApplication(this);
-    if (!m_connection)
-        return;
-
-    m_registry = new Registry(this);
-    m_registry->create(m_connection);
-
-    connect(m_registry, &Registry::shmAnnounced, this, [this](quint32 name, quint32 version) {
-        if (!m_shmPool)
-            m_shmPool = m_registry->createShmPool(name, version, this);
-    });
-    connect(m_registry, &Registry::shadowAnnounced, this, [this](quint32 name, quint32 version) {
-        if (!m_shadowManager)
-            m_shadowManager = m_registry->createShadowManager(name, version, this);
-    });
-
-    m_registry->setup();
-
-    // Windows ask for their shadow while they are being shown, so the globals
-    // have to be bound before this returns rather than on the next event loop
-    // iteration.
-    m_connection->roundtrip();
+    m_valid = QGuiApplication::platformName().contains(QLatin1String("wayland"));
 }
 
 bool WaylandShadowManager::isValid() const
 {
-    return m_shadowManager && m_shmPool;
+    return m_valid;
 }
 
 const ShadowTiles &WaylandShadowManager::tiles(qreal radius, qreal strength, qreal dpr)
@@ -198,14 +167,13 @@ ShadowTiles WaylandShadowManager::renderTiles(qreal radius, qreal strength, qrea
     };
 
     for (int i = 0; i < 8; ++i) {
-        const QImage tile = texture.copy(rects[i]);
-        result.tiles[i] = m_shmPool->createBuffer(tile);
+        result.tiles[i] = texture.copy(rects[i]);
 
         if (result.tiles[i].isNull())
             return ShadowTiles();
     }
 
-    result.offsets = QMarginsF(padding.left(), padding.top(), padding.right(), padding.bottom());
+    result.offsets = padding;
 
     return result;
 }

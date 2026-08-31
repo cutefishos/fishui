@@ -28,9 +28,9 @@ find_package(Qt6Gui CONFIG QUIET COMPONENTS Private)
 if(NOT TARGET Qt6::GuiPrivate)
     find_package(Qt6 REQUIRED COMPONENTS GuiPrivate)
 endif()
-# KWin composites the drop shadow of a client side decorated window from tiles
-# the client uploads through org_kde_kwin_shadow; KWayland wraps that protocol.
-find_package(KWayland REQUIRED)
+# KWindowShadow owns the Wayland shadow protocol and its native surface
+# lifecycle.
+find_package(KF6WindowSystem REQUIRED)
 
 include(GenerateExportHeader)
 include(GNUInstallDirs)

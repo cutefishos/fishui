@@ -3,25 +3,25 @@
 
 #include <QWindow>
 
-#include <KWayland/Client/shadow.h>
-#include <KWayland/Client/surface.h>
-
-using namespace KWayland::Client;
+#include <KWindowShadow>
+#include <KWindowShadowTile>
 
 WindowShadow::WindowShadow(QObject *parent) noexcept
     : QObject(parent)
 {
+    m_updateTimer.setSingleShot(true);
+    connect(&m_updateTimer, &QTimer::timeout, this, &WindowShadow::update);
 }
 
 WindowShadow::~WindowShadow()
 {
-    delete m_shadow;
+    clear();
 }
 
 void WindowShadow::componentComplete()
 {
     m_complete = true;
-    update();
+    scheduleUpdate();
 }
 
 void WindowShadow::setView(QWindow *view)
@@ -37,16 +37,16 @@ void WindowShadow::setView(QWindow *view)
 
     if (m_view) {
         // Qt tears the wl_surface down when the window is hidden, and the
-        // shadow goes with it, so it has to be installed again on every show.
-        connect(m_view, &QWindow::visibleChanged, this, &WindowShadow::update);
-        // A maximized or fullscreen window has no shadow, and moving to a
-        // screen with a different scale needs tiles at the new resolution.
-        connect(m_view, &QWindow::windowStateChanged, this, &WindowShadow::update);
-        connect(m_view, &QWindow::screenChanged, this, &WindowShadow::update);
+        // KWindowShadow implementation recreates it on the next expose.
+        connect(m_view, &QWindow::visibleChanged, this, &WindowShadow::scheduleUpdate);
+        connect(m_view, &QWindow::screenChanged, this, [this] {
+            clear();
+            scheduleUpdate();
+        });
     }
 
     emit viewChanged();
-    update();
+    scheduleUpdate();
 }
 
 QWindow *WindowShadow::view() const
@@ -73,7 +73,8 @@ void WindowShadow::setRadius(qreal value)
         return;
     m_radius = value;
     emit radiusChanged();
-    update();
+    clear();
+    scheduleUpdate();
 }
 
 void WindowShadow::setStrength(qreal strength)
@@ -82,12 +83,34 @@ void WindowShadow::setStrength(qreal strength)
         return;
     m_strength = strength;
     emit strengthChanged();
-    update();
+    clear();
+    scheduleUpdate();
+}
+
+void WindowShadow::setEnabled(bool enabled)
+{
+    if (m_enabled == enabled)
+        return;
+
+    m_enabled = enabled;
+    emit enabledChanged();
+    if (!m_enabled)
+        clear();
+    scheduleUpdate();
+}
+
+void WindowShadow::scheduleUpdate()
+{
+    if (!m_updateTimer.isActive())
+        m_updateTimer.start();
 }
 
 void WindowShadow::clear()
 {
-    delete m_shadow;
+    if (m_shadow) {
+        m_shadow->destroy();
+        delete m_shadow;
+    }
     m_shadow = nullptr;
 }
 
@@ -96,42 +119,39 @@ void WindowShadow::update()
     if (!m_complete || !m_view)
         return;
 
-    WaylandShadowManager *manager = WaylandShadowManager::instance();
-    if (!manager->isValid())
+    if (!m_enabled || !m_view->isVisible()) {
+        clear();
         return;
-
-    // Only exists once the window has been shown; there is nothing to attach
-    // a shadow to before that, and update() runs again on visibleChanged.
-    Surface *surface = Surface::fromWindow(m_view);
-    if (!surface)
-        return;
-
-    clear();
-    manager->shadowManager()->removeShadow(surface);
-
-    const bool wantsShadow = m_view->isVisible()
-                             && !(m_view->windowStates() & (Qt::WindowMaximized | Qt::WindowFullScreen));
-
-    if (wantsShadow) {
-        const ShadowTiles &tiles = manager->tiles(m_radius, m_strength, m_view->devicePixelRatio());
-
-        if (tiles.isValid()) {
-            m_shadow = manager->shadowManager()->createShadow(surface, this);
-            m_shadow->attachTopLeft(tiles.tiles[0]);
-            m_shadow->attachTop(tiles.tiles[1]);
-            m_shadow->attachTopRight(tiles.tiles[2]);
-            m_shadow->attachRight(tiles.tiles[3]);
-            m_shadow->attachBottomRight(tiles.tiles[4]);
-            m_shadow->attachBottom(tiles.tiles[5]);
-            m_shadow->attachBottomLeft(tiles.tiles[6]);
-            m_shadow->attachLeft(tiles.tiles[7]);
-            m_shadow->setOffsets(tiles.offsets);
-            m_shadow->commit();
-        }
     }
 
-    // The shadow only becomes visible with the next surface commit. Qt would
-    // do one on its own eventually, but not before the next repaint, which
-    // may never come for an idle window.
-    surface->commit(Surface::CommitFlag::None);
+    WaylandShadowManager *manager = WaylandShadowManager::instance();
+    if (!manager->isValid() || m_shadow || m_radius <= 0)
+        return;
+
+    const ShadowTiles &tiles = manager->tiles(m_radius, m_strength, m_view->devicePixelRatio());
+    if (!tiles.isValid())
+        return;
+
+    m_shadow = new KWindowShadow(this);
+    m_shadow->setWindow(m_view);
+
+    const auto createTile = [](const QImage &image) {
+        auto tile = KWindowShadowTile::Ptr::create();
+        tile->setImage(image);
+        return tile;
+    };
+
+    m_shadow->setTopLeftTile(createTile(tiles.tiles[0]));
+    m_shadow->setTopTile(createTile(tiles.tiles[1]));
+    m_shadow->setTopRightTile(createTile(tiles.tiles[2]));
+    m_shadow->setRightTile(createTile(tiles.tiles[3]));
+    m_shadow->setBottomRightTile(createTile(tiles.tiles[4]));
+    m_shadow->setBottomTile(createTile(tiles.tiles[5]));
+    m_shadow->setBottomLeftTile(createTile(tiles.tiles[6]));
+    m_shadow->setLeftTile(createTile(tiles.tiles[7]));
+    m_shadow->setPadding(tiles.offsets);
+
+    if (!m_shadow->create())
+        clear();
+
 }
