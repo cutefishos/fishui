@@ -56,20 +56,6 @@ QWindow* WindowBlur::view() const
     return m_view;
 }
 
-void WindowBlur::setGeometry(const QRect &rect)
-{
-    if (rect != m_rect) {
-        m_rect = rect;
-        updateBlur();
-        emit geometryChanged();
-    }
-}
-
-QRect WindowBlur::geometry() const
-{
-    return m_rect;
-}
-
 void WindowBlur::setEnabled(bool enabled)
 {
     if (enabled != m_enabled) {

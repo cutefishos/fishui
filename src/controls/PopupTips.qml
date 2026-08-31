@@ -44,7 +44,6 @@ Window {
 
     FishUI.WindowShadow {
         view: control
-        geometry: Qt.rect(control.x, control.y, control.width, control.height)
         radius: _background.radius
     }
 
@@ -53,7 +52,6 @@ Window {
         view: control
         enabled: true
         windowRadius: _background.radius
-        geometry: Qt.rect(_background.x, _background.y, _background.width, _background.height)
     }
 
     Rectangle {

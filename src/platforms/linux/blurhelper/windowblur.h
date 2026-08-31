@@ -28,11 +28,18 @@
 #include <QWindow>
 #include <QVector>
 
+/**
+ * Blur behind a translucent window.
+ *
+ * The region is the window itself, rounded by windowRadius; there is nothing
+ * for a caller to place. The property that used to say where the blur went was
+ * bound to the window's own x, y, width and height in every user, which is a
+ * binding loop as soon as one of those depends on the content's implicit size.
+ */
 class WindowBlur : public QObject, public QQmlParserStatus
 {
     Q_OBJECT
     Q_PROPERTY(QWindow *view READ view WRITE setView NOTIFY viewChanged)
-    Q_PROPERTY(QRect geometry READ geometry WRITE setGeometry NOTIFY geometryChanged)
     Q_PROPERTY(bool enabled READ enabled WRITE setEnabled NOTIFY enabledChanged)
     Q_PROPERTY(qreal windowRadius READ windowRadius WRITE setWindowRadius NOTIFY windowRadiusChanged)
     Q_INTERFACES(QQmlParserStatus)
@@ -46,9 +53,6 @@ public:
 
     void setView(QWindow *view);
     QWindow *view() const;
-
-    void setGeometry(const QRect &rect);
-    QRect geometry() const;
 
     void setEnabled(bool enabled);
     bool enabled() const;
@@ -66,11 +70,9 @@ signals:
     void viewChanged();
     void enabledChanged();
     void windowRadiusChanged();
-    void geometryChanged();
 
 private:
     QWindow *m_view;
-    QRect m_rect;
     bool m_enabled;
     qreal m_windowRadius;
 };
