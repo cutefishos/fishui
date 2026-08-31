@@ -1,6 +1,7 @@
 #include "windowshadow.h"
 #include "waylandshadowmanager.h"
 
+#include <QScreen>
 #include <QWindow>
 
 #include <KWindowShadow>
@@ -40,10 +41,12 @@ void WindowShadow::setView(QWindow *view)
         // KWindowShadow implementation recreates it on the next expose.
         connect(m_view, &QWindow::visibleChanged, this, &WindowShadow::scheduleUpdate);
         connect(m_view, &QWindow::screenChanged, this, [this] {
-            clear();
+            watchScreen();
             scheduleUpdate();
         });
     }
+
+    watchScreen();
 
     emit viewChanged();
     scheduleUpdate();
@@ -54,17 +57,28 @@ QWindow *WindowShadow::view() const
     return m_view;
 }
 
-void WindowShadow::setGeometry(const QRect &rect)
+void WindowShadow::watchScreen()
 {
-    if (m_rect == rect)
-        return;
-    m_rect = rect;
-    emit geometryChanged();
-}
+    QScreen *screen = m_view ? m_view->screen() : nullptr;
 
-QRect WindowShadow::geometry() const
-{
-    return m_rect;
+    if (m_screen == screen)
+        return;
+
+    if (m_screen)
+        m_screen->disconnect(this);
+
+    m_screen = screen;
+
+    if (!m_screen)
+        return;
+
+    // The tiles are rendered for one device pixel ratio. Changing the scale of
+    // an output does not move the window to another screen, so
+    // QWindow::screenChanged never fires: without this the shadow would keep
+    // the resolution it was first drawn at and the compositor would scale the
+    // tiles up into a blurred smear.
+    connect(m_screen, &QScreen::physicalDotsPerInchChanged, this, &WindowShadow::scheduleUpdate);
+    connect(m_screen, &QScreen::geometryChanged, this, &WindowShadow::scheduleUpdate);
 }
 
 void WindowShadow::setRadius(qreal value)
@@ -112,6 +126,7 @@ void WindowShadow::clear()
         delete m_shadow;
     }
     m_shadow = nullptr;
+    m_tileScale = 0;
 }
 
 void WindowShadow::update()
@@ -125,10 +140,20 @@ void WindowShadow::update()
     }
 
     WaylandShadowManager *manager = WaylandShadowManager::instance();
-    if (!manager->isValid() || m_shadow || m_radius <= 0)
+    if (!manager->isValid() || m_radius <= 0)
         return;
 
-    const ShadowTiles &tiles = manager->tiles(m_radius, m_strength, m_view->devicePixelRatio());
+    const qreal scale = m_view->devicePixelRatio();
+
+    // Already up to date. A shadow rendered for another scale has to go.
+    if (m_shadow) {
+        if (qFuzzyCompare(m_tileScale, scale))
+            return;
+
+        clear();
+    }
+
+    const ShadowTiles &tiles = manager->tiles(m_radius, m_strength, scale);
     if (!tiles.isValid())
         return;
 
@@ -151,7 +176,8 @@ void WindowShadow::update()
     m_shadow->setLeftTile(createTile(tiles.tiles[7]));
     m_shadow->setPadding(tiles.offsets);
 
-    if (!m_shadow->create())
+    if (m_shadow->create())
+        m_tileScale = scale;
+    else
         clear();
-
 }

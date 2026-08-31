@@ -38,11 +38,15 @@ struct CompositeShadowParams
 };
 
 // Two stacked blurs, the same shape Breeze uses: a wide ambient shadow plus a
-// tighter one lifted upwards, so the window looks lit from above.
+// tighter one lifted upwards, so the window looks lit from above. The
+// opacities are of the blurred black that is composited *behind* the window,
+// so they read far lighter on screen than the numbers suggest: at a tenth of
+// this the shadow measured about 5% darker than the wallpaper next to it,
+// which is to say invisible.
 const CompositeShadowParams s_shadowParams(
     QPoint(0, 6),
-    ShadowParams(QPoint(0, 0), 32, 0.1),
-    ShadowParams(QPoint(0, -3), 16, 0.05));
+    ShadowParams(QPoint(0, 0), 32, 0.5),
+    ShadowParams(QPoint(0, -3), 16, 0.25));
 
 // How far the shadow reaches under the window. Without an overlap the tiles
 // stop exactly at the window edge and antialiasing leaves a bright seam there.
