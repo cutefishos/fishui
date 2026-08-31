@@ -19,22 +19,6 @@
 
 #include "windowblur.h"
 
-#include <QApplication>
-#include <QGuiApplication>
-#include <QPainterPath>
-#include <QScreen>
-#include <QtGui/qguiapplication_platform.h>
-
-#include <xcb/xcb.h>
-#include <xcb/shape.h>
-#include <xcb/xcb_icccm.h>
-
-static xcb_connection_t *xcbConnection()
-{
-    const auto nativeInterface = qGuiApp->nativeInterface<QNativeInterface::QX11Application>();
-    return nativeInterface ? nativeInterface->connection() : nullptr;
-}
-
 WindowBlur::WindowBlur(QObject *parent) noexcept
     : QObject(parent)
     , m_view(nullptr)
@@ -122,37 +106,6 @@ void WindowBlur::onViewVisibleChanged(bool visible)
 
 void WindowBlur::updateBlur()
 {
-    if (!m_view)
-        return;
-
-    xcb_connection_t *c = xcbConnection();
-    if (!c)
-        return;
-
-    const QByteArray effectName = QByteArrayLiteral("_KDE_NET_WM_BLUR_BEHIND_REGION");
-    xcb_intern_atom_cookie_t atomCookie = xcb_intern_atom_unchecked(c, false, effectName.length(), effectName.constData());
-    QScopedPointer<xcb_intern_atom_reply_t, QScopedPointerPodDeleter> atom(xcb_intern_atom_reply(c, atomCookie, nullptr));
-    if (!atom)
-        return;
-
-    if (m_enabled) {
-        qreal devicePixelRatio = m_view->screen()->devicePixelRatio();
-        QPainterPath path;
-        path.addRoundedRect(QRectF(QPoint(0, 0), m_view->size() * devicePixelRatio),
-                            m_windowRadius * devicePixelRatio,
-                            m_windowRadius * devicePixelRatio);
-        QVector<uint32_t> data;
-        foreach (const QPolygonF &polygon, path.toFillPolygons()) {
-            QRegion region = polygon.toPolygon();
-            for (auto i = region.begin(); i != region.end(); ++i) {
-                data << i->x() << i->y() << i->width() << i->height();
-            }
-        }
-
-        xcb_change_property(c, XCB_PROP_MODE_REPLACE, m_view->winId(), atom->atom, XCB_ATOM_CARDINAL,
-                            32, data.size(), data.constData());
-
-    } else {
-        xcb_delete_property(c, m_view->winId(), atom->atom);
-    }
+    // Blur regions are compositor-specific; this control intentionally does
+    // nothing on the Wayland backend until a compositor protocol is selected.
 }

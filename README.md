@@ -5,7 +5,7 @@ FishUI is a GUI library based on QQC2 (Qt Quick Controls 2), every Cutefish appl
 ## Features
 
 * Light and Dark Mode
-* Borderless window (XCB Window move & resize)
+* Borderless Wayland window move & resize
 * Blurred window
 * Window shadow
 * Desktop-level menu
@@ -15,7 +15,7 @@ FishUI is a GUI library based on QQC2 (Qt Quick Controls 2), every Cutefish appl
 ## Dependencies
 
 ```bash
-sudo apt install libqt5x11extras5-dev libkf5windowsystem-dev qtbase5-private-dev libxcb1-dev libxcb-shape0-dev libxcb-icccm4-dev -y
+sudo apt install qt6-base-dev qt6-base-private-dev qt6-declarative-dev -y
 ```
 
 ## Build

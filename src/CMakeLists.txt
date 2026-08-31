@@ -39,8 +39,6 @@ else ()
     target_sources(${TARGET} PRIVATE
             platforms/linux/windowhelper.cpp platforms/linux/windowhelper.h
             platforms/linux/blurhelper/windowblur.cpp platforms/linux/blurhelper/windowblur.h
-            platforms/linux/shadowhelper/boxshadowrenderer.cpp platforms/linux/shadowhelper/boxshadowrenderer.h
-            platforms/linux/shadowhelper/tileset.cpp platforms/linux/shadowhelper/tileset.h
             platforms/linux/shadowhelper/windowshadow.cpp platforms/linux/shadowhelper/windowshadow.h
             )
     target_include_directories(${TARGET} PRIVATE platforms/linux)
@@ -57,12 +55,6 @@ target_link_libraries(${TARGET}
         Qt6::QuickControls2
         Qt6::GuiPrivate
         )
-if (UNIX)
-    if (NOT APPLE)
-        target_link_libraries(${TARGET} PRIVATE KF6::WindowSystem)
-    endif ()
-endif ()
-
 generate_export_header(${TARGET} BASE_NAME ${TARGET})
 install(TARGETS ${TARGET} EXPORT ${TARGET}Targets ${INSTALL_TARGETS_DEFAULT_ARGS})
 install(TARGETS ${TARGET} DESTINATION ${INSTALL_QMLDIR}/${TARGET})
