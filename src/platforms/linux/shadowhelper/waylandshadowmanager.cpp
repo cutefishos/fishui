@@ -38,15 +38,18 @@ struct CompositeShadowParams
 };
 
 // Two stacked blurs, the same shape Breeze uses: a wide ambient shadow plus a
-// tighter one lifted upwards, so the window looks lit from above. The
-// opacities are of the blurred black that is composited *behind* the window,
-// so they read far lighter on screen than the numbers suggest: at a tenth of
-// this the shadow measured about 5% darker than the wallpaper next to it,
-// which is to say invisible.
+// tighter one lifted upwards, so the window looks lit from above.
+//
+// The opacities are of blurred black composited *behind* the window, and what
+// reaches the screen is roughly (shadow1 + shadow2) * strength of darkening
+// right at the window edge, fading out over the blur radius. FishUI's Window
+// asks for strength 1.5 while it is active, so these numbers put an active
+// window at about 15% darker than what is behind it, over a wide enough falloff
+// that the edge of the shadow is not a line.
 const CompositeShadowParams s_shadowParams(
     QPoint(0, 6),
-    ShadowParams(QPoint(0, 0), 32, 0.5),
-    ShadowParams(QPoint(0, -3), 16, 0.25));
+    ShadowParams(QPoint(0, 0), 40, 0.24),
+    ShadowParams(QPoint(0, -3), 16, 0.11));
 
 // How far the shadow reaches under the window. Without an overlap the tiles
 // stop exactly at the window edge and antialiasing leaves a bright seam there.
