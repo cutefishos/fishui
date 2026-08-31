@@ -33,6 +33,7 @@ static const QString Interface = "com.cutefish.Theme";
 ThemeManager::ThemeManager(QObject *parent) 
     : QObject(parent)
     , m_darkMode(false)
+    , m_blurEnabled(true)
     , m_accentColorIndex(-1)
     , m_accentColor(m_blueColor) // The default is blue
     , m_fontSize(9.0)
@@ -60,6 +61,11 @@ void ThemeManager::initData()
 
     if (iface.isValid()) {
         m_darkMode = iface.property("isDarkMode").toBool();
+        const bool blurEnabled = iface.property("blurEnabled").toBool();
+        if (m_blurEnabled != blurEnabled) {
+            m_blurEnabled = blurEnabled;
+            emit blurEnabledChanged();
+        }
         int accentColorID = iface.property("accentColor").toInt();
         setAccentColor(accentColorID);
 
@@ -80,6 +86,8 @@ void ThemeManager::initDBusSignals()
     if (iface.isValid()) {
         QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "darkModeChanged",
                                               this, SLOT(onDBusDarkModeChanged(bool)));
+        QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "blurEnabledChanged",
+                                              this, SLOT(onDBusBlurEnabledChanged()));
         QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "accentColorChanged",
                                               this, SLOT(onDBusAccentColorChanged(int)));
         QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "systemFontPointSizeChanged",
@@ -94,6 +102,17 @@ void ThemeManager::onDBusDarkModeChanged(bool darkMode)
     if (m_darkMode != darkMode) {
         m_darkMode = darkMode;
         emit darkModeChanged();
+    }
+}
+
+void ThemeManager::onDBusBlurEnabledChanged()
+{
+    QDBusInterface iface(Service, ObjectPath, Interface, QDBusConnection::sessionBus(), this);
+
+    const bool blurEnabled = iface.property("blurEnabled").toBool();
+    if (m_blurEnabled != blurEnabled) {
+        m_blurEnabled = blurEnabled;
+        emit blurEnabledChanged();
     }
 }
 

@@ -25,6 +25,10 @@ import FishUI 1.0 as FishUI
 FishUI.MenuPopupWindow {
     id: control
 
+    // Statusbar menus keep their existing appearance; other callers bind this
+    // property to the global blur preference.
+    property bool blurEnabled: true
+
     default property alias content : _mainLayout.data
 
     Rectangle {
@@ -32,7 +36,7 @@ FishUI.MenuPopupWindow {
         anchors.fill: parent
         color: FishUI.Theme.secondBackgroundColor
         radius: FishUI.Theme.hugeRadius
-        opacity: 0.6
+        opacity: control.blurEnabled ? 0.6 : 1
         border.color: _background.borderColor
         border.width: 1 / FishUI.Units.devicePixelRatio
         border.pixelAligned: FishUI.Units.devicePixelRatio > 1 ? false : true
@@ -48,7 +52,7 @@ FishUI.MenuPopupWindow {
         FishUI.WindowBlur {
             view: control
             windowRadius: _background.radius
-            enabled: true
+            enabled: control.blurEnabled
         }
     }
 

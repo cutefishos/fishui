@@ -28,6 +28,7 @@ QtObject {
     property real devicePixelRatio: FishUICore.ThemeManager.devicePixelRatio
 
     property bool darkMode: FishUICore.ThemeManager.darkMode
+    property bool blurEnabled: FishUICore.ThemeManager.blurEnabled
 
     property color blueColor: FishUICore.ThemeManager.blueColor
     property color redColor: FishUICore.ThemeManager.redColor

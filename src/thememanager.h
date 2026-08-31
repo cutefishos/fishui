@@ -36,6 +36,7 @@ class ThemeManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(bool darkMode READ darkMode NOTIFY darkModeChanged)
+    Q_PROPERTY(bool blurEnabled READ blurEnabled NOTIFY blurEnabledChanged)
     Q_PROPERTY(QColor accentColor READ accentColor NOTIFY accentColorChanged)
     Q_PROPERTY(QColor blueColor READ blueColor CONSTANT)
     Q_PROPERTY(QColor redColor READ redColor CONSTANT)
@@ -54,6 +55,7 @@ public:
     qreal devicePixelRatio() const;
 
     bool darkMode() { return m_darkMode; }
+    bool blurEnabled() const { return m_blurEnabled; }
     QColor accentColor() { return m_accentColor; }
 
     qreal fontSize() { return m_fontSize; }
@@ -69,6 +71,7 @@ public:
 
 signals:
     void darkModeChanged();
+    void blurEnabledChanged();
     void accentColorChanged();
     void fontSizeChanged();
     void fontFamilyChanged();
@@ -77,6 +80,7 @@ private slots:
     void initData();
     void initDBusSignals();
     void onDBusDarkModeChanged(bool darkMode);
+    void onDBusBlurEnabledChanged();
     void onDBusAccentColorChanged(int accentColorID);
     void onDBusFontSizeChanged();
     void onDBusFontFamilyChanged();
@@ -86,6 +90,7 @@ private:
 
 private:
     bool m_darkMode;
+    bool m_blurEnabled;
     int m_accentColorIndex;
 
     QColor m_blueColor   = QColor(51,  133, 255);   // #3385FF

@@ -194,7 +194,7 @@ Popup {
             background: Rectangle {
                 color: FishUI.Theme.backgroundColor
                 radius: FishUI.Theme.mediumRadius
-                opacity: 0.9
+                opacity: FishUI.Theme.blurEnabled ? 0.9 : 1
                 layer.enabled: true
                 layer.effect: DropShadow {
                     transparentBorder: true

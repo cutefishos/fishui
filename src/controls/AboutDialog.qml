@@ -28,12 +28,12 @@ FishUI.Window {
     property string link: "https://cutefishos.com"
     property var contentHeight: _mainLayout.implicitHeight + control.header.height * 2
 
-    background.opacity: 0.6
+    background.opacity: FishUI.Theme.blurEnabled ? 0.6 : 1
 
     FishUI.WindowBlur {
         view: control
         windowRadius: control.windowRadius
-        enabled: true
+        enabled: FishUI.Theme.blurEnabled
     }
 
     ColumnLayout {

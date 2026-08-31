@@ -47,7 +47,7 @@ T.ToolTip {
     }
 
     background: Rectangle {
-        opacity: 0.95
+        opacity: FishUI.Theme.blurEnabled ? 0.95 : 1
         color: FishUI.Theme.secondBackgroundColor
         radius: FishUI.Theme.smallRadius
 
