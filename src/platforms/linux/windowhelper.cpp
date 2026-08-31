@@ -1,17 +1,8 @@
 #include "windowhelper.h"
 
-#include <QApplication>
-#include <QGuiApplication>
-
 WindowHelper::WindowHelper(QObject *parent)
     : QObject(parent)
-    , m_compositing(true)
 {
-}
-
-bool WindowHelper::compositing() const
-{
-    return m_compositing;
 }
 
 bool WindowHelper::isWayland() const

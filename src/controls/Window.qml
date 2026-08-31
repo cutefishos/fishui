@@ -40,9 +40,8 @@ Window {
     property Item headerItem
 
     // Window helper
-    property alias compositing: windowHelper.compositing
     property var contentTopMargin: _header.height
-    property var windowRadius: compositing ? FishUI.Theme.windowRadius : 0
+    property var windowRadius: FishUI.Theme.windowRadius
     property alias helper: windowHelper
 
     // Other
@@ -173,7 +172,7 @@ Window {
         id: _background
         anchors.fill: parent
         anchors.margins: 0
-        radius: !isMaximized && !isFullScreen && windowHelper.compositing ? control.windowRadius : 0
+        radius: !isMaximized && !isFullScreen ? control.windowRadius : 0
         color: FishUI.Theme.backgroundColor
         antialiasing: true
 
@@ -189,9 +188,8 @@ Window {
     Rectangle {
         anchors.fill: parent
 
-        property var borderColor: compositing ? FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3)
-                                                                      : Qt.rgba(0, 0, 0, 0.2) : FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.15)
-                                                                                                                      : Qt.rgba(0, 0, 0, 0.15)
+        property var borderColor: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3)
+                                                        : Qt.rgba(0, 0, 0, 0.2)
         color: "transparent"
         radius: control.windowRadius
         border.color: borderColor
