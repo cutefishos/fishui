@@ -27,6 +27,13 @@ Item {
 
     property var size: 32
     property var iconMargins: 0
+
+    //! The size the icon is drawn at, in logical pixels. Defaults to the button
+    //! minus its margins. Set it to the artwork's own grid - 30 for the window
+    //! buttons - when the icon is drawn with one pixel wide features: rendering
+    //! a 30 unit design into 27 pixels puts every one of those lines across two
+    //! pixel rows at 90% coverage, which is what turns them grey and fuzzy.
+    property int iconSize: Math.round(control.size - control.iconMargins * 2)
     height: size
     width: size
 
@@ -43,7 +50,7 @@ Item {
     Rectangle {
         id: _background
         anchors.fill: parent
-        anchors.margins: size * 0.1
+        anchors.margins: Math.round(size * 0.1)
         radius: control.height / 2
         color: mouseArea.pressed ? pressedColor : mouseArea.containsMouse ? control.hoveredColor : control.backgroundColor
     }
@@ -59,8 +66,12 @@ Item {
     Image {
         id: _image
         objectName: "image"
-        anchors.fill: parent
-        anchors.margins: control.iconMargins
+        width: control.iconSize
+        height: control.iconSize
+        // Integer geometry, not anchors: half a pixel of offset is enough to
+        // smear a one pixel line across two rows again.
+        x: Math.round((control.width - width) / 2)
+        y: Math.round((control.height - height) / 2)
         fillMode: Image.PreserveAspectFit
         sourceSize: Qt.size(width, height)
         cache: true

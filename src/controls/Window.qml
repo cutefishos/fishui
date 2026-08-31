@@ -271,7 +271,8 @@ Window {
                         Layout.topMargin: _header.spacing
                         image.smooth: false
                         image.antialiasing: true
-                        iconMargins: 2
+                        // The artwork is a 24x24 grid; anything else is soft.
+                        iconSize: 24
                     }
 
                     RoundImageButton {
@@ -285,7 +286,8 @@ Window {
                         Layout.topMargin: _header.spacing
                         image.smooth: false
                         image.antialiasing: true
-                        iconMargins: 2
+                        // The artwork is a 24x24 grid; anything else is soft.
+                        iconSize: 24
                     }
 
                     RoundImageButton {
@@ -297,7 +299,8 @@ Window {
                         Layout.topMargin: _header.spacing
                         image.smooth: false
                         image.antialiasing: true
-                        iconMargins: 2
+                        // The artwork is a 24x24 grid; anything else is soft.
+                        iconSize: 24
                     }
                 }
 
