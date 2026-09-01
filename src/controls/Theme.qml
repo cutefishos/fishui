@@ -38,7 +38,7 @@ QtObject {
     property color orangeColor: FishUICore.ThemeManager.orangeColor
     property color greyColor: FishUICore.ThemeManager.greyColor
 
-    property color backgroundColor: darkMode ? "#1C1C1D" : "#F3F4F9"
+    property color backgroundColor: darkMode ? "#1C1C1D" : "#F6F6F7"
     property color secondBackgroundColor: darkMode ? "#2C2C2D" : "#FFFFFF"
     property color alternateBackgroundColor: darkMode ? "#3C3C3D" : "#F2F4F5"
 
