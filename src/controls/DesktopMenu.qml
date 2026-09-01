@@ -35,8 +35,9 @@ FishUI.MenuPopupWindow {
         id: _contentItem
 
         readonly property int contentMargin: Math.max(4, FishUI.Units.smallSpacing - 2)
+        readonly property int verticalContentMargin: Math.round(contentMargin * 1.5)
         implicitWidth: _mainLayout.implicitWidth + contentMargin * 2
-        implicitHeight: _mainLayout.implicitHeight + contentMargin * 2
+        implicitHeight: _mainLayout.implicitHeight + verticalContentMargin * 2
         width: implicitWidth
         height: implicitHeight
 
@@ -47,7 +48,7 @@ FishUI.MenuPopupWindow {
                            FishUI.Theme.secondBackgroundColor.g,
                            FishUI.Theme.secondBackgroundColor.b,
                            control.blurEnabled && !control.submenu ? 0.86 : 1)
-            radius: FishUI.Theme.smallRadius
+            radius: FishUI.Theme.windowRadius
             border.color: _background.borderColor
             border.width: 1 / FishUI.Units.devicePixelRatio
             border.pixelAligned: FishUI.Units.devicePixelRatio > 1 ? false : true
@@ -72,7 +73,7 @@ FishUI.MenuPopupWindow {
         ColumnLayout {
             id: _mainLayout
             x: _contentItem.contentMargin
-            y: _contentItem.contentMargin
+            y: _contentItem.verticalContentMargin
             width: implicitWidth
             height: implicitHeight
             spacing: 1
