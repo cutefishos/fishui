@@ -51,6 +51,7 @@ public:
 
 public slots:
     Q_INVOKABLE void show();
+    Q_INVOKABLE void showAt(int x, int y);
     Q_INVOKABLE void dismissPopup();
     Q_INVOKABLE void dismissAllPopups();
     Q_INVOKABLE void updateGeometry();

@@ -87,6 +87,10 @@ FishUI.MenuPopupWindow {
         control.show()
     }
 
+    function popupAt(x, y) {
+        control.showAt(x, y)
+    }
+
     function popupSubMenu() {
         control.show()
     }

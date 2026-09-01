@@ -74,10 +74,15 @@ void MenuPopupWindow::applicationStateChanged(Qt::ApplicationState state)
 
 void MenuPopupWindow::show()
 {
+    showAt(QCursor::pos().x(), QCursor::pos().y());
+}
+
+void MenuPopupWindow::showAt(int x, int y)
+{
     if (!m_contentItem)
         return;
 
-    QPoint pos = QCursor::pos();
+    QPoint pos(x, y);
     const int margin = 6;
     int w = m_contentItem->implicitWidth();
     int h = m_contentItem->implicitHeight();
