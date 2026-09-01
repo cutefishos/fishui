@@ -58,6 +58,7 @@ public slots:
 
 signals:
     void popupDismissed();
+    void mouseMoved();
     void geometryChanged();
     void parentItemChanged();
     void pointerInsideChanged();

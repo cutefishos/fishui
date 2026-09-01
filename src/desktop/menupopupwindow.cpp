@@ -293,6 +293,7 @@ void MenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
 {
     m_mouseMoved = true;
     setPointerInside(QRect(QPoint(), size()).contains(e->position().toPoint()));
+    emit mouseMoved();
 
     QQuickWindow::mouseMoveEvent(e);
 }
