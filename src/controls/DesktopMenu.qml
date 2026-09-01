@@ -25,42 +25,58 @@ import FishUI 1.0 as FishUI
 FishUI.MenuPopupWindow {
     id: control
 
-    // Statusbar menus keep their existing appearance; other callers bind this
-    // property to the global blur preference.
-    property bool blurEnabled: true
+    property bool blurEnabled: FishUI.Theme.blurEnabled
 
     default property alias content : _mainLayout.data
 
-    Rectangle {
-        id: _background
-        anchors.fill: parent
-        color: FishUI.Theme.secondBackgroundColor
-        radius: FishUI.Theme.hugeRadius
-        opacity: control.blurEnabled ? 0.6 : 1
-        border.color: _background.borderColor
-        border.width: 1 / FishUI.Units.devicePixelRatio
-        border.pixelAligned: FishUI.Units.devicePixelRatio > 1 ? false : true
+    popupContentItem: _contentItem
 
-        property var borderColor: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3)
-                                                        : Qt.rgba(0, 0, 0, 0.2)
+    Item {
+        id: _contentItem
 
-        FishUI.WindowShadow {
-            view: control
-            radius: _background.radius
+        readonly property int contentMargin: Math.max(4, FishUI.Units.smallSpacing - 2)
+        implicitWidth: _mainLayout.implicitWidth + contentMargin * 2
+        implicitHeight: _mainLayout.implicitHeight + contentMargin * 2
+        width: implicitWidth
+        height: implicitHeight
+
+        Rectangle {
+            id: _background
+            anchors.fill: parent
+            color: Qt.rgba(FishUI.Theme.secondBackgroundColor.r,
+                           FishUI.Theme.secondBackgroundColor.g,
+                           FishUI.Theme.secondBackgroundColor.b,
+                           control.blurEnabled && !control.submenu ? 0.86 : 1)
+            radius: FishUI.Theme.smallRadius
+            border.color: _background.borderColor
+            border.width: 1 / FishUI.Units.devicePixelRatio
+            border.pixelAligned: FishUI.Units.devicePixelRatio > 1 ? false : true
+
+            property var borderColor: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3)
+                                                            : Qt.rgba(0, 0, 0, 0.2)
+
+            FishUI.WindowShadow {
+                view: control
+                radius: _background.radius
+                strength: 0.4
+                enabled: true
+            }
+
+            FishUI.WindowBlur {
+                view: control
+                windowRadius: _background.radius
+                enabled: control.blurEnabled && !control.submenu
+            }
         }
 
-        FishUI.WindowBlur {
-            view: control
-            windowRadius: _background.radius
-            enabled: control.blurEnabled
+        ColumnLayout {
+            id: _mainLayout
+            x: _contentItem.contentMargin
+            y: _contentItem.contentMargin
+            width: implicitWidth
+            height: implicitHeight
+            spacing: 1
         }
-    }
-
-    ColumnLayout {
-        id: _mainLayout
-        anchors.fill: parent
-        anchors.topMargin: 4
-        anchors.bottomMargin: 4
     }
 
     function open() {
@@ -69,5 +85,54 @@ FishUI.MenuPopupWindow {
 
     function popup() {
         control.show()
+    }
+
+    function popupSubMenu() {
+        control.show()
+    }
+
+    // A submenu closes immediately after the pointer has actually entered
+    // and then left it. The timer only covers the short handoff gap between
+    // the parent popup and this popup.
+    property bool pointerEntered: false
+
+    onPointerInsideChanged: {
+        if (!control.submenu)
+            return
+
+        if (control.pointerInside) {
+            pointerEntered = true
+        } else if (pointerEntered) {
+            pointerEntered = false
+            if (!control.containsGlobalCursor() &&
+                    !control.parentItemContainsGlobalCursor() &&
+                    !control.parentPopupContainsGlobalCursor()) {
+                control.dismissPopup()
+            }
+        }
+    }
+
+    onVisibleChanged: {
+        if (!visible)
+            pointerEntered = false
+    }
+
+    property Timer submenuDismissTimer: Timer {
+        interval: 160
+        repeat: true
+        running: control.visible
+
+        onTriggered: {
+            if (!control.parentItem) {
+                stop()
+                return
+            }
+
+            if (!control.pointerInside &&
+                    !control.parentItemHovered() &&
+                    !control.parentItemContainsGlobalCursor()) {
+                control.dismissPopup()
+            }
+        }
     }
 }

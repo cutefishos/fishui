@@ -15,6 +15,9 @@
         <file alias="TabCloseButton.qml">controls/TabCloseButton.qml</file>
         <file alias="TabView.qml">controls/TabView.qml</file>
         <file alias="DesktopMenu.qml">controls/DesktopMenu.qml</file>
+        <file alias="Menu.qml">controls/Menu.qml</file>
+        <file alias="MenuItem.qml">controls/MenuItem.qml</file>
+        <file alias="MenuSeparator.qml">controls/MenuSeparator.qml</file>
         <file>images/refresh.svg</file>
         <file>images/dark/close.svg</file>
         <file>images/dark/maximize.svg</file>

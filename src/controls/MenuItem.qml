@@ -2,39 +2,61 @@ import QtQuick
 import QtQuick.Templates as T
 import QtQuick.Controls
 import QtQuick.Controls.impl
+import QtQuick.Layouts 1.12
+import QtQuick.Window
 
 import FishUI 1.0 as FishUI
 
 T.MenuItem {
     id: control
 
-    property color hoveredColor: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.2)
-                                                       : Qt.rgba(0, 0, 0, 0.1)
-    property color pressedColor: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.1)
-                                                       : Qt.rgba(0, 0, 0, 0.2)
+    // DesktopMenu uses a separate popup window for submenus. Regular Menu
+    // instances continue to use the Qt Quick Controls subMenu property.
+    property var childMenu: null
+    readonly property bool hasIcon: control.icon.name.length > 0 || control.icon.source.toString().length > 0
+    readonly property bool submenuOpen: !!control.childMenu && control.childMenu.visible
+    readonly property bool active: control.enabled && (control.hovered || control.highlighted ||
+                                                       control.pressed || control.submenuOpen)
+    property color hoveredColor: Qt.rgba(FishUI.Theme.highlightColor.r,
+                                         FishUI.Theme.highlightColor.g,
+                                         FishUI.Theme.highlightColor.b,
+                                         FishUI.Theme.darkMode ? 0.82 : 0.9)
+    property color pressedColor: Qt.rgba(FishUI.Theme.highlightColor.r,
+                                         FishUI.Theme.highlightColor.g,
+                                         FishUI.Theme.highlightColor.b,
+                                         FishUI.Theme.darkMode ? 0.95 : 0.78)
 
-    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+    implicitWidth: Math.max(146, implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
-    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
-                             implicitContentHeight + topPadding + bottomPadding,
-                             implicitIndicatorHeight + topPadding + bottomPadding)
+    implicitHeight: visible ? 30 : 0
+
+    // ColumnLayout otherwise keeps each row at its own preferred width. All
+    // rows must share the menu width so their hover backgrounds line up.
+    Layout.fillWidth: true
 
     verticalPadding: FishUI.Units.smallSpacing
     hoverEnabled: true
     topPadding: FishUI.Units.smallSpacing
     bottomPadding: FishUI.Units.smallSpacing
+    leftPadding: FishUI.Units.smallSpacing + 2
+    rightPadding: FishUI.Units.smallSpacing + 2
+    spacing: FishUI.Units.smallSpacing
 
-    icon.width: FishUI.Units.iconSizes.medium
-    icon.height: FishUI.Units.iconSizes.medium
+    icon.width: control.hasIcon ? FishUI.Units.iconSizes.smallMedium : 0
+    icon.height: control.hasIcon ? FishUI.Units.iconSizes.smallMedium : 0
 
-    icon.color: control.enabled ? (control.highlighted ? control.FishUI.Theme.highlightColor : control.FishUI.Theme.textColor) :
-                             control.FishUI.Theme.disabledTextColor
+    icon.color: control.enabled ? (control.active ? FishUI.Theme.highlightedTextColor : FishUI.Theme.textColor) :
+                             FishUI.Theme.disabledTextColor
 
     contentItem: IconLabel {
-        readonly property real arrowPadding: control.subMenu && control.arrow ? control.arrow.width + control.spacing : 0
-        readonly property real indicatorPadding: control.checkable && control.indicator ? control.indicator.width + control.spacing : 0
-        leftPadding: !control.mirrored ? indicatorPadding + FishUI.Units.smallSpacing * 2 : arrowPadding
-        rightPadding: control.mirrored ? indicatorPadding : arrowPadding + FishUI.Units.smallSpacing * 2
+        readonly property real arrowPadding: (control.subMenu || control.childMenu) && control.arrow ? control.arrow.width + control.spacing : 0
+        // Only checked items reserve a checkmark column. Items without icons
+        // stay compact instead of inheriting an empty leading icon column.
+        readonly property real indicatorPadding: control.checked && control.indicator ? control.indicator.width + control.spacing : 0
+        // This is the only intentional change from the previous layout: give
+        // labels a small extra inset without moving the submenu arrow.
+        leftPadding: !control.mirrored ? indicatorPadding + 4 : arrowPadding
+        rightPadding: control.mirrored ? indicatorPadding : arrowPadding
 
         spacing: control.spacing
         mirrored: control.mirrored
@@ -44,22 +66,63 @@ T.MenuItem {
         icon: control.icon
         text: control.text
         font: control.font
-        color: control.enabled ? control.pressed || control.hovered ? control.FishUI.Theme.textColor :
+        color: control.enabled ? control.active ? FishUI.Theme.highlightedTextColor :
                FishUI.Theme.textColor : FishUI.Theme.disabledTextColor
     }
 
+    indicator: Text {
+        x: control.mirrored ? control.width - width - control.rightPadding : control.leftPadding
+        y: (control.height - height) / 2
+        visible: control.checkable && control.checked
+        text: "✓"
+        font.pixelSize: 15
+        color: control.active ? FishUI.Theme.highlightedTextColor : FishUI.Theme.highlightColor
+    }
+
+    arrow: Text {
+        x: control.mirrored ? control.leftPadding : control.width - width - control.rightPadding
+        y: 0
+        width: 16
+        height: control.height
+        visible: !!control.subMenu || !!control.childMenu
+        text: "›"
+        font.pixelSize: 21
+        font.weight: Font.Light
+        horizontalAlignment: Text.AlignHCenter
+        verticalAlignment: Text.AlignVCenter
+        color: control.active ? FishUI.Theme.highlightedTextColor : FishUI.Theme.disabledTextColor
+    }
+
     background: Rectangle {
-        implicitWidth: 200
-        implicitHeight: control.visible ? FishUI.Units.gridUnit + FishUI.Units.largeSpacing : 0
-        radius: FishUI.Theme.mediumRadius
+        implicitWidth: 146
+        implicitHeight: 30
+        radius: FishUI.Theme.smallRadius
         opacity: 1
 
-        anchors {
-            fill: parent
-            leftMargin: FishUI.Units.smallSpacing
-            rightMargin: FishUI.Units.smallSpacing
-        }
+        x: Math.max(4, FishUI.Units.smallSpacing - 2)
+        y: 1
+        width: control.width - Math.max(4, FishUI.Units.smallSpacing - 2) * 2
+        height: control.height - 2
 
-        color: control.pressed || highlighted ? control.pressedColor : control.hovered ? control.hoveredColor : "transparent"
+        color: control.pressed ? control.pressedColor :
+               control.active ? control.hoveredColor : "transparent"
+    }
+
+    onHoveredChanged: {
+        if (!childMenu)
+            return
+
+        if (hovered) {
+            childMenu.parentItem = control
+            childMenu.popupSubMenu()
+        }
+    }
+
+    onTriggered: {
+        if (control.childMenu)
+            return
+
+        if (control.Window.window && control.Window.window.dismissAllPopups)
+            control.Window.window.dismissAllPopups()
     }
 }
