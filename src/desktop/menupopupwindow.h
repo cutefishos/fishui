@@ -108,7 +108,6 @@ private:
     QRect availableScreenGeometry() const;
     MenuPopupWindow *rootPopup() const;
     QPoint popupPosition(const QPoint &requested, const QSize &size) const;
-    bool submenuOpenedAt(const QPoint &globalPos) const;
     void setPointerInside(bool inside);
     void setChildPopup(MenuPopupWindow *popup);
 

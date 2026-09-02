@@ -91,18 +91,25 @@ T.MenuItem {
         color: control.active ? FishUI.Theme.highlightedTextColor : FishUI.Theme.highlightColor
     }
 
-    arrow: Text {
+    arrow: Item {
         x: control.mirrored ? control.leftPadding : control.width - width - control.rightPadding
         y: 0
-        width: 16
+        // The chevron is a thin diagonal: drawn much below 20px its stroke
+        // falls between pixels and turns into a grey smudge.
+        width: 20
         height: control.height
         visible: control.hasChildMenu
-        text: "›"
-        font.pixelSize: 21
-        font.weight: Font.Light
-        horizontalAlignment: Text.AlignHCenter
-        verticalAlignment: Text.AlignVCenter
-        color: control.active ? FishUI.Theme.highlightedTextColor : FishUI.Theme.disabledTextColor
+
+        IconImage {
+            width: 20
+            height: 20
+            anchors.centerIn: parent
+            source: "qrc:/fishui/kit/images/icons/arrow-right.svg"
+            sourceSize: Qt.size(width, height)
+            mirror: control.mirrored
+            color: control.active ? FishUI.Theme.highlightedTextColor
+                                  : FishUI.Theme.disabledTextColor
+        }
     }
 
     background: Rectangle {
@@ -120,14 +127,25 @@ T.MenuItem {
                control.active ? control.hoveredColor : "transparent"
     }
 
-    onHoveredChanged: {
-        if (!childMenu)
+    // Also called from the popup window when the row is clicked. Opening a
+    // submenu that is already up would hide and remap its popup, so a click
+    // on a row whose submenu is open leaves it alone.
+    function openChildMenu() {
+        if (!control.childMenu || control.childMenu.visible)
             return
 
-        if (hovered) {
-            childMenu.parentItem = control
-            childMenu.popupSubMenu()
-        }
+        // A menu that is closing still sends hover changes to its rows; none
+        // of them may put a submenu back on screen.
+        if (!control.Window.window || !control.Window.window.visible)
+            return
+
+        control.childMenu.parentItem = control
+        control.childMenu.popupSubMenu()
+    }
+
+    onHoveredChanged: {
+        if (hovered)
+            control.openChildMenu()
     }
 
     onTriggered: {

@@ -38,6 +38,35 @@ static const int kOpeningPressMs = 200;
 // slightly so the two frames read as one connected menu.
 static const int kSubmenuOverlap = 2;
 
+// The menu row under a point given in the item's own coordinates, or null.
+// Rows are the only thing in a menu that can be chosen; the frame, the
+// margins and the separators are not.
+static QQuickItem *rowUnder(QQuickItem *item, const QPointF &pos)
+{
+    if (!item)
+        return nullptr;
+
+    const QList<QQuickItem *> children = item->childItems();
+    for (int i = children.count() - 1; i >= 0; --i) {
+        QQuickItem *child = children.at(i);
+        if (!child->isVisible() || qFuzzyIsNull(child->opacity()))
+            continue;
+
+        const QPointF local = item->mapToItem(child, pos);
+        if (!child->contains(local))
+            continue;
+
+        if (QQuickItem *row = rowUnder(child, local))
+            return row;
+
+        // Every menu row is a button; a separator is a plain control.
+        if (child->inherits("QQuickAbstractButton"))
+            return child;
+    }
+
+    return nullptr;
+}
+
 MenuPopupWindow::MenuPopupWindow(QQuickWindow *parent)
     : QQuickWindow(parent)
     , m_parentItem(0)
@@ -441,9 +470,12 @@ void MenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
 {
     m_mouseMoved = true;
     setPointerInside(QRect(QPoint(), size()).contains(e->position().toPoint()));
-    emit mouseMoved(e->globalPosition());
 
+    // Deliver first: a handler of mouseMoved that asks which row is hovered
+    // would otherwise still see the hover state of the previous position.
     QQuickWindow::mouseMoveEvent(e);
+
+    emit mouseMoved(e->globalPosition());
 }
 
 void MenuPopupWindow::mousePressEvent(QMouseEvent *e)
@@ -526,27 +558,20 @@ void MenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
     if (m_dismissed || e->button() == Qt::RightButton)
         return;
 
-    // Clicking an item that owns a submenu opens it instead of choosing
-    // anything, so the menu chain has to stay on screen.
-    if (submenuOpenedAt(e->globalPosition().toPoint()))
+    // Only choosing something closes the menu. A click on the frame, on a
+    // separator or on a disabled row chooses nothing and leaves it open.
+    QQuickItem *row = rowUnder(contentItem(), e->position());
+    if (!row || !row->isEnabled())
         return;
 
+    // A row that owns a submenu opens it instead of choosing anything, so
+    // the menu chain has to stay on screen.
+    if (row->property("hasChildMenu").toBool()) {
+        QMetaObject::invokeMethod(row, "openChildMenu");
+        return;
+    }
+
     dismissPopup();
-}
-
-bool MenuPopupWindow::submenuOpenedAt(const QPoint &globalPos) const
-{
-    if (!m_childPopup || !m_childPopup->isVisible())
-        return false;
-
-    const QQuickItem *item = m_childPopup->parentItem();
-    if (!item || !item->window())
-        return false;
-
-    const QRect itemRect(item->mapToGlobal(QPointF(0, 0)).toPoint(),
-                         QSize(qCeil(item->width()), qCeil(item->height())));
-
-    return itemRect.contains(globalPos);
 }
 
 bool MenuPopupWindow::event(QEvent *event)

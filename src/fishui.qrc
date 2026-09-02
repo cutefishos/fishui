@@ -19,6 +19,7 @@
         <file alias="MenuItem.qml">controls/MenuItem.qml</file>
         <file alias="MenuSeparator.qml">controls/MenuSeparator.qml</file>
         <file>images/refresh.svg</file>
+        <file>images/icons/arrow-right.svg</file>
         <file>images/dark/close.svg</file>
         <file>images/dark/maximize.svg</file>
         <file>images/dark/minimize.svg</file>

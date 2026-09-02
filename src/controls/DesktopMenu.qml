@@ -357,6 +357,35 @@ FishUI.MenuPopupWindow {
     onMouseMoved: {
         if (control.popupChainContainsGlobalCursor())
             control.clearKeyboardState()
+
+        control.updateSubmenuHover()
+    }
+
+    // Close a hover-opened submenu as soon as the pointer has left both it and
+    // the row it hangs off. The poll timer below would only notice at its next
+    // tick, which is what made a row with a submenu let go of its highlight
+    // later than every other row.
+    function updateSubmenuHover() {
+        var rows = control.menuRows()
+        for (var i = 0; i < rows.length; ++i) {
+            var child = rows[i].childMenu
+            if (!child || !child.visible || child.keyboardNavigation)
+                continue
+
+            child.updateSubmenuHover()
+
+            if (child.containsGlobalCursor() || child.pointerInside)
+                continue
+
+            // Also true in the handoff corridor between the row and its popup.
+            if (child.parentItemContainsGlobalCursor())
+                continue
+
+            if (child.parentItemHovered())
+                continue
+
+            child.dismissPopup()
+        }
     }
 
     // The popup takes its size from the layout's implicit size, and a menu
@@ -420,8 +449,11 @@ FishUI.MenuPopupWindow {
         }
     }
 
+    // Only a backstop for the pointer leaving the menu without a last motion
+    // event: updateSubmenuHover() closes a submenu the moment the pointer
+    // moves off it.
     property Timer submenuDismissTimer: Timer {
-        interval: 160
+        interval: 50
         repeat: true
         running: control.visible
 
