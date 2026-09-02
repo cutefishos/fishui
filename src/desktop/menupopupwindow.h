@@ -34,6 +34,14 @@ class MenuPopupWindow : public QQuickWindow
     Q_PROPERTY(bool submenu READ submenu NOTIFY parentItemChanged)
     Q_PROPERTY(bool pointerInside READ pointerInside NOTIFY pointerInsideChanged)
     Q_PROPERTY(int contentTopMargin READ contentTopMargin WRITE setContentTopMargin NOTIFY contentTopMarginChanged)
+    // How tall the popup may become on the screen it will appear on.
+    Q_PROPERTY(int availableHeight READ availableHeight NOTIFY availableHeightChanged)
+    // The work area to keep the popup inside. Wayland tells a client nothing
+    // about other clients' panels, so QScreen::availableGeometry() is the
+    // whole output there and a menu would open under the status bar and the
+    // dock. An application that does know - the shell reserves those struts
+    // itself - sets the area here; an invalid rect falls back to the screen.
+    Q_PROPERTY(QRect availableGeometry READ availableGeometry WRITE setAvailableGeometry NOTIFY availableGeometryChanged)
 
 public:
     MenuPopupWindow(QQuickWindow *parent = nullptr);
@@ -49,12 +57,16 @@ public:
     // A submenu is placed with this offset removed so that its first row
     // lines up with the parent item instead of the popup frame.
     int contentTopMargin() const { return m_contentTopMargin; }
+    int availableHeight() const;
+    QRect availableGeometry() const;
+    void setAvailableGeometry(const QRect &geometry);
     void setContentTopMargin(int margin);
     Q_INVOKABLE bool containsGlobalCursor() const;
     Q_INVOKABLE bool parentItemContainsGlobalCursor() const;
     Q_INVOKABLE bool parentPopupContainsGlobalCursor() const;
     Q_INVOKABLE bool popupChainContainsGlobalCursor() const;
     Q_INVOKABLE bool parentItemHovered() const;
+    Q_INVOKABLE QPointF globalCursorPos() const;
 
 public slots:
     Q_INVOKABLE void show();
@@ -65,13 +77,24 @@ public slots:
 
 signals:
     void popupDismissed();
-    void mouseMoved();
+    // Carries the global cursor position: while a menu is open it owns the
+    // pointer grab, so anything else that needs to follow the cursor (a menu
+    // bar switching between its menus, say) can only learn about it here.
+    void mouseMoved(const QPointF &globalPos);
     void geometryChanged();
     void parentItemChanged();
     void pointerInsideChanged();
     void contentTopMarginChanged();
+    void availableHeightChanged();
+    void availableGeometryChanged();
+    // Key events are reported per window rather than left to Qt Quick's
+    // focus handling: opening a submenu popup moves the window focus off the
+    // menu the user is navigating, and an item-level Keys handler then stops
+    // receiving anything at all.
+    void keyPressed(int key, int modifiers);
 
 protected:
+    void keyPressEvent(QKeyEvent *) override;
     void mousePressEvent(QMouseEvent *) override;
     void mouseReleaseEvent(QMouseEvent *) override;
     void mouseMoveEvent(QMouseEvent *) override;
@@ -83,6 +106,7 @@ protected slots:
 private:
     bool isSubmenuPopup() const;
     QRect availableScreenGeometry() const;
+    MenuPopupWindow *rootPopup() const;
     QPoint popupPosition(const QPoint &requested, const QSize &size) const;
     bool submenuOpenedAt(const QPoint &globalPos) const;
     void setPointerInside(bool inside);
@@ -96,6 +120,7 @@ private:
     bool m_dismissed;
     bool m_pointerInside;
     int m_contentTopMargin;
+    QRect m_availableGeometry;
     bool m_pressed;
     QElapsedTimer m_shownTimer;
 };

@@ -21,6 +21,7 @@
 #include <QGuiApplication>
 #include <QCoreApplication>
 #include <QCursor>
+#include <QKeyEvent>
 #include <QQuickRenderControl>
 #include <QQuickItem>
 #include <QScreen>
@@ -96,6 +97,39 @@ bool MenuPopupWindow::isSubmenuPopup() const
     return m_parentItem && qobject_cast<MenuPopupWindow *>(transientParent());
 }
 
+MenuPopupWindow *MenuPopupWindow::rootPopup() const
+{
+    const MenuPopupWindow *popup = this;
+    while (popup->m_parentPopup)
+        popup = popup->m_parentPopup;
+
+    return const_cast<MenuPopupWindow *>(popup);
+}
+
+QRect MenuPopupWindow::availableGeometry() const
+{
+    // A submenu is placed inside the same work area as the menu it belongs
+    // to, which is the one the application configured.
+    const MenuPopupWindow *root = rootPopup();
+    if (root->m_availableGeometry.isValid())
+        return root->m_availableGeometry;
+
+    return availableScreenGeometry();
+}
+
+void MenuPopupWindow::setAvailableGeometry(const QRect &geometry)
+{
+    if (m_availableGeometry == geometry)
+        return;
+
+    m_availableGeometry = geometry;
+    emit availableGeometryChanged();
+    emit availableHeightChanged();
+
+    if (isVisible())
+        updateGeometry();
+}
+
 QRect MenuPopupWindow::availableScreenGeometry() const
 {
     const QWindow *pw = transientParent();
@@ -113,7 +147,7 @@ QRect MenuPopupWindow::availableScreenGeometry() const
 
 QPoint MenuPopupWindow::popupPosition(const QPoint &requested, const QSize &size) const
 {
-    const QRect g = availableScreenGeometry();
+    const QRect g = availableGeometry();
     if (!g.isValid())
         return requested;
 
@@ -159,6 +193,12 @@ QPoint MenuPopupWindow::popupPosition(const QPoint &requested, const QSize &size
     return QPoint(posx, posy);
 }
 
+int MenuPopupWindow::availableHeight() const
+{
+    const QRect g = availableGeometry();
+    return g.isValid() ? g.height() - kScreenMargin * 2 : 0;
+}
+
 void MenuPopupWindow::setContentTopMargin(int margin)
 {
     if (m_contentTopMargin == margin)
@@ -175,6 +215,10 @@ void MenuPopupWindow::showAt(int x, int y)
 {
     if (!m_contentItem)
         return;
+
+    // The popup may be about to appear on another screen than the one it was
+    // last sized for.
+    emit availableHeightChanged();
 
     const int w = qCeil(m_contentItem->implicitWidth());
     const int h = qCeil(m_contentItem->implicitHeight());
@@ -281,6 +325,11 @@ bool MenuPopupWindow::popupChainContainsGlobalCursor() const
     return m_childPopup && m_childPopup->popupChainContainsGlobalCursor();
 }
 
+QPointF MenuPopupWindow::globalCursorPos() const
+{
+    return QCursor::pos();
+}
+
 bool MenuPopupWindow::parentItemHovered() const
 {
     return m_parentItem && m_parentItem->property("hovered").toBool();
@@ -365,11 +414,17 @@ void MenuPopupWindow::updateGeometry()
     setGeometry(pos.x(), pos.y(), w, h);
 }
 
+void MenuPopupWindow::keyPressEvent(QKeyEvent *e)
+{
+    emit keyPressed(e->key(), int(e->modifiers()));
+    e->accept();
+}
+
 void MenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
 {
     m_mouseMoved = true;
     setPointerInside(QRect(QPoint(), size()).contains(e->position().toPoint()));
-    emit mouseMoved();
+    emit mouseMoved(e->globalPosition());
 
     QQuickWindow::mouseMoveEvent(e);
 }

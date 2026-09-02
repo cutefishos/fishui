@@ -13,6 +13,10 @@ T.MenuItem {
     // DesktopMenu uses a separate popup window for submenus. Regular Menu
     // instances continue to use the Qt Quick Controls subMenu property.
     property var childMenu: null
+    // Whether the item opens a submenu. A menu that creates its submenu
+    // popups lazily overrides this so the arrow is drawn before the popup
+    // exists.
+    property bool hasChildMenu: !!control.subMenu || !!control.childMenu
     readonly property bool hasIcon: control.icon.name.length > 0 || control.icon.source.toString().length > 0
     readonly property bool submenuOpen: !!control.childMenu && control.childMenu.visible
     readonly property bool active: control.enabled && (control.hovered || control.highlighted ||
@@ -49,7 +53,7 @@ T.MenuItem {
                              FishUI.Theme.disabledTextColor
 
     contentItem: IconLabel {
-        readonly property real arrowPadding: (control.subMenu || control.childMenu) && control.arrow ? control.arrow.width + control.spacing : 0
+        readonly property real arrowPadding: control.hasChildMenu && control.arrow ? control.arrow.width + control.spacing : 0
         // Only checked items reserve a checkmark column. Items without icons
         // stay compact instead of inheriting an empty leading icon column.
         readonly property real indicatorPadding: control.checked && control.indicator ? control.indicator.width + control.spacing : 0
@@ -84,7 +88,7 @@ T.MenuItem {
         y: 0
         width: 16
         height: control.height
-        visible: !!control.subMenu || !!control.childMenu
+        visible: control.hasChildMenu
         text: "›"
         font.pixelSize: 21
         font.weight: Font.Light
