@@ -46,7 +46,13 @@ signals:
 
 protected:
     void loadPixmap();
+    void componentComplete() override;
     void geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry) override;
+    QSGNode *updatePaintNode(QSGNode *node, UpdatePaintNodeData *data) override;
+
+    // The scale the icon must be rasterised at: the window's, not the
+    // application's, so a second screen with another scale is handled too.
+    qreal scaleFactor() const;
 
 private:
     QVariant m_source;
@@ -56,6 +62,7 @@ private:
 
     QString m_iconName;
     QPixmap m_iconPixmap;
+    qreal m_pixmapScale = 0;
 };
 
 #endif // NEWICONITEM_H

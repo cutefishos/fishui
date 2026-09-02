@@ -113,13 +113,47 @@ void NewIconItem::updateIcon()
     loadPixmap();
 }
 
+void NewIconItem::componentComplete()
+{
+    QQuickPaintedItem::componentComplete();
+
+    // loadPixmap() refuses to run before this point, and an item whose size is
+    // set declaratively never gets a geometryChange afterwards, so without this
+    // the icon would never be rasterised at all.
+    loadPixmap();
+}
+
+QSGNode *NewIconItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *data)
+{
+    // Nothing about the item changes when the output scale does - same source,
+    // same logical geometry - so the icon has to be re-rasterised here or it
+    // keeps the resolution it was first built at and is upscaled from there.
+    if (!qFuzzyCompare(m_pixmapScale, scaleFactor()))
+        loadPixmap();
+
+    return QQuickPaintedItem::updatePaintNode(node, data);
+}
+
+qreal NewIconItem::scaleFactor() const
+{
+    if (QQuickWindow *w = window())
+        return w->effectiveDevicePixelRatio();
+
+    return qApp->devicePixelRatio();
+}
+
 void NewIconItem::loadPixmap()
 {
     if (!isComponentComplete()) {
         return;
     }
 
-    QSize size = QSize(width(), height());
+    // Recorded before the early returns below, so a null result is not retried
+    // on every frame by updatePaintNode().
+    const qreal scale = scaleFactor();
+    m_pixmapScale = scale;
+
+    const QSize size = QSize(width(), height());
     QPixmap result;
 
     if (size.width() < 0 ||
@@ -135,9 +169,9 @@ void NewIconItem::loadPixmap()
         if (icon.isNull())
             icon = QIcon::fromTheme("application-x-desktop");
 
-        result = icon.pixmap(size * qApp->devicePixelRatio());
+        result = icon.pixmap(size, scale);
     } else if (!m_icon.isNull()) {
-        result = m_icon.pixmap(window(), size * qApp->devicePixelRatio());
+        result = m_icon.pixmap(size, scale);
     } else if (!m_image.isNull()) {
         result = QPixmap::fromImage(m_image);
     } else {
