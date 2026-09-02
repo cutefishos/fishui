@@ -236,22 +236,26 @@ void MenuPopupWindow::showAt(int x, int y)
 
     const bool isSubmenu = isSubmenuPopup();
 
-    // Transfer the mouse grab before showing a submenu. Trying to replace a
-    // live grab from inside a hover transition can block the event loop on
-    // compositors that serialize popup grabs. The Qt::Popup window receives
-    // pointer events in its own area without an explicit mouse grab.
-    if (isSubmenu && m_parentPopup) {
-        m_parentPopup->setMouseGrabEnabled(false);
+    // Hand the keyboard grab over before showing a submenu. Trying to replace
+    // a live grab from inside a hover transition can block the event loop on
+    // compositors that serialize popup grabs.
+    if (isSubmenu && m_parentPopup)
         m_parentPopup->setKeyboardGrabEnabled(false);
-    }
 
     setGeometry(posx, posy, w, h);
 
     QQuickWindow::show();
     if (!isSubmenu) {
-        // Only the root menu owns the application-level input grabs. A
-        // submenu is opened from hover and must not grab input itself.
-        setMouseGrabEnabled(true);
+        // Only the root menu owns the keyboard grab; a submenu is opened from
+        // hover and must not grab input itself.
+        //
+        // The pointer is deliberately left ungrabbed. A Qt::Popup window is
+        // already an xdg_popup with the compositor's own grab, which is what
+        // dismisses the menu on a click outside it. Asking for the client
+        // side grab on top of that redirects every pointer event to this
+        // window, so the surface underneath - the panel holding the menu bar
+        // that opened this menu - stops seeing hover altogether and a menu bar
+        // can no longer switch menus under the pointer.
         setKeyboardGrabEnabled(true);
     }
 }
@@ -378,14 +382,12 @@ void MenuPopupWindow::dismissPopup()
     // compositor while it rebuilds the transient window tree.
     emit popupDismissed();
 
-    // Popup windows take both grabs while they are visible.  Releasing only
-    // by hiding the window is not sufficient on Wayland/KWin: the hidden
-    // popup can keep receiving pointer and keyboard focus, leaving the rest
-    // of the desktop unresponsive after a dock context menu is dismissed.
-    if (!m_parentItem) {
-        setMouseGrabEnabled(false);
+    // A root popup holds the keyboard grab while it is visible. Releasing it
+    // only by hiding the window is not sufficient on Wayland/KWin: the hidden
+    // popup can keep receiving keyboard focus, leaving the rest of the desktop
+    // unresponsive after a dock context menu is dismissed.
+    if (!m_parentItem)
         setKeyboardGrabEnabled(false);
-    }
 
     hide();
 }
