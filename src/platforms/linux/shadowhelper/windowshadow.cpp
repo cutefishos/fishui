@@ -87,7 +87,6 @@ void WindowShadow::setRadius(qreal value)
         return;
     m_radius = value;
     emit radiusChanged();
-    clear();
     scheduleUpdate();
 }
 
@@ -97,7 +96,6 @@ void WindowShadow::setStrength(qreal strength)
         return;
     m_strength = strength;
     emit strengthChanged();
-    clear();
     scheduleUpdate();
 }
 
@@ -127,6 +125,8 @@ void WindowShadow::clear()
     }
     m_shadow = nullptr;
     m_tileScale = 0;
+    m_tileRadius = 0;
+    m_tileStrength = 0;
 }
 
 void WindowShadow::update()
@@ -145,17 +145,26 @@ void WindowShadow::update()
 
     const qreal scale = m_view->devicePixelRatio();
 
-    // Already up to date. A shadow rendered for another scale has to go.
-    if (m_shadow) {
-        if (qFuzzyCompare(m_tileScale, scale))
-            return;
-
-        clear();
+    // Already up to date.
+    if (m_shadow
+            && qFuzzyCompare(m_tileScale, scale)
+            && qFuzzyCompare(m_tileRadius, m_radius)
+            && qFuzzyCompare(m_tileStrength, m_strength)) {
+        return;
     }
 
+    // Render the replacement before the old shadow goes away. Dropping a
+    // shadow tells the compositor to repaint the window without one, so the
+    // window would be drawn flat for as long as it takes to get the new tiles
+    // over the wire - one visible frame every time the window is focused,
+    // which is what made an opening window blink.
     const ShadowTiles &tiles = manager->tiles(m_radius, m_strength, scale);
     if (!tiles.isValid())
         return;
+
+    // From here on nothing returns to the event loop, so the window is never
+    // committed without a shadow.
+    clear();
 
     m_shadow = new KWindowShadow(this);
     m_shadow->setWindow(m_view);
@@ -176,8 +185,11 @@ void WindowShadow::update()
     m_shadow->setLeftTile(createTile(tiles.tiles[7]));
     m_shadow->setPadding(tiles.offsets);
 
-    if (m_shadow->create())
+    if (m_shadow->create()) {
         m_tileScale = scale;
-    else
+        m_tileRadius = m_radius;
+        m_tileStrength = m_strength;
+    } else {
         clear();
+    }
 }

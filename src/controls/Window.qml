@@ -66,11 +66,18 @@ Window {
         id: windowHelper
     }
 
+    // A window that has just been mapped is about to be given the focus, and
+    // the shadow it is opening with should be the one it will keep: building
+    // the inactive shadow first only to replace it a frame later is what made
+    // an opening window blink.
+    property bool _wasActive: false
+    onActiveChanged: if (active) _wasActive = true
+
     // Window shadows
     FishUI.WindowShadow {
         view: control
         radius: control.windowRadius
-        strength: control.active ? 1.5 : 0.9
+        strength: control.active || !control._wasActive ? 1.5 : 0.9
     }
 
     // Left bottom edge

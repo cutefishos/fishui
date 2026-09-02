@@ -62,6 +62,8 @@ private:
     QPointer<QWindow> m_view;
     QPointer<QScreen> m_screen;
     qreal m_tileScale = 0;
+    qreal m_tileRadius = 0;
+    qreal m_tileStrength = 0;
     qreal m_radius = 10;
     qreal m_strength = 1.2;
     bool m_enabled = true;

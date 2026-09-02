@@ -63,7 +63,7 @@ QtObject {
     property real mediumRadius: 10.0
     property real bigRadius: 12.0
     property real hugeRadius: 14.0
-    property real windowRadius: 11.0
+    property real windowRadius: 14.0
 
     property var renderType: Text.QtRendering
 
