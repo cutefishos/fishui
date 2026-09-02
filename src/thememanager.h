@@ -21,6 +21,7 @@
 #define THEMEMANAGER_H
 
 #include <QObject>
+#include <QHash>
 #include <QFont>
 #include <QColor>
 
@@ -69,6 +70,12 @@ public:
     QColor orangeColor() { return m_orangeColor; }
     QColor greyColor() { return m_greyColor; }
 
+    // Whether the icon theme draws @p name as a single-colour glyph, the kind
+    // that is meant to be recoloured to match the text around it. Full colour
+    // icons have to be left alone: tinting one paints it over as a solid
+    // block of text colour.
+    Q_INVOKABLE bool isMonochromeIcon(const QString &name);
+
 signals:
     void darkModeChanged();
     void blurEnabledChanged();
@@ -104,6 +111,10 @@ private:
     QColor m_accentColor;
     qreal m_fontSize;
     QString m_fontFamily;
+
+    // isMonochromeIcon() has to rasterise the icon to answer, so the verdict
+    // is remembered per icon name.
+    QHash<QString, bool> m_monochromeIcons;
 };
 
 #endif // THEMEMANAGER_H

@@ -50,8 +50,15 @@ T.MenuItem {
     icon.width: control.hasIcon ? FishUI.Units.iconSizes.smallMedium : 0
     icon.height: control.hasIcon ? FishUI.Units.iconSizes.smallMedium : 0
 
-    icon.color: control.enabled ? (control.active ? FishUI.Theme.highlightedTextColor : FishUI.Theme.textColor) :
-                             FishUI.Theme.disabledTextColor
+    // Only a single-colour glyph is recoloured to match the row. A full colour
+    // icon keeps its own colours - tinting one paints it over as a solid block
+    // of text colour, which is all a filled icon has left to show.
+    readonly property bool monochromeIcon: FishUI.Theme.isMonochromeIcon(control.icon.name)
+
+    icon.color: !control.monochromeIcon ? "transparent"
+                                        : control.enabled ? (control.active ? FishUI.Theme.highlightedTextColor
+                                                                            : FishUI.Theme.textColor)
+                                                          : FishUI.Theme.disabledTextColor
 
     contentItem: IconLabel {
         readonly property real arrowPadding: control.hasChildMenu && control.arrow ? control.arrow.width + control.spacing : 0

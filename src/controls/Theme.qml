@@ -83,4 +83,10 @@ QtObject {
             id: fontMetrics
         }
     ]
+
+    // Whether the icon theme draws this icon as a single-colour glyph, so it
+    // may be recoloured to match its surroundings.
+    function isMonochromeIcon(name) {
+        return FishUICore.ThemeManager.isMonochromeIcon(name)
+    }
 }
