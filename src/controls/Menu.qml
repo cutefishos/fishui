@@ -2,7 +2,6 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Templates as T
 import QtQuick.Window
-import Qt5Compat.GraphicalEffects
 
 import FishUI 1.0 as FishUI
 
@@ -23,6 +22,15 @@ T.Menu {
     transformOrigin: !cascade ? Item.Top : (mirrored ? Item.TopRight : Item.TopLeft)
 
     delegate: FishUI.MenuItem { }
+
+    onAboutToShow: {
+        // QQmlObjectModel items can finish resolving their implicit height
+        // after the popup has calculated its initial size. Force the list to
+        // lay out before the popup window is shown, then repeat once the
+        // event loop has processed any newly-created menu items.
+        contentItem.forceLayout()
+        Qt.callLater(function() { contentItem.forceLayout() })
+    }
 
     enter: Transition {
         ParallelAnimation {
@@ -95,15 +103,5 @@ T.Menu {
         border.width: 1 / FishUI.Units.devicePixelRatio
         border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.16)
                                             : Qt.rgba(0, 0, 0, 0.12)
-
-        layer.enabled: true
-        layer.effect: DropShadow {
-            transparentBorder: true
-            radius: 18
-            samples: 32
-            horizontalOffset: 0
-            verticalOffset: 4
-            color: Qt.rgba(0, 0, 0, FishUI.Theme.darkMode ? 0.2 : 0.1)
-        }
     }
 }

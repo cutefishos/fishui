@@ -33,6 +33,7 @@ T.MenuItem {
     implicitWidth: Math.max(146, implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
     implicitHeight: visible ? 30 : 0
+    height: implicitHeight
 
     // ColumnLayout otherwise keeps each row at its own preferred width. All
     // rows must share the menu width so their hover backgrounds line up.

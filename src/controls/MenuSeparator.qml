@@ -9,6 +9,7 @@ T.MenuSeparator {
     id: control
 
     implicitHeight: visible ? 5 : 0
+    height: implicitHeight
     Layout.fillWidth: true
 
     background: Rectangle {

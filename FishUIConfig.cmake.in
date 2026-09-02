@@ -1,8 +1,15 @@
 @PACKAGE_INIT@
 
 include(CMakeFindDependencyMacro)
-find_dependency(Qt5Core @REQUIRED_QT_VERSION@)
-find_dependency(Qt5DBus @REQUIRED_QT_VERSION@)
+find_dependency(Qt6Core)
+find_dependency(Qt6Gui)
+find_dependency(Qt6Widgets)
+find_dependency(Qt6DBus)
+find_dependency(Qt6Qml)
+find_dependency(Qt6Quick)
+find_dependency(Qt6QuickControls2)
+find_dependency(KF6WindowSystem)
+find_dependency(KWayland)
 
 # Any changes in this ".cmake" file will be overwritten by CMake, the source is the ".cmake.in" file.
 
