@@ -19,11 +19,23 @@
 
 #include "menupopupwindow.h"
 #include <QGuiApplication>
+#include <QCoreApplication>
 #include <QCursor>
 #include <QQuickRenderControl>
 #include <QQuickItem>
 #include <QScreen>
 #include <QTimer>
+#include <QtMath>
+
+// Distance kept between a popup and the screen edges.
+static const int kScreenMargin = 6;
+// A release that arrives this soon after the menu opened still belongs to
+// the press that opened it, the way a short click-and-hold does on macOS.
+static const int kOpeningPressMs = 200;
+
+// A submenu sits against the menu it belongs to, overlapping its border
+// slightly so the two frames read as one connected menu.
+static const int kSubmenuOverlap = 2;
 
 MenuPopupWindow::MenuPopupWindow(QQuickWindow *parent)
     : QQuickWindow(parent)
@@ -33,6 +45,8 @@ MenuPopupWindow::MenuPopupWindow(QQuickWindow *parent)
     , m_mouseMoved(false)
     , m_dismissed(false)
     , m_pointerInside(false)
+    , m_contentTopMargin(0)
+    , m_pressed(false)
 {
     setFlags(Qt::Popup);
     setColor(Qt::transparent);
@@ -77,47 +91,106 @@ void MenuPopupWindow::show()
     showAt(QCursor::pos().x(), QCursor::pos().y());
 }
 
+bool MenuPopupWindow::isSubmenuPopup() const
+{
+    return m_parentItem && qobject_cast<MenuPopupWindow *>(transientParent());
+}
+
+QRect MenuPopupWindow::availableScreenGeometry() const
+{
+    const QWindow *pw = transientParent();
+    if (!pw && m_parentItem)
+        pw = m_parentItem->window();
+    if (!pw)
+        pw = this;
+
+    const QScreen *screen = pw->screen();
+    if (!screen)
+        screen = QGuiApplication::primaryScreen();
+
+    return screen ? screen->availableGeometry() : QRect();
+}
+
+QPoint MenuPopupWindow::popupPosition(const QPoint &requested, const QSize &size) const
+{
+    const QRect g = availableScreenGeometry();
+    if (!g.isValid())
+        return requested;
+
+    int posx = requested.x();
+    int posy = requested.y();
+
+    if (isSubmenuPopup()) {
+        const QPoint itemPos = m_parentItem->mapToGlobal(QPointF(0, 0)).toPoint();
+
+        // Attach the submenu to the parent menu's frame rather than to the
+        // item inside it: the item stops short of the frame by the menu
+        // padding, which would push the submenu that much further away.
+        const QRect parentFrame = m_parentPopup ? m_parentPopup->geometry()
+                                                : QRect(itemPos, QSize(qCeil(m_parentItem->width()),
+                                                                       qCeil(m_parentItem->height())));
+        posx = parentFrame.right() + 1 - kSubmenuOverlap;
+
+        // Line the first row of the submenu up with the parent item. The
+        // popup starts with its own vertical padding, so the frame has to
+        // begin that much higher than the item it belongs to.
+        posy = itemPos.y() - m_contentTopMargin;
+
+        // Not enough room on the right: mirror the submenu to the other
+        // side of the parent menu instead of letting it run off screen.
+        if (posx + size.width() > g.right() - kScreenMargin)
+            posx = parentFrame.left() + kSubmenuOverlap - size.width();
+    } else if (posx + size.width() > g.right() - kScreenMargin) {
+        posx = g.right() - size.width() - kScreenMargin;
+    }
+
+    // A submenu taller than the space below the parent item is moved up so
+    // that its last row stays on screen; the alignment is only kept when it
+    // actually fits.
+    if (posy + size.height() > g.bottom() - kScreenMargin)
+        posy = g.bottom() - kScreenMargin - size.height();
+
+    // qBound() requires min <= max, which no longer holds once the popup is
+    // larger than the screen. Clamping the top-left edge alone keeps the
+    // start of the menu reachable in that case.
+    posx = qMax(g.left() + kScreenMargin, qMin(posx, g.right() - kScreenMargin - size.width()));
+    posy = qMax(g.top() + kScreenMargin, posy);
+
+    return QPoint(posx, posy);
+}
+
+void MenuPopupWindow::setContentTopMargin(int margin)
+{
+    if (m_contentTopMargin == margin)
+        return;
+
+    m_contentTopMargin = margin;
+    emit contentTopMarginChanged();
+
+    if (isVisible())
+        updateGeometry();
+}
+
 void MenuPopupWindow::showAt(int x, int y)
 {
     if (!m_contentItem)
         return;
 
-    QPoint pos(x, y);
-    const int margin = 6;
-    int w = m_contentItem->implicitWidth();
-    int h = m_contentItem->implicitHeight();
-    int posx = pos.x();
-    int posy = pos.y();
-
-    QWindow *pw = transientParent();
-    if (!pw && parentItem())
-        pw = parentItem()->window();
-    if (!pw)
-        pw = this;
-
-    QRect g = pw->screen()->availableGeometry();
-
-    const bool isSubmenu = parentItem() && qobject_cast<MenuPopupWindow *>(transientParent());
-    const int submenuGap = 6;
-    if (isSubmenu) {
-        const QPoint itemPos = parentItem()->mapToGlobal(QPointF(0, 0)).toPoint();
-        const int rightEdge = itemPos.x() + parentItem()->width();
-        posx = rightEdge + submenuGap;
-        posy = itemPos.y();
-
-        if (posx + w > g.right() - margin)
-            posx = itemPos.x() - w - submenuGap;
-    } else if (posx + w > g.right() - margin) {
-        posx = g.right() - w - margin;
-    }
-
-    posx = qBound(g.left() + margin, posx, g.right() - w - margin);
+    const int w = qCeil(m_contentItem->implicitWidth());
+    const int h = qCeil(m_contentItem->implicitHeight());
 
     m_mouseMoved = false;
     m_dismissed = false;
+    m_pressed = false;
+    m_shownTimer.start();
     if (!isVisible())
         setPointerInside(false);
-    posy = qBound(g.top() + margin, posy, g.bottom() - h - margin);
+
+    const QPoint pos = popupPosition(QPoint(x, y), QSize(w, h));
+    const int posx = pos.x();
+    const int posy = pos.y();
+
+    const bool isSubmenu = isSubmenuPopup();
 
     // Transfer the mouse grab before showing a submenu. Trying to replace a
     // live grab from inside a hover transition can block the event loop on
@@ -281,12 +354,15 @@ void MenuPopupWindow::updateGeometry()
     if (!m_contentItem)
         return;
 
-    int w = m_contentItem->implicitWidth();
-    int h = m_contentItem->implicitHeight();
-    int posx = geometry().x();
-    int posy = geometry().y();
+    const int w = qCeil(m_contentItem->implicitWidth());
+    const int h = qCeil(m_contentItem->implicitHeight());
 
-    setGeometry(posx, posy, w, h);
+    // Re-run the placement: a popup that grew after it was shown would
+    // otherwise keep a position computed for its old size, which both
+    // breaks the submenu alignment and lets the menu run off screen.
+    const QPoint pos = popupPosition(geometry().topLeft(), QSize(w, h));
+
+    setGeometry(pos.x(), pos.y(), w, h);
 }
 
 void MenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
@@ -300,33 +376,105 @@ void MenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
 
 void MenuPopupWindow::mousePressEvent(QMouseEvent *e)
 {
-    QRect rect = QRect(QPoint(), size());
-    setPointerInside(rect.contains(e->position().toPoint()));
-    if (rect.contains(e->pos())) {
+    const QRect rect(QPoint(), size());
+    const bool inside = rect.contains(e->position().toPoint());
+    setPointerInside(inside);
+
+    if (inside) {
+        m_pressed = true;
         QQuickWindow::mousePressEvent(e);
-    } else {
-        dismissPopup();
+        return;
     }
+
+    // A press that lands on one of our own popups is part of the same menu
+    // interaction. Compositors that keep the pointer grab on the menu that
+    // owns it deliver such a press here, and dismissing on it would close
+    // the menu instead of letting the submenu item handle the click.
+    if (popupChainContainsGlobalCursor())
+        return;
+
+    dismissPopup();
 }
 
 void MenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
 {
-    QRect rect = QRect(QPoint(), size());
-    setPointerInside(rect.contains(e->position().toPoint()));
-    if (rect.contains(e->pos())) {
-        if (m_mouseMoved) {
-            QMouseEvent pe = QMouseEvent(QEvent::MouseButtonPress, e->pos(), e->button(), e->buttons(), e->modifiers());
-            QQuickWindow::mousePressEvent(&pe);
-            if (!m_dismissed && e->button() != Qt::RightButton) {
-                dismissPopup();
-                QQuickWindow::mouseReleaseEvent(e);
-            }
-        }
+    const QRect rect(QPoint(), size());
+    const bool inside = rect.contains(e->position().toPoint());
+    const bool pressedHere = m_pressed;
+    m_pressed = false;
+
+    setPointerInside(inside);
+
+    if (!inside) {
         m_mouseMoved = true;
+        return;
     }
 
-    // QQuickWindow::mouseReleaseEvent(e);
-    // dismissPopup();
+    // Activate on a plain click (press and release in this popup) and on the
+    // press-drag-release gesture that starts on whatever opened the menu.
+    // The release of the very press that opened the menu is ignored: it has
+    // neither a press of its own here nor any pointer movement.
+    if (!pressedHere && (!m_mouseMoved || m_shownTimer.elapsed() < kOpeningPressMs)) {
+        m_mouseMoved = true;
+        return;
+    }
+
+    if (!pressedHere) {
+        // Press-drag-release: the item under the cursor never saw a press,
+        // so it cannot turn this release into a click. Replay the pair as a
+        // normal press followed by a release. Both have to leave the current
+        // delivery - Qt Quick ignores a pointer event sent while another one
+        // is being handled - and the release must be built only once the
+        // press has been delivered, otherwise it carries no press state and
+        // the item never sees it.
+        const QPointF local = e->position();
+        const QPointF scene = e->scenePosition();
+        const QPointF global = e->globalPosition();
+        const Qt::MouseButton button = e->button();
+        const Qt::KeyboardModifiers mods = e->modifiers();
+        QMouseEvent *press = new QMouseEvent(QEvent::MouseButtonPress, local, scene, global,
+                                             button, button, mods);
+        QCoreApplication::postEvent(this, press);
+        QTimer::singleShot(0, this, [this, local, scene, global, button, mods] {
+            QMouseEvent re(QEvent::MouseButtonRelease, local, scene, global,
+                           button, Qt::NoButton, mods);
+            QCoreApplication::sendEvent(this, &re);
+        });
+        m_mouseMoved = true;
+        return;
+    }
+
+    // Deliver the release before closing anything: hiding the popup cancels
+    // the item's mouse grab, and a release that arrives after that never
+    // becomes a click, so the action would silently not run.
+    QQuickWindow::mouseReleaseEvent(e);
+
+    m_mouseMoved = true;
+
+    if (m_dismissed || e->button() == Qt::RightButton)
+        return;
+
+    // Clicking an item that owns a submenu opens it instead of choosing
+    // anything, so the menu chain has to stay on screen.
+    if (submenuOpenedAt(e->globalPosition().toPoint()))
+        return;
+
+    dismissPopup();
+}
+
+bool MenuPopupWindow::submenuOpenedAt(const QPoint &globalPos) const
+{
+    if (!m_childPopup || !m_childPopup->isVisible())
+        return false;
+
+    const QQuickItem *item = m_childPopup->parentItem();
+    if (!item || !item->window())
+        return false;
+
+    const QRect itemRect(item->mapToGlobal(QPointF(0, 0)).toPoint(),
+                         QSize(qCeil(item->width()), qCeil(item->height())));
+
+    return itemRect.contains(globalPos);
 }
 
 bool MenuPopupWindow::event(QEvent *event)

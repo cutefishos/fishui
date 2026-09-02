@@ -23,6 +23,7 @@
 #include <QQuickWindow>
 #include <QQuickItem>
 #include <QPointer>
+#include <QElapsedTimer>
 
 class MenuPopupWindow : public QQuickWindow
 {
@@ -32,6 +33,7 @@ class MenuPopupWindow : public QQuickWindow
     Q_PROPERTY(QQuickItem *parentItem READ parentItem WRITE setParentItem NOTIFY parentItemChanged)
     Q_PROPERTY(bool submenu READ submenu NOTIFY parentItemChanged)
     Q_PROPERTY(bool pointerInside READ pointerInside NOTIFY pointerInsideChanged)
+    Q_PROPERTY(int contentTopMargin READ contentTopMargin WRITE setContentTopMargin NOTIFY contentTopMarginChanged)
 
 public:
     MenuPopupWindow(QQuickWindow *parent = nullptr);
@@ -43,6 +45,11 @@ public:
     virtual void setParentItem(QQuickItem *);
     bool submenu() const { return m_parentItem != nullptr; }
     bool pointerInside() const { return m_pointerInside; }
+    // Distance between the popup's top edge and the top of its first row.
+    // A submenu is placed with this offset removed so that its first row
+    // lines up with the parent item instead of the popup frame.
+    int contentTopMargin() const { return m_contentTopMargin; }
+    void setContentTopMargin(int margin);
     Q_INVOKABLE bool containsGlobalCursor() const;
     Q_INVOKABLE bool parentItemContainsGlobalCursor() const;
     Q_INVOKABLE bool parentPopupContainsGlobalCursor() const;
@@ -62,6 +69,7 @@ signals:
     void geometryChanged();
     void parentItemChanged();
     void pointerInsideChanged();
+    void contentTopMarginChanged();
 
 protected:
     void mousePressEvent(QMouseEvent *) override;
@@ -73,6 +81,10 @@ protected slots:
     void applicationStateChanged(Qt::ApplicationState state);
 
 private:
+    bool isSubmenuPopup() const;
+    QRect availableScreenGeometry() const;
+    QPoint popupPosition(const QPoint &requested, const QSize &size) const;
+    bool submenuOpenedAt(const QPoint &globalPos) const;
     void setPointerInside(bool inside);
     void setChildPopup(MenuPopupWindow *popup);
 
@@ -83,6 +95,9 @@ private:
     bool m_mouseMoved;
     bool m_dismissed;
     bool m_pointerInside;
+    int m_contentTopMargin;
+    bool m_pressed;
+    QElapsedTimer m_shownTimer;
 };
 
 #endif

@@ -31,6 +31,9 @@ FishUI.MenuPopupWindow {
 
     popupContentItem: _contentItem
 
+    // Lets the popup align its first row with the item that opened it.
+    contentTopMargin: _contentItem.verticalContentMargin
+
     Item {
         id: _contentItem
 
