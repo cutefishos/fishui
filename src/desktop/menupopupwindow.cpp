@@ -551,10 +551,20 @@ bool MenuPopupWindow::submenuOpenedAt(const QPoint &globalPos) const
 
 bool MenuPopupWindow::event(QEvent *event)
 {
-    if (event->type() == QEvent::Enter)
+    if (event->type() == QEvent::Enter) {
+        // A popup is sent an Enter when it maps, even when the pointer is
+        // somewhere else entirely - over the menu bar that opened it, say.
+        // Letting that through has Qt Quick deliver hover at a position the
+        // pointer never had, which leaves the first row of the menu looking
+        // hovered. Real movement into the popup is reported as motion, and
+        // that is what sets the flag below.
+        if (!geometry().contains(QCursor::pos()))
+            return true;
+
         setPointerInside(true);
-    else if (event->type() == QEvent::Leave)
+    } else if (event->type() == QEvent::Leave) {
         setPointerInside(false);
+    }
 
     //QTBUG-45079
     //This is a workaround for popup menu not being closed when using touch input.
