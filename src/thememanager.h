@@ -46,14 +46,11 @@ class ThemeManager : public QObject
     Q_PROPERTY(QColor pinkColor READ pinkColor CONSTANT)
     Q_PROPERTY(QColor orangeColor READ orangeColor CONSTANT)
     Q_PROPERTY(QColor greyColor READ greyColor CONSTANT)
-    Q_PROPERTY(qreal devicePixelRatio READ devicePixelRatio CONSTANT)
     Q_PROPERTY(qreal fontSize READ fontSize NOTIFY fontSizeChanged)
     Q_PROPERTY(QString fontFamily READ fontFamily NOTIFY fontFamilyChanged)
 
 public:
     explicit ThemeManager(QObject *parent = nullptr);
-
-    qreal devicePixelRatio() const;
 
     bool darkMode() { return m_darkMode; }
     bool blurEnabled() const { return m_blurEnabled; }

@@ -25,8 +25,6 @@ import FishUI.Core 1.0 as FishUICore
 QtObject {
     id: theme
 
-    property real devicePixelRatio: FishUICore.ThemeManager.devicePixelRatio
-
     property bool darkMode: FishUICore.ThemeManager.darkMode
     property bool blurEnabled: FishUICore.ThemeManager.blurEnabled
 

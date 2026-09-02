@@ -18,6 +18,7 @@
  */
 
 import QtQuick 2.12
+import QtQuick.Window 2.3
 import QtQuick.Controls 2.12
 import Qt5Compat.GraphicalEffects
 
@@ -53,8 +54,8 @@ Item {
         anchors.fill: parent
         color: "transparent"
         radius: _background.radius
-        border.width: 1 / FishUI.Theme.devicePixelRatio
-        border.pixelAligned: FishUI.Theme.devicePixelRatio > 1 ? false : true
+        border.width: 1 / Screen.devicePixelRatio
+        border.pixelAligned: Screen.devicePixelRatio > 1 ? false : true
         border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.1) : Qt.rgba(0, 0, 0, 0.1)
         visible: control.borderEnabled
         antialiasing: true

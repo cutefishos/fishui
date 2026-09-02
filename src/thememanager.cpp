@@ -53,11 +53,6 @@ ThemeManager::ThemeManager(QObject *parent)
     initData();
 }
 
-qreal ThemeManager::devicePixelRatio() const
-{
-    return qApp->devicePixelRatio();
-}
-
 void ThemeManager::initData()
 {
     QDBusInterface iface(Service, ObjectPath, Interface, QDBusConnection::sessionBus(), this);
