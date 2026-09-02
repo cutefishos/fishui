@@ -143,7 +143,12 @@ void WindowShadow::update()
     if (!manager->isValid() || m_radius <= 0)
         return;
 
-    const qreal scale = m_view->devicePixelRatio();
+    // KWin maps a shadow tile's pixels 1:1 onto *logical* pixels and never
+    // looks at the buffer scale, so tiles have to be rendered at one pixel per
+    // logical pixel. A hidpi tile set makes the shadow twice as wide as the
+    // padding claims; KWin then squashes the corner tiles to fit the window and
+    // the shadow all but vanishes at 200%.
+    const qreal scale = 1.0;
 
     // Already up to date.
     if (m_shadow
