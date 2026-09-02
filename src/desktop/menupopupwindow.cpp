@@ -239,8 +239,14 @@ void MenuPopupWindow::showAt(int x, int y)
     // Hand the keyboard grab over before showing a submenu. Trying to replace
     // a live grab from inside a hover transition can block the event loop on
     // compositors that serialize popup grabs.
-    if (isSubmenu && m_parentPopup)
+    //
+    // Claiming the parent's submenu slot here rather than only when the
+    // parent item is assigned also covers a submenu that is shown again
+    // after the pointer has been to a sibling in the meantime.
+    if (isSubmenu && m_parentPopup) {
+        m_parentPopup->setChildPopup(this);
         m_parentPopup->setKeyboardGrabEnabled(false);
+    }
 
     setGeometry(posx, posy, w, h);
 
@@ -352,6 +358,15 @@ void MenuPopupWindow::setChildPopup(MenuPopupWindow *popup)
 {
     if (!popup || m_childPopup == popup)
         return;
+
+    // A menu may only ever have one submenu on screen. Popups have to be
+    // taken down innermost first, so the submenu that is being replaced has
+    // to go before the new one is mapped: leaving both up and letting the
+    // older one time out afterwards destroys them out of order, and the
+    // compositor answers that by dismissing the whole popup chain - the menu
+    // disappears from under the pointer.
+    if (m_childPopup && m_childPopup->isVisible())
+        m_childPopup->dismissPopup();
 
     m_childPopup = popup;
 }
