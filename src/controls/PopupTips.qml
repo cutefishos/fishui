@@ -115,6 +115,12 @@ Window {
     }
 
     function show() {
+        // A menu holds the interaction while it is open. A tooltip popping up
+        // from the panel underneath it would be talking over the menu, and on
+        // Wayland it cannot even be placed against it sensibly.
+        if (windowHelper.popupMenuVisible())
+            return
+
         if (control.popupText)
             control.visible = true
     }

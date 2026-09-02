@@ -1,5 +1,7 @@
 #include "windowhelper.h"
 
+#include <QGuiApplication>
+
 WindowHelper::WindowHelper(QObject *parent)
     : QObject(parent)
 {
@@ -26,4 +28,15 @@ void WindowHelper::minimizeWindow(QWindow *w)
 {
     if (w)
         w->showMinimized();
+}
+
+bool WindowHelper::popupMenuVisible() const
+{
+    const auto windows = QGuiApplication::topLevelWindows();
+    for (const QWindow *window : windows) {
+        if (window->isVisible() && (window->flags() & Qt::Popup) == Qt::Popup)
+            return true;
+    }
+
+    return false;
 }

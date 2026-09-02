@@ -19,6 +19,11 @@ public:
 
     Q_INVOKABLE void minimizeWindow(QWindow *w);
 
+    // Whether one of this application's menus is on screen. A menu owns the
+    // interaction while it is up, so the panels underneath it must not answer
+    // hover with a tooltip.
+    Q_INVOKABLE bool popupMenuVisible() const;
+
 };
 
 #endif // WINDOWHELPER_H
