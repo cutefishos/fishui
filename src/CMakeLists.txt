@@ -7,7 +7,7 @@ target_sources(${TARGET} PRIVATE
         iconthemeprovider.cpp
         thememanager.cpp
 
-        newiconitem.cpp
+        iconitem.cpp
         managedtexturenode.cpp
         wheelhandler.cpp
         dpi.cpp

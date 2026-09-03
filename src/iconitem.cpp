@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "newiconitem.h"
+#include "iconitem.h"
 
 #include <QQuickWindow>
 #include <QGuiApplication>
@@ -25,14 +25,14 @@
 #include <QPainter>
 #include <QIcon>
 
-NewIconItem::NewIconItem(QQuickItem *parent)
+IconItem::IconItem(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
     setFlag(ItemHasContents, true);
     setSmooth(false);
 }
 
-void NewIconItem::setSource(const QVariant &source)
+void IconItem::setSource(const QVariant &source)
 {
     if (source == m_source) {
         return;
@@ -94,12 +94,12 @@ void NewIconItem::setSource(const QVariant &source)
     emit sourceChanged();
 }
 
-QVariant NewIconItem::source() const
+QVariant IconItem::source() const
 {
     return m_source;
 }
 
-void NewIconItem::paint(QPainter *painter)
+void IconItem::paint(QPainter *painter)
 {
     if (m_iconPixmap.isNull())
         return;
@@ -108,12 +108,12 @@ void NewIconItem::paint(QPainter *painter)
     painter->drawPixmap(contentsBoundingRect().toRect(), m_iconPixmap);
 }
 
-void NewIconItem::updateIcon()
+void IconItem::updateIcon()
 {
     loadPixmap();
 }
 
-void NewIconItem::componentComplete()
+void IconItem::componentComplete()
 {
     QQuickPaintedItem::componentComplete();
 
@@ -123,7 +123,7 @@ void NewIconItem::componentComplete()
     loadPixmap();
 }
 
-QSGNode *NewIconItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *data)
+QSGNode *IconItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *data)
 {
     // Nothing about the item changes when the output scale does - same source,
     // same logical geometry - so the icon has to be re-rasterised here or it
@@ -134,7 +134,7 @@ QSGNode *NewIconItem::updatePaintNode(QSGNode *node, UpdatePaintNodeData *data)
     return QQuickPaintedItem::updatePaintNode(node, data);
 }
 
-qreal NewIconItem::scaleFactor() const
+qreal IconItem::scaleFactor() const
 {
     if (QQuickWindow *w = window())
         return w->effectiveDevicePixelRatio();
@@ -142,7 +142,7 @@ qreal NewIconItem::scaleFactor() const
     return qApp->devicePixelRatio();
 }
 
-void NewIconItem::loadPixmap()
+void IconItem::loadPixmap()
 {
     if (!isComponentComplete()) {
         return;
@@ -184,7 +184,7 @@ void NewIconItem::loadPixmap()
     update();
 }
 
-void NewIconItem::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
+void IconItem::geometryChange(const QRectF &newGeometry, const QRectF &oldGeometry)
 {
     QQuickPaintedItem::geometryChange(newGeometry, oldGeometry);
 

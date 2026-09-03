@@ -23,7 +23,7 @@
 #include "shadowhelper/windowshadow.h"
 #include "blurhelper/windowblur.h"
 #include "windowhelper.h"
-#include "newiconitem.h"
+#include "iconitem.h"
 #include "wheelhandler.h"
 #include "dpi.h"
 #include "qqmlsortfilterproxymodel.h"
@@ -58,7 +58,7 @@ void FishUI::registerTypes(const char *uri)
     qmlRegisterType<WindowShadow>(uri, 1, 0, "WindowShadow");
     qmlRegisterType<WindowBlur>(uri, 1, 0, "WindowBlur");
     qmlRegisterType<WindowHelper>(uri, 1, 0, "WindowHelper");
-    qmlRegisterType<NewIconItem>(uri, 1, 0, "IconItem");
+    qmlRegisterType<IconItem>(uri, 1, 0, "IconItem");
     qmlRegisterType<MenuPopupWindow>(uri, 1, 0, "MenuPopupWindow");
     qmlRegisterType<WheelHandler>(uri, 1, 0, "WheelHandler");
     qmlRegisterUncreatableType<Dpi>(uri, 1, 0, "Dpi", QStringLiteral("Dpi is an attached property"));
@@ -70,7 +70,6 @@ void FishUI::registerTypes(const char *uri)
     qmlRegisterType(componentUrl(QStringLiteral("AboutDialog.qml")), uri, 1, 0, "AboutDialog");
     qmlRegisterType(componentUrl(QStringLiteral("ActionTextField.qml")), uri, 1, 0, "ActionTextField");    
     qmlRegisterType(componentUrl(QStringLiteral("BusyIndicator.qml")), uri, 1, 0, "BusyIndicator");
-    qmlRegisterType(componentUrl(QStringLiteral("Icon.qml")), uri, 1, 0, "Icon");
     qmlRegisterType(componentUrl(QStringLiteral("PopupTips.qml")), uri, 1, 0, "PopupTips");
     qmlRegisterType(componentUrl(QStringLiteral("RoundedRect.qml")), uri, 1, 0, "RoundedRect");
     qmlRegisterType(componentUrl(QStringLiteral("TabBar.qml")), uri, 1, 0, "TabBar");

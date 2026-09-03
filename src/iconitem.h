@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef NEWICONITEM_H
-#define NEWICONITEM_H
+#ifndef ICONITEM_H
+#define ICONITEM_H
 
 #include <QQuickPaintedItem>
 #include <QPixmap>
@@ -26,13 +26,13 @@
 #include <QIcon>
 
 class IconItemSource;
-class NewIconItem : public QQuickPaintedItem
+class IconItem : public QQuickPaintedItem
 {
     Q_OBJECT
     Q_PROPERTY(QVariant source READ source WRITE setSource NOTIFY sourceChanged)
 
 public:
-    NewIconItem(QQuickItem *parent = nullptr);
+    IconItem(QQuickItem *parent = nullptr);
 
     void setSource(const QVariant &source);
     QVariant source() const;
@@ -65,4 +65,4 @@ private:
     qreal m_pixmapScale = 0;
 };
 
-#endif // NEWICONITEM_H
+#endif // ICONITEM_H
