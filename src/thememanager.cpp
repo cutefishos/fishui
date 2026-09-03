@@ -29,9 +29,9 @@
 #include <QDBusInterface>
 #include <QDebug>
 
-static const QString Service = "com.cutefish.Settings";
-static const QString ObjectPath = "/Theme";
-static const QString Interface = "com.cutefish.Theme";
+static const QString Service = "com.cutefish.Services";
+static const QString ObjectPath = "/com/cutefish/Services/Appearance";
+static const QString Interface = "com.cutefish.Services.Appearance";
 
 ThemeManager::ThemeManager(QObject *parent) 
     : QObject(parent)
