@@ -99,6 +99,21 @@ QVariant IconItem::source() const
     return m_source;
 }
 
+void IconItem::setColor(const QColor &color)
+{
+    if (m_color == color)
+        return;
+
+    m_color = color;
+    emit colorChanged();
+    loadPixmap();
+}
+
+QColor IconItem::color() const
+{
+    return m_color;
+}
+
 void IconItem::paint(QPainter *painter)
 {
     if (m_iconPixmap.isNull())
@@ -178,6 +193,23 @@ void IconItem::loadPixmap()
         m_iconPixmap = QPixmap();
         update();
         return;
+    }
+
+    // Tinted here rather than with a QML layer/ColorOverlay: a layer's FBO is
+    // resampled at the item's position, which softens the icon whenever that
+    // position is not on a whole device pixel.
+    if (m_color.isValid() && !result.isNull()) {
+        QPixmap tinted(result.size());
+        tinted.setDevicePixelRatio(result.devicePixelRatio());
+        tinted.fill(Qt::transparent);
+
+        QPainter p(&tinted);
+        p.drawPixmap(0, 0, result);
+        p.setCompositionMode(QPainter::CompositionMode_SourceIn);
+        p.fillRect(tinted.rect(), m_color);
+        p.end();
+
+        result = tinted;
     }
 
     m_iconPixmap = result;

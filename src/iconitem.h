@@ -24,12 +24,15 @@
 #include <QPixmap>
 #include <QPixmapCache>
 #include <QIcon>
+#include <QColor>
 
 class IconItemSource;
 class IconItem : public QQuickPaintedItem
 {
     Q_OBJECT
     Q_PROPERTY(QVariant source READ source WRITE setSource NOTIFY sourceChanged)
+    // An invalid colour (the default) paints the icon as it is.
+    Q_PROPERTY(QColor color READ color WRITE setColor NOTIFY colorChanged)
 
 public:
     IconItem(QQuickItem *parent = nullptr);
@@ -37,12 +40,16 @@ public:
     void setSource(const QVariant &source);
     QVariant source() const;
 
+    void setColor(const QColor &color);
+    QColor color() const;
+
     void paint(QPainter *painter) override;
 
     Q_INVOKABLE void updateIcon();
 
 signals:
     void sourceChanged();
+    void colorChanged();
 
 protected:
     void loadPixmap();
@@ -61,6 +68,7 @@ private:
     QImage m_image;
 
     QString m_iconName;
+    QColor m_color;
     QPixmap m_iconPixmap;
     qreal m_pixmapScale = 0;
 };
