@@ -77,7 +77,7 @@ Window {
     FishUI.WindowShadow {
         view: control
         radius: control.windowRadius
-        strength: control.active || !control._wasActive ? 1.5 : 0.9
+        strength: control.active || !control._wasActive ? 0.8 : 0.5
     }
 
     // Left bottom edge
