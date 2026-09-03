@@ -6,15 +6,18 @@ import FishUI 1.0 as FishUI
 T.TabBar {
     id: control
 
-    implicitWidth: Math.max(background.implicitWidth, contentItem.implicitWidth + FishUI.Units.smallSpacing)
-    implicitHeight: contentItem.implicitHeight
+    // The implicit size must come from T.TabBar's own contentWidth/contentHeight,
+    // never from the ListView: the ListView's contentWidth follows the tab
+    // widths, which follow the bar's width, so routing the implicit size
+    // through it makes a Layout re-polish for ever at 100% CPU.
+    implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
+                            contentWidth + leftPadding + rightPadding + FishUI.Units.smallSpacing)
+    implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
+                             contentHeight + topPadding + bottomPadding)
 
     spacing: 0
 
     contentItem: ListView {
-        implicitWidth: contentWidth
-        implicitHeight: control.contentModel.get(0).height
-
         model: control.contentModel
         currentIndex: control.currentIndex
 
