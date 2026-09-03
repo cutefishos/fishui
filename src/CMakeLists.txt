@@ -10,6 +10,7 @@ target_sources(${TARGET} PRIVATE
         newiconitem.cpp
         managedtexturenode.cpp
         wheelhandler.cpp
+        dpi.cpp
         qqmlsortfilterproxymodel.cpp
 
         desktop/menupopupwindow.cpp

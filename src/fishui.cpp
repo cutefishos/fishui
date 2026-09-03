@@ -25,6 +25,7 @@
 #include "windowhelper.h"
 #include "newiconitem.h"
 #include "wheelhandler.h"
+#include "dpi.h"
 #include "qqmlsortfilterproxymodel.h"
 
 #include "desktop/menupopupwindow.h"
@@ -60,6 +61,7 @@ void FishUI::registerTypes(const char *uri)
     qmlRegisterType<NewIconItem>(uri, 1, 0, "IconItem");
     qmlRegisterType<MenuPopupWindow>(uri, 1, 0, "MenuPopupWindow");
     qmlRegisterType<WheelHandler>(uri, 1, 0, "WheelHandler");
+    qmlRegisterUncreatableType<Dpi>(uri, 1, 0, "Dpi", QStringLiteral("Dpi is an attached property"));
     qmlRegisterType<QQmlSortFilterProxyModel>(uri, 1, 0, "SortFilterProxyModel");
 
     qmlRegisterSingletonType(componentUrl(QStringLiteral("Theme.qml")), uri, 1, 0, "Theme");
