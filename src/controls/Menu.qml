@@ -100,7 +100,7 @@ T.Menu {
                        FishUI.Theme.secondBackgroundColor.g,
                        FishUI.Theme.secondBackgroundColor.b,
                        FishUI.Theme.darkMode ? 0.96 : 0.92)
-        border.width: 1 / FishUI.Units.devicePixelRatio
+        border.width: 1 / FishUI.Dpi.ratio
         border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.16)
                                             : Qt.rgba(0, 0, 0, 0.12)
     }

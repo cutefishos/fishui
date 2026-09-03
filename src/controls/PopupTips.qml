@@ -60,8 +60,8 @@ Window {
         color: FishUI.Theme.secondBackgroundColor
         radius: FishUI.Theme.mediumRadius
         border.color: control.borderColor
-        border.width: 1 / Screen.devicePixelRatio
-        border.pixelAligned: Screen.devicePixelRatio > 1 ? false : true
+        border.width: 1 / FishUI.Dpi.ratio
+        border.pixelAligned: FishUI.Dpi.ratio > 1 ? false : true
 
         Behavior on color {
             ColorAnimation {

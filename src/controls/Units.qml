@@ -67,6 +67,10 @@ QtObject {
      * use theme.mSize(theme.defaultFont), units.smallSpacing and units.largeSpacing.
      * The devicePixelRatio follows the definition of "device independent pixel" by Microsoft.
      */
+    // Deprecated: this is QScreen's ratio, which on Wayland is the integer
+    // wl_output scale (2 for a 150% output) rather than the ratio the window
+    // draws at. A singleton has no window, so it cannot be fixed here - use the
+    // FishUI.Dpi attached property on the item instead.
     property real devicePixelRatio: Screen.devicePixelRatio
 
     /**

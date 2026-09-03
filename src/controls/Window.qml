@@ -200,8 +200,8 @@ Window {
         color: "transparent"
         radius: control.windowRadius
         border.color: borderColor
-        border.width: 1 / Screen.devicePixelRatio
-        border.pixelAligned: Screen.devicePixelRatio > 1 ? false : true
+        border.width: 1 / FishUI.Dpi.ratio
+        border.pixelAligned: FishUI.Dpi.ratio > 1 ? false : true
         antialiasing: true
         visible: !isMaximized && !isFullScreen
         z: 999

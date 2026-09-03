@@ -57,8 +57,8 @@ FishUI.MenuPopupWindow {
                            control.blurEnabled && !control.submenu ? 0.86 : 1)
             radius: FishUI.Theme.windowRadius
             border.color: _background.borderColor
-            border.width: 1 / FishUI.Units.devicePixelRatio
-            border.pixelAligned: FishUI.Units.devicePixelRatio > 1 ? false : true
+            border.width: 1 / FishUI.Dpi.ratio
+            border.pixelAligned: FishUI.Dpi.ratio > 1 ? false : true
 
             property var borderColor: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3)
                                                             : Qt.rgba(0, 0, 0, 0.2)

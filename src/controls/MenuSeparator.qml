@@ -16,7 +16,7 @@ T.MenuSeparator {
         id: separator
         anchors.centerIn: control
         width: control.width - FishUI.Units.largeSpacing * 2
-        height: 1 / FishUI.Units.devicePixelRatio
+        height: 1 / FishUI.Dpi.ratio
         color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.14)
                                     : Qt.rgba(0, 0, 0, 0.1)
     }
