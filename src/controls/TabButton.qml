@@ -97,7 +97,7 @@ Item {
             Layout.preferredHeight: 24
             Layout.preferredWidth: 24
             size: 24
-            source: !enabled ? "" : "qrc:/images/" + (FishUI.Theme.darkMode || control.checked ? "dark/" : "light/") + "close.svg"
+            source: !enabled ? "" : "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode || control.checked ? "dark/" : "light/") + "close.svg"
             onClicked: control.closeClicked()
         }
     }

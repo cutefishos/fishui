@@ -61,7 +61,7 @@ Item {
             Layout.preferredWidth: visible ? height : 0
 
             sourceComponent: FishUI.RoundImageButton {
-                source: "qrc:/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "add.svg"
+                source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "add.svg"
                 onClicked: control.newTabClicked()
                 iconMargins: 2
             }
