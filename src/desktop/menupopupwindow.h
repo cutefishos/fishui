@@ -110,6 +110,7 @@ private:
     QPoint popupPosition(const QPoint &requested, const QSize &size) const;
     void setPointerInside(bool inside);
     void setChildPopup(MenuPopupWindow *popup);
+    void unmap();
 
     QPointer<QQuickItem> m_parentItem;
     QPointer<QQuickItem> m_contentItem;
@@ -117,6 +118,9 @@ private:
     QPointer<MenuPopupWindow> m_childPopup;
     bool m_mouseMoved;
     bool m_dismissed;
+    // A dismissed popup is only unmapped once the current event delivery is
+    // over, so that a menu bar switching menus keeps the surface it has.
+    bool m_hidePending = false;
     bool m_pointerInside;
     int m_contentTopMargin;
     QRect m_availableGeometry;

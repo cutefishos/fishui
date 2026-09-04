@@ -255,6 +255,9 @@ void MenuPopupWindow::showAt(int x, int y)
     m_mouseMoved = false;
     m_dismissed = false;
     m_pressed = false;
+    // Reopened before the deferred unmap ran: the popup stays mapped and only
+    // moves.
+    m_hidePending = false;
     m_shownTimer.start();
     if (!isVisible())
         setPointerInside(false);
@@ -394,8 +397,12 @@ void MenuPopupWindow::setChildPopup(MenuPopupWindow *popup)
     // older one time out afterwards destroys them out of order, and the
     // compositor answers that by dismissing the whole popup chain - the menu
     // disappears from under the pointer.
-    if (m_childPopup && m_childPopup->isVisible())
+    if (m_childPopup && m_childPopup->isVisible()) {
         m_childPopup->dismissPopup();
+        // Here the unmap cannot wait for the event loop: the popup being
+        // replaced has to leave the chain before its successor joins it.
+        m_childPopup->unmap();
+    }
 
     m_childPopup = popup;
 }
@@ -433,6 +440,25 @@ void MenuPopupWindow::dismissPopup()
     if (!m_parentItem)
         setKeyboardGrabEnabled(false);
 
+    // Unmap only once the current event delivery is over. Clicking a menu bar
+    // entry dismisses the open menu and reopens it on another entry in the
+    // same pass; destroying the surface and building a second xdg_popup for it
+    // there races the scene graph thread, which is free to commit a frame to
+    // the new surface before the grab request - and a grab on a surface that
+    // already carries a buffer is a protocol error that kills the client.
+    if (m_hidePending)
+        return;
+
+    m_hidePending = true;
+    QMetaObject::invokeMethod(this, &MenuPopupWindow::unmap, Qt::QueuedConnection);
+}
+
+void MenuPopupWindow::unmap()
+{
+    if (!m_hidePending)
+        return;
+
+    m_hidePending = false;
     hide();
 }
 
