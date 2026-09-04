@@ -174,14 +174,25 @@ Window {
         onPressed: windowHelper.startSystemResize(control, Qt.RightEdge)
     }
 
-    // Background
+    // Background and border are one Rectangle on purpose: a separate
+    // transparent-fill ring on top of the background is two antialiased
+    // rounded shapes, and along the corner arc their feathers cancel so the
+    // hairline never reaches full opacity - it reads soft and pale next to
+    // the crisp straight edges.
+    property real _borderWidth: !isMaximized && !isFullScreen ? 1 / FishUI.Dpi.ratio : 0
+
     Rectangle {
         id: _background
         anchors.fill: parent
-        anchors.margins: 0
         radius: !isMaximized && !isFullScreen ? control.windowRadius : 0
         color: FishUI.Theme.backgroundColor
         antialiasing: true
+
+        border.width: control._borderWidth
+        border.pixelAligned: FishUI.Dpi.ratio <= 1
+        border.color: FishUI.Theme.darkMode
+                      ? Qt.rgba(1, 1, 1, control.active ? 0.16 : 0.10)
+                      : Qt.rgba(0, 0, 0, control.active ? 0.18 : 0.12)
 
         Behavior on color {
             ColorAnimation {
@@ -189,22 +200,13 @@ Window {
                 easing.type: Easing.Linear
             }
         }
-    }
 
-    // Border line
-    Rectangle {
-        anchors.fill: parent
-
-        property var borderColor: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3)
-                                                        : Qt.rgba(0, 0, 0, 0.2)
-        color: "transparent"
-        radius: control.windowRadius
-        border.color: borderColor
-        border.width: 1 / FishUI.Dpi.ratio
-        border.pixelAligned: FishUI.Dpi.ratio > 1 ? false : true
-        antialiasing: true
-        visible: !isMaximized && !isFullScreen
-        z: 999
+        Behavior on border.color {
+            ColorAnimation {
+                duration: 150
+                easing.type: Easing.Linear
+            }
+        }
     }
 
     // Content
@@ -329,19 +331,21 @@ Window {
             }
         }
 
-        // Mask
-       layer.enabled: _background.radius > 0
-       layer.effect: OpacityMask {
-           maskSource: Item {
-               width: _contentItem.width
-               height: _contentItem.height
+        // Mask. Inset by the border so opaque content (a sidebar, a view
+        // background) stops at the hairline instead of painting over it.
+        layer.enabled: _background.radius > 0
+        layer.effect: OpacityMask {
+            maskSource: Item {
+                width: _contentItem.width
+                height: _contentItem.height
 
-               Rectangle {
-                   anchors.fill: parent
-                   radius: _background.radius
-               }
-           }
-       }
+                Rectangle {
+                    anchors.fill: parent
+                    anchors.margins: control._borderWidth
+                    radius: Math.max(0, _background.radius - control._borderWidth)
+                }
+            }
+        }
     }
 
     QtObject {
