@@ -18,6 +18,9 @@ T.MenuItem {
     // exists.
     property bool hasChildMenu: !!control.subMenu || !!control.childMenu
     readonly property bool hasIcon: control.icon.name.length > 0 || control.icon.source.toString().length > 0
+    // A row that only reflects a choice keeps the checkmark column even while
+    // unchecked, so the labels of the whole group line up.
+    property bool reservesCheckColumn: control.checkable
     readonly property bool submenuOpen: !!control.childMenu && control.childMenu.visible
     readonly property bool active: control.enabled && (control.hovered || control.highlighted ||
                                                        control.pressed || control.submenuOpen)
@@ -62,9 +65,10 @@ T.MenuItem {
 
     contentItem: IconLabel {
         readonly property real arrowPadding: control.hasChildMenu && control.arrow ? control.arrow.width + control.spacing : 0
-        // Only checked items reserve a checkmark column. Items without icons
-        // stay compact instead of inheriting an empty leading icon column.
-        readonly property real indicatorPadding: control.checked && control.indicator ? control.indicator.width + control.spacing : 0
+        // Items that never show a checkmark stay compact instead of inheriting
+        // an empty leading column.
+        readonly property real indicatorPadding: (control.checked || control.reservesCheckColumn) && control.indicator
+                                                 ? control.indicator.width + control.spacing : 0
         // This is the only intentional change from the previous layout: give
         // labels a small extra inset without moving the submenu arrow.
         leftPadding: !control.mirrored ? indicatorPadding + 4 : arrowPadding
@@ -85,7 +89,8 @@ T.MenuItem {
     indicator: Text {
         x: control.mirrored ? control.width - width - control.rightPadding : control.leftPadding
         y: (control.height - height) / 2
-        visible: control.checkable && control.checked
+        // Also for an item that only reflects state and never toggles itself.
+        visible: control.checked
         text: "✓"
         font.pixelSize: 15
         color: control.active ? FishUI.Theme.highlightedTextColor : FishUI.Theme.highlightColor
