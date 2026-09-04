@@ -45,6 +45,7 @@ class MenuPopupWindow : public QQuickWindow
 
 public:
     MenuPopupWindow(QQuickWindow *parent = nullptr);
+    ~MenuPopupWindow() override;
 
     QQuickItem *popupContentItem() const { return m_contentItem; }
     void setPopupContentItem(QQuickItem *popupContentItem);
@@ -111,6 +112,8 @@ private:
     void setPointerInside(bool inside);
     void setChildPopup(MenuPopupWindow *popup);
     void unmap();
+    void takeDownOtherPopups();
+    static void takeDown(MenuPopupWindow *popup);
 
     QPointer<QQuickItem> m_parentItem;
     QPointer<QQuickItem> m_contentItem;
@@ -126,6 +129,10 @@ private:
     QRect m_availableGeometry;
     bool m_pressed;
     QElapsedTimer m_shownTimer;
+
+    // Every popup of this process, so that a menu about to be mapped can take
+    // down a chain that is still on screen.
+    static QList<MenuPopupWindow *> s_popups;
 };
 
 #endif

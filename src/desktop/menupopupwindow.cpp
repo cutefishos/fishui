@@ -67,6 +67,8 @@ static QQuickItem *rowUnder(QQuickItem *item, const QPointF &pos)
     return nullptr;
 }
 
+QList<MenuPopupWindow *> MenuPopupWindow::s_popups;
+
 MenuPopupWindow::MenuPopupWindow(QQuickWindow *parent)
     : QQuickWindow(parent)
     , m_parentItem(0)
@@ -78,10 +80,16 @@ MenuPopupWindow::MenuPopupWindow(QQuickWindow *parent)
     , m_contentTopMargin(0)
     , m_pressed(false)
 {
+    s_popups.append(this);
     setFlags(Qt::Popup);
     setColor(Qt::transparent);
     connect(qApp, SIGNAL(applicationStateChanged(Qt::ApplicationState)),
             this, SLOT(applicationStateChanged(Qt::ApplicationState)));
+}
+
+MenuPopupWindow::~MenuPopupWindow()
+{
+    s_popups.removeAll(this);
 }
 
 void MenuPopupWindow::applicationStateChanged(Qt::ApplicationState state)
@@ -282,6 +290,8 @@ void MenuPopupWindow::showAt(int x, int y)
 
     setGeometry(posx, posy, w, h);
 
+    takeDownOtherPopups();
+
     QQuickWindow::show();
     if (!isSubmenu) {
         // Only the root menu owns the keyboard grab; a submenu is opened from
@@ -460,6 +470,43 @@ void MenuPopupWindow::unmap()
 
     m_hidePending = false;
     hide();
+}
+
+void MenuPopupWindow::takeDown(MenuPopupWindow *popup)
+{
+    if (!popup)
+        return;
+
+    // Innermost first: a submenu outlives the menu it hangs off only as a
+    // popup whose parent surface is already gone, which KWin answers by
+    // dropping the whole chain.
+    takeDown(popup->m_childPopup);
+
+    if (!popup->isVisible())
+        return;
+
+    popup->dismissPopup();
+    popup->unmap();
+}
+
+void MenuPopupWindow::takeDownOtherPopups()
+{
+    // A menu that is on its way out is unmapped one event loop turn later, so
+    // a menu opened by the very click that dismissed it would ask for the
+    // pointer grab while the old popup still holds it - and the compositor
+    // answers that by taking the new popup down again. Anything left of
+    // another chain has to be off screen before this one is mapped.
+    QList<const MenuPopupWindow *> chain;
+    for (const MenuPopupWindow *p = this; p; p = p->m_parentPopup)
+        chain.append(p);
+
+    const QList<MenuPopupWindow *> popups = s_popups;
+    for (MenuPopupWindow *popup : popups) {
+        if (!popup || popup->m_parentPopup || chain.contains(popup))
+            continue;
+
+        takeDown(popup);
+    }
 }
 
 void MenuPopupWindow::dismissAllPopups()
