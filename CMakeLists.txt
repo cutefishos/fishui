@@ -34,6 +34,9 @@ find_package(KF6WindowSystem REQUIRED)
 # org_kde_kwin_blur, for the region behind a translucent window.
 find_package(KWayland REQUIRED)
 
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../cutefish-framework/appearance
+                 ${CMAKE_CURRENT_BINARY_DIR}/cutefish-framework-appearance-build)
+
 include(GenerateExportHeader)
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)

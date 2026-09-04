@@ -20,7 +20,7 @@
 #ifndef THEMEMANAGER_H
 #define THEMEMANAGER_H
 
-#include <QObject>
+#include <appearance.h>
 #include <QHash>
 #include <QFont>
 #include <QColor>
@@ -33,11 +33,9 @@
 #define ACCENTCOLOR_ORANGE 5
 #define ACCENTCOLOR_GREY   6
 
-class ThemeManager : public QObject
+class ThemeManager : public Appearance
 {
     Q_OBJECT
-    Q_PROPERTY(bool darkMode READ darkMode NOTIFY darkModeChanged)
-    Q_PROPERTY(bool blurEnabled READ blurEnabled NOTIFY blurEnabledChanged)
     Q_PROPERTY(QColor accentColor READ accentColor NOTIFY accentColorChanged)
     Q_PROPERTY(QColor blueColor READ blueColor CONSTANT)
     Q_PROPERTY(QColor redColor READ redColor CONSTANT)
@@ -47,25 +45,20 @@ class ThemeManager : public QObject
     Q_PROPERTY(QColor orangeColor READ orangeColor CONSTANT)
     Q_PROPERTY(QColor greyColor READ greyColor CONSTANT)
     Q_PROPERTY(qreal fontSize READ fontSize NOTIFY fontSizeChanged)
-    Q_PROPERTY(QString fontFamily READ fontFamily NOTIFY fontFamilyChanged)
 
 public:
     explicit ThemeManager(QObject *parent = nullptr);
 
-    bool darkMode() { return m_darkMode; }
-    bool blurEnabled() const { return m_blurEnabled; }
-    QColor accentColor() { return m_accentColor; }
+    QColor accentColor() const { return m_accentColor; }
+    qreal fontSize() const { return fontPointSize(); }
 
-    qreal fontSize() { return m_fontSize; }
-    QString fontFamily() { return m_fontFamily; }
-
-    QColor blueColor() { return m_blueColor; }
-    QColor redColor() { return m_redColor; }
-    QColor greenColor() { return m_greenColor; }
-    QColor purpleColor() { return m_purpleColor; }
-    QColor pinkColor() { return m_pinkColor; }
-    QColor orangeColor() { return m_orangeColor; }
-    QColor greyColor() { return m_greyColor; }
+    QColor blueColor() const { return m_blueColor; }
+    QColor redColor() const { return m_redColor; }
+    QColor greenColor() const { return m_greenColor; }
+    QColor purpleColor() const { return m_purpleColor; }
+    QColor pinkColor() const { return m_pinkColor; }
+    QColor orangeColor() const { return m_orangeColor; }
+    QColor greyColor() const { return m_greyColor; }
 
     // Whether the icon theme draws @p name as a single-colour glyph, the kind
     // that is meant to be recoloured to match the text around it. Full colour
@@ -74,29 +67,13 @@ public:
     Q_INVOKABLE bool isMonochromeIcon(const QString &name);
 
 signals:
-    void darkModeChanged();
-    void blurEnabledChanged();
     void accentColorChanged();
     void fontSizeChanged();
-    void fontFamilyChanged();
 
 private slots:
-    void initData();
-    void initDBusSignals();
-    void onDBusDarkModeChanged(bool darkMode);
-    void onDBusBlurEnabledChanged();
-    void onDBusAccentColorChanged(int accentColorID);
-    void onDBusFontSizeChanged();
-    void onDBusFontFamilyChanged();
+    void updateAccentColor();
 
 private:
-    void setAccentColor(int accentColorID);
-
-private:
-    bool m_darkMode;
-    bool m_blurEnabled;
-    int m_accentColorIndex;
-
     QColor m_blueColor   = QColor(51,  133, 255);   // #3385FF
     QColor m_redColor    = QColor(255, 92,  109);   // #FF5C6D
     QColor m_greenColor  = QColor(53,  191, 86);    // #35BF56
@@ -106,8 +83,6 @@ private:
     QColor m_greyColor   = QColor(79, 89, 107);     // #4F596B
 
     QColor m_accentColor;
-    qreal m_fontSize;
-    QString m_fontFamily;
 
     // isMonochromeIcon() has to rasterise the icon to answer, so the verdict
     // is remembered per icon name.

@@ -22,133 +22,19 @@
 #include <QIcon>
 #include <QImage>
 
-#include <QGuiApplication>
-
-#include <QDBusConnection>
-#include <QDBusServiceWatcher>
-#include <QDBusInterface>
-#include <QDebug>
-
-static const QString Service = "com.cutefish.Services";
-static const QString ObjectPath = "/com/cutefish/Services/Appearance";
-static const QString Interface = "com.cutefish.Services.Appearance";
-
 ThemeManager::ThemeManager(QObject *parent) 
-    : QObject(parent)
-    , m_darkMode(false)
-    , m_blurEnabled(true)
-    , m_accentColorIndex(-1)
-    , m_accentColor(m_blueColor) // The default is blue
-    , m_fontSize(9.0)
-    , m_fontFamily("Noto Sans")
+    : Appearance(parent)
+    , m_accentColor(m_blueColor)
 {
-    QDBusServiceWatcher *serviceWatcher = new QDBusServiceWatcher(Service, QDBusConnection::sessionBus(),
-                                                                  QDBusServiceWatcher::WatchForRegistration);
-    connect(serviceWatcher, &QDBusServiceWatcher::serviceRegistered, this, [=] {
-        initData();
-        initDBusSignals();
-    });
+    connect(this, &Appearance::accentColorIndexChanged, this, &ThemeManager::updateAccentColor);
+    connect(this, &Appearance::fontPointSizeChanged, this, &ThemeManager::fontSizeChanged);
 
-    initDBusSignals();
-    initData();
+    updateAccentColor();
 }
 
-void ThemeManager::initData()
+void ThemeManager::updateAccentColor()
 {
-    QDBusInterface iface(Service, ObjectPath, Interface, QDBusConnection::sessionBus(), this);
-
-    if (iface.isValid()) {
-        m_darkMode = iface.property("isDarkMode").toBool();
-        const bool blurEnabled = iface.property("blurEnabled").toBool();
-        if (m_blurEnabled != blurEnabled) {
-            m_blurEnabled = blurEnabled;
-            emit blurEnabledChanged();
-        }
-        int accentColorID = iface.property("accentColor").toInt();
-        setAccentColor(accentColorID);
-
-        m_fontSize = iface.property("systemFontPointSize").toReal();
-        emit fontSizeChanged();
-
-        m_fontFamily = iface.property("systemFont").toString();
-        emit fontFamilyChanged();
-
-        emit darkModeChanged();
-    }
-}
-
-void ThemeManager::initDBusSignals()
-{
-    QDBusInterface iface(Service, ObjectPath, Interface, QDBusConnection::sessionBus(), this);
-
-    if (iface.isValid()) {
-        QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "darkModeChanged",
-                                              this, SLOT(onDBusDarkModeChanged(bool)));
-        QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "blurEnabledChanged",
-                                              this, SLOT(onDBusBlurEnabledChanged()));
-        QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "accentColorChanged",
-                                              this, SLOT(onDBusAccentColorChanged(int)));
-        QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "systemFontPointSizeChanged",
-                                              this, SLOT(onDBusFontSizeChanged()));
-        QDBusConnection::sessionBus().connect(Service, ObjectPath, Interface, "systemFontChanged",
-                                              this, SLOT(onDBusFontFamilyChanged()));
-    }
-}
-
-void ThemeManager::onDBusDarkModeChanged(bool darkMode)
-{
-    if (m_darkMode != darkMode) {
-        m_darkMode = darkMode;
-        emit darkModeChanged();
-    }
-}
-
-void ThemeManager::onDBusBlurEnabledChanged()
-{
-    QDBusInterface iface(Service, ObjectPath, Interface, QDBusConnection::sessionBus(), this);
-
-    const bool blurEnabled = iface.property("blurEnabled").toBool();
-    if (m_blurEnabled != blurEnabled) {
-        m_blurEnabled = blurEnabled;
-        emit blurEnabledChanged();
-    }
-}
-
-void ThemeManager::onDBusAccentColorChanged(int accentColorID)
-{
-    setAccentColor(accentColorID);
-}
-
-void ThemeManager::onDBusFontSizeChanged()
-{
-    QDBusInterface iface(Service, ObjectPath, Interface, QDBusConnection::sessionBus(), this);
-
-    qreal size = iface.property("systemFontPointSize").toReal();
-    if (size != m_fontSize) {
-        m_fontSize = size;
-        emit fontSizeChanged();
-    }
-}
-
-void ThemeManager::onDBusFontFamilyChanged()
-{
-    QDBusInterface iface(Service, ObjectPath, Interface, QDBusConnection::sessionBus(), this);
-
-    QString family = iface.property("systemFont").toString();
-    if (family != m_fontFamily) {
-        m_fontFamily = family;
-        emit fontFamilyChanged();
-    }
-}
-
-void ThemeManager::setAccentColor(int accentColorID)
-{
-    if (m_accentColorIndex == accentColorID)
-        return;
-
-    m_accentColorIndex = accentColorID;
-
-    switch (accentColorID) {
+    switch (accentColorIndex()) {
     case ACCENTCOLOR_BLUE:
         m_accentColor = m_blueColor;
         break;

@@ -23,6 +23,7 @@ Depends: qml6-module-qtquick-controls,
          qml6-module-qtquick-window,
          qml6-module-qtquick-shapes,
          qml6-module-qt5compat-graphicaleffects,
+         libcutefish,
          ${misc:Depends},
          ${shlibs:Depends}
 Description: CutefishOS UIKit
