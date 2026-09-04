@@ -39,7 +39,6 @@ add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../cutefish-framework/appearance
 
 include(GenerateExportHeader)
 include(GNUInstallDirs)
-include(CMakePackageConfigHelpers)
 include(ECMGenerateHeaders)
 
 # Get the installation directory from Qt 6
@@ -56,8 +55,6 @@ else ()
 endif ()
 
 # Install
-set(CMAKECONFIG_INSTALL_DIR "${CMAKE_INSTALL_LIBDIR}/cmake/FishUI")
-message(STATUS "install directory:" "${CMAKECONFIG_INSTALL_DIR}")
 
 # Qt Widgets Style
 #if (UNIX)
@@ -70,31 +67,4 @@ message(STATUS "install directory:" "${CMAKECONFIG_INSTALL_DIR}")
 
 add_subdirectory(src)
 
-configure_package_config_file(
-        "${CMAKE_CURRENT_SOURCE_DIR}/FishUIConfig.cmake.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/FishUIConfig.cmake"
-        INSTALL_DESTINATION
-        "${CMAKECONFIG_INSTALL_DIR}"
-        PATH_VARS
-        CMAKECONFIG_INSTALL_DIR CMAKE_INSTALL_PREFIX
-)
 
-write_basic_package_version_file(
-        ${CMAKE_CURRENT_BINARY_DIR}/FishUIConfigVersion.cmake
-        VERSION ${PROJECT_VERSION}
-        COMPATIBILITY AnyNewerVersion
-)
-install(
-        FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/FishUIConfig.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/FishUIConfigVersion.cmake"
-        DESTINATION
-        "${CMAKECONFIG_INSTALL_DIR}"
-        COMPONENT
-        Devel
-)
-
-install(EXPORT FishUITargets
-        DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
-        FILE FishUITargets.cmake
-        )

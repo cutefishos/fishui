@@ -33,9 +33,11 @@
 #define ACCENTCOLOR_ORANGE 5
 #define ACCENTCOLOR_GREY   6
 
-class ThemeManager : public Appearance
+class ThemeManager : public QObject
 {
     Q_OBJECT
+    Q_PROPERTY(bool darkMode READ darkMode NOTIFY darkModeChanged)
+    Q_PROPERTY(bool blurEnabled READ blurEnabled NOTIFY blurEnabledChanged)
     Q_PROPERTY(QColor accentColor READ accentColor NOTIFY accentColorChanged)
     Q_PROPERTY(QColor blueColor READ blueColor CONSTANT)
     Q_PROPERTY(QColor redColor READ redColor CONSTANT)
@@ -45,12 +47,17 @@ class ThemeManager : public Appearance
     Q_PROPERTY(QColor orangeColor READ orangeColor CONSTANT)
     Q_PROPERTY(QColor greyColor READ greyColor CONSTANT)
     Q_PROPERTY(qreal fontSize READ fontSize NOTIFY fontSizeChanged)
+    Q_PROPERTY(QString fontFamily READ fontFamily NOTIFY fontFamilyChanged)
 
 public:
     explicit ThemeManager(QObject *parent = nullptr);
 
+    bool darkMode() const { return m_appearance.darkMode(); }
+    bool blurEnabled() const { return m_appearance.blurEnabled(); }
+
     QColor accentColor() const { return m_accentColor; }
-    qreal fontSize() const { return fontPointSize(); }
+    qreal fontSize() const { return m_appearance.fontPointSize(); }
+    QString fontFamily() const { return m_appearance.fontFamily(); }
 
     QColor blueColor() const { return m_blueColor; }
     QColor redColor() const { return m_redColor; }
@@ -67,13 +74,19 @@ public:
     Q_INVOKABLE bool isMonochromeIcon(const QString &name);
 
 signals:
+    void darkModeChanged();
+    void blurEnabledChanged();
     void accentColorChanged();
     void fontSizeChanged();
-
-private slots:
-    void updateAccentColor();
+    void fontFamilyChanged();
 
 private:
+    void updateAccentColor();
+
+    // Held, not inherited: the theme is read-only, and Appearance also carries
+    // the setters for wallpaper, cursor theme and font settings.
+    Appearance m_appearance;
+
     QColor m_blueColor   = QColor(51,  133, 255);   // #3385FF
     QColor m_redColor    = QColor(255, 92,  109);   // #FF5C6D
     QColor m_greenColor  = QColor(53,  191, 86);    // #35BF56

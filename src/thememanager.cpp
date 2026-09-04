@@ -23,18 +23,21 @@
 #include <QImage>
 
 ThemeManager::ThemeManager(QObject *parent) 
-    : Appearance(parent)
+    : QObject(parent)
     , m_accentColor(m_blueColor)
 {
-    connect(this, &Appearance::accentColorIndexChanged, this, &ThemeManager::updateAccentColor);
-    connect(this, &Appearance::fontPointSizeChanged, this, &ThemeManager::fontSizeChanged);
+    connect(&m_appearance, &Appearance::darkModeChanged, this, &ThemeManager::darkModeChanged);
+    connect(&m_appearance, &Appearance::blurEnabledChanged, this, &ThemeManager::blurEnabledChanged);
+    connect(&m_appearance, &Appearance::fontPointSizeChanged, this, &ThemeManager::fontSizeChanged);
+    connect(&m_appearance, &Appearance::fontFamilyChanged, this, &ThemeManager::fontFamilyChanged);
+    connect(&m_appearance, &Appearance::accentColorIndexChanged, this, &ThemeManager::updateAccentColor);
 
     updateAccentColor();
 }
 
 void ThemeManager::updateAccentColor()
 {
-    switch (accentColorIndex()) {
+    switch (m_appearance.accentColorIndex()) {
     case ACCENTCOLOR_BLUE:
         m_accentColor = m_blueColor;
         break;

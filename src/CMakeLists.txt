@@ -26,10 +26,7 @@ target_sources(${TARGET} PRIVATE
         platforms/linux/shadowhelper/waylandshadowmanager.cpp platforms/linux/shadowhelper/waylandshadowmanager.h
         platforms/linux/shadowhelper/windowshadow.cpp platforms/linux/shadowhelper/windowshadow.h
         )
-target_include_directories(${TARGET} PRIVATE
-        platforms/linux
-        $<TARGET_PROPERTY:cutefish-framework-appearance,INTERFACE_INCLUDE_DIRECTORIES>
-        )
+target_include_directories(${TARGET} PRIVATE platforms/linux)
 target_link_libraries(${TARGET}
         PUBLIC
         Qt6::Core
@@ -37,9 +34,7 @@ target_link_libraries(${TARGET}
         Qt6::DBus
         Qt6::Widgets
         PRIVATE
-        # By path, not by target: FishUI exports FishUITargets, and an exported
-        # target may not name a dependency this package does not ship.
-        $<TARGET_FILE:cutefish-framework-appearance>
+        Cutefish::Appearance
         Qt6::Qml
         Qt6::Quick
         Qt6::QuickControls2
@@ -47,10 +42,9 @@ target_link_libraries(${TARGET}
         KF6::WindowSystem
         Plasma::KWaylandClient
         )
-add_dependencies(${TARGET} cutefish-framework-appearance)
-
 generate_export_header(${TARGET} BASE_NAME ${TARGET})
-install(TARGETS ${TARGET} EXPORT ${TARGET}Targets ${INSTALL_TARGETS_DEFAULT_ARGS})
+# The QML module directory is the only home: a second copy in the library
+# directory would be loaded again alongside it, with its own type registrations.
 install(TARGETS ${TARGET} DESTINATION ${INSTALL_QMLDIR}/${TARGET})
 
 # Install Controls
