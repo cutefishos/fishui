@@ -55,6 +55,11 @@ Window {
 
     property bool minimizeButtonVisible: true
 
+    property var windowButtonsAlignment: Qt.AlignTop
+    property real windowButtonsTopMargin: FishUI.Units.smallSpacing
+    property real windowButtonsRightMargin: windowButtonsTopMargin
+    property real windowButtonsSpacing: FishUI.Units.smallSpacing / 2
+
     onHeaderItemChanged: {
         if (headerItem) {
             headerItem.parent = _headerContent
@@ -265,8 +270,8 @@ Window {
                 }
 
                 RowLayout {
-                    spacing: FishUI.Units.smallSpacing
-                    Layout.alignment: Qt.AlignTop
+                    spacing: control.windowButtonsSpacing
+                    Layout.alignment: control.windowButtonsAlignment
 
                     // Window buttons
                     RoundImageButton {
@@ -274,8 +279,8 @@ Window {
                         source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "minimize.svg"
                         onClicked: windowHelper.minimizeWindow(control)
                         visible: control.minimizeButtonVisible
-                        Layout.alignment: Qt.AlignTop
-                        Layout.topMargin: _header.spacing
+                        Layout.alignment: control.windowButtonsAlignment
+                        Layout.topMargin: control.windowButtonsTopMargin
                         image.smooth: false
                         image.antialiasing: true
                         // The artwork is a 24x24 grid; anything else is soft.
@@ -289,8 +294,8 @@ Window {
                             (control.visibility === Window.Maximized ? "restore.svg" : "maximize.svg")
                         onClicked: control.toggleMaximized()
                         visible: !control.isFullScreen &&  control.minimumWidth !== control.maximumWidth && control.maximumHeight !== control.minimumHeight
-                        Layout.alignment: Qt.AlignTop
-                        Layout.topMargin: _header.spacing
+                        Layout.alignment: control.windowButtonsAlignment
+                        Layout.topMargin: control.windowButtonsTopMargin
                         image.smooth: false
                         image.antialiasing: true
                         // The artwork is a 24x24 grid; anything else is soft.
@@ -302,8 +307,8 @@ Window {
                         source: "qrc:/fishui/kit/images/" + (FishUI.Theme.darkMode ? "dark/" : "light/") + "close.svg"
                         onClicked: control.close()
                         // visible: !control.isFullScreen
-                        Layout.alignment: Qt.AlignTop
-                        Layout.topMargin: _header.spacing
+                        Layout.alignment: control.windowButtonsAlignment
+                        Layout.topMargin: control.windowButtonsTopMargin
                         image.smooth: false
                         image.antialiasing: true
                         // The artwork is a 24x24 grid; anything else is soft.
@@ -312,7 +317,7 @@ Window {
                 }
 
                 Item {
-                    width: _header.spacing
+                    width: control.windowButtonsRightMargin
                 }
             }
         }
