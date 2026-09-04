@@ -216,7 +216,8 @@ void WindowBlur::updateBlur()
         m_blur->commit();
     }
 
-    // Blur state is double buffered like everything else on the surface, so it
-    // takes effect with the surface's next commit.
-    surface->commit(Surface::CommitFlag::None);
+    // Blur state is double buffered; it takes effect with the surface's next
+    // commit. Committing here would pair the pending viewport destination with
+    // the buffer on screen: one stretched frame per step of a resize.
+    m_view->requestUpdate();
 }
