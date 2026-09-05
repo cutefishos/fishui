@@ -55,6 +55,12 @@ const CompositeShadowParams s_shadowParams(
 // stop exactly at the window edge and antialiasing leaves a bright seam there.
 const int ShadowOverlap = 4;
 
+// KWin lines the right and bottom tiles up one pixel inside the shadow rect.
+// Without an extra pixel of padding on those two sides the column just outside
+// the window gets no shadow at all, and that bright hairline against the window
+// border reads as a second border.
+const int RightBottomSeam = 1;
+
 QColor withOpacity(const QColor &color, qreal opacity)
 {
     QColor c(color);
@@ -132,8 +138,8 @@ ShadowTiles WaylandShadowManager::renderTiles(qreal radius, qreal strength, qrea
     // falls downwards.
     const QMargins padding(boxRect.left() - outerRect.left() - ShadowOverlap - params.offset.x(),
                            boxRect.top() - outerRect.top() - ShadowOverlap - params.offset.y(),
-                           outerRect.right() - boxRect.right() - ShadowOverlap + params.offset.x(),
-                           outerRect.bottom() - boxRect.bottom() - ShadowOverlap + params.offset.y());
+                           outerRect.right() - boxRect.right() - ShadowOverlap + params.offset.x() + RightBottomSeam,
+                           outerRect.bottom() - boxRect.bottom() - ShadowOverlap + params.offset.y() + RightBottomSeam);
     const QRect innerRect = outerRect - padding;
 
     // Punch out the window itself: the compositor draws the tiles behind the
