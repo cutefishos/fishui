@@ -113,6 +113,10 @@ private:
     // The popup of this chain that the pointer is over, innermost first.
     MenuPopupWindow *popupUnder(const QPoint &globalPos);
     void activateRowAt(const QPointF &pos);
+    // While a button is held the grab keeps hover away from every other row,
+    // so the row under the pointer is highlighted by hand instead.
+    void updateDragHighlight(const QPoint &globalPos);
+    void clearDragHighlight();
     QRect availableScreenGeometry() const;
     MenuPopupWindow *rootPopup() const;
     QPoint popupPosition(const QPoint &requested, const QSize &size) const;
@@ -138,6 +142,7 @@ private:
     // The row the press landed on, if any. A release on another row chooses
     // that other row, so the two have to be told apart.
     QPointer<QQuickItem> m_pressedRow;
+    QPointer<QQuickItem> m_dragRow;
     QElapsedTimer m_shownTimer;
 
     // Every popup of this process, so that a menu about to be mapped can take
