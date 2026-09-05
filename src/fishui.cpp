@@ -81,6 +81,7 @@ void FishUI::registerTypes(const char *uri)
     qmlRegisterType(componentUrl(QStringLiteral("RoundImageButton.qml")), uri, 1, 0, "RoundImageButton");
     qmlRegisterType(componentUrl(QStringLiteral("SegmentedControl.qml")), uri, 1, 0, "SegmentedControl");
     qmlRegisterType(componentUrl(QStringLiteral("DesktopMenu.qml")), uri, 1, 0, "DesktopMenu");
+    qmlRegisterType(componentUrl(QStringLiteral("MenuSurface.qml")), uri, 1, 0, "MenuSurface");
     qmlRegisterType(componentUrl(QStringLiteral("Menu.qml")), uri, 1, 0, "Menu");
     qmlRegisterType(componentUrl(QStringLiteral("MenuItem.qml")), uri, 1, 0, "MenuItem");
     qmlRegisterType(componentUrl(QStringLiteral("MenuSeparator.qml")), uri, 1, 0, "MenuSeparator");

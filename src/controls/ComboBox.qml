@@ -3,7 +3,6 @@ import QtQuick.Window
 import QtQuick.Controls
 import QtQuick.Controls.impl
 import QtQuick.Templates as T
-import Qt5Compat.GraphicalEffects
 import FishUI 1.0 as FishUI
 
 T.ComboBox {
@@ -29,20 +28,10 @@ T.ComboBox {
         updateTimer.restart()
     }
 
-    delegate: MenuItem {
-        width: control.popup.width
-        text: {
-            if (!control.textRole)
-                return modelData
-
-            if (modelData && modelData[control.textRole] !== undefined)
-                return modelData[control.textRole]
-
-            return model[control.textRole]
-        }
-        highlighted: control.highlightedIndex === index
-        hoverEnabled: control.hoverEnabled
-    }
+    // T.ComboBox only counts its model, and with it fills currentText and
+    // displayText, once it has a delegate. The rows themselves are built by
+    // the drop-down window below, so this one is never instantiated.
+    delegate: Item {}
 
     indicator: Image {
         id: indicatorImage
@@ -97,62 +86,61 @@ T.ComboBox {
         radius: FishUI.Theme.smallRadius
         color: FishUI.Theme.alternateBackgroundColor
 
-        border.color: control.activeFocus ? FishUI.Theme.highlightColor : color
+        border.color: control.activeFocus || control.menuVisible ? FishUI.Theme.highlightColor : color
         border.width: 1
     }
 
-    popup: T.Popup {
-        width: Math.max(control.width, 150)
-        implicitHeight: Math.min(contentItem.implicitHeight, control.Window.height - topMargin - bottomMargin) + FishUI.Units.largeSpacing
-        transformOrigin: Item.Top
+    // The list lives in its own popup window: Qt 6.8's window popups for
+    // ComboBox are dismissed by the compositor the moment they open, and an
+    // in-window Popup is clipped by the application window.
+    FishUI.ComboBoxMenu {
+        id: _menu
 
-        enter: Transition {
-            NumberAnimation {
-                property: "opacity"
-                from: 0
-                to: 1
-                easing.type: Easing.InOutCubic
-                duration: 150
-            }
+        model: control.model
+        textRole: control.textRole
+        currentIndex: control.currentIndex
+        minimumWidth: control.width
+
+        onSelected: function (index) {
+            control.currentIndex = index
+            control.activated(index)
+        }
+    }
+
+    // The drop-down window, for a caller that has to close it itself.
+    readonly property alias menu: _menu
+    readonly property bool menuVisible: _menu.visible
+
+    function toggleMenu() {
+        if (_menu.visible) {
+            _menu.dismissPopup()
+            return
         }
 
-        exit: Transition {
-            NumberAnimation {
-                property: "opacity"
-                from: 1
-                to: 0
-                easing.type: Easing.InOutCubic
-                duration: 150
-            }
-        }
+        _menu.transientParent = control.Window.window
+        var pos = control.mapToGlobal(0, control.height + FishUI.Units.smallSpacing / 2)
+        _menu.popupAt(pos.x, pos.y)
+    }
 
-        contentItem: ListView {
-            clip: true
-            implicitHeight: contentHeight
-            model: control.delegateModel
-            currentIndex: control.highlightedIndex
-            highlightMoveDuration: 0
-            topMargin: FishUI.Units.smallSpacing
-            bottomMargin: FishUI.Units.smallSpacing
-            spacing: FishUI.Units.smallSpacing
+    // The ComboBox opens its own list: T.ComboBox would only drive the popup
+    // property, which is left unset here.
+    MouseArea {
+        anchors.fill: parent
+        z: 1
+        enabled: control.enabled && !control.editable
+        acceptedButtons: Qt.LeftButton
+        onPressed: control.toggleMenu()
+    }
 
-            T.ScrollBar.vertical: ScrollBar {}
-        }
-
-        background: Rectangle {
-            radius: FishUI.Theme.smallRadius
-            color: parent.FishUI.Theme.secondBackgroundColor
-            border.width: 0
-
-            layer.enabled: true
-            layer.effect: DropShadow {
-                transparentBorder: true
-                radius: 32
-                samples: 32
-                horizontalOffset: 0
-                verticalOffset: 0
-                color: Qt.rgba(0, 0, 0, 0.15)
-            }
+    Keys.onPressed: function (event) {
+        switch (event.key) {
+        case Qt.Key_Space:
+        case Qt.Key_Return:
+        case Qt.Key_Enter:
+        case Qt.Key_Down:
+            control.toggleMenu()
+            event.accepted = true
+            break
         }
     }
 }

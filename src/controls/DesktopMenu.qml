@@ -27,107 +27,21 @@ FishUI.MenuPopupWindow {
 
     property bool blurEnabled: FishUI.Theme.blurEnabled
 
-    default property alias content : _mainLayout.data
+    default property alias content : _contentItem.content
 
     popupContentItem: _contentItem
 
     // Lets the popup align its first row with the item that opened it.
     contentTopMargin: _contentItem.verticalContentMargin
 
-    Item {
+    FishUI.MenuSurface {
         id: _contentItem
 
-        readonly property int contentMargin: Math.max(4, FishUI.Units.smallSpacing - 2)
-        readonly property int verticalContentMargin: Math.round(contentMargin * 1.5)
+        view: control
+        blurEnabled: control.blurEnabled && !control.submenu
         // A menu with more rows than the screen is tall scrolls instead of
         // running off the edge.
-        readonly property int maxHeight: control.availableHeight > 0 ? control.availableHeight : 0
-        implicitWidth: _mainLayout.implicitWidth + contentMargin * 2
-        implicitHeight: maxHeight > 0 ? Math.min(_mainLayout.implicitHeight + verticalContentMargin * 2, maxHeight)
-                                      : _mainLayout.implicitHeight + verticalContentMargin * 2
-        width: implicitWidth
-        height: implicitHeight
-
-        Rectangle {
-            id: _background
-            anchors.fill: parent
-            color: Qt.rgba(FishUI.Theme.secondBackgroundColor.r,
-                           FishUI.Theme.secondBackgroundColor.g,
-                           FishUI.Theme.secondBackgroundColor.b,
-                           control.blurEnabled && !control.submenu ? 0.86 : 1)
-            radius: FishUI.Theme.windowRadius
-            border.color: _background.borderColor
-            border.width: 1 / FishUI.Dpi.ratio
-            border.pixelAligned: FishUI.Dpi.ratio > 1 ? false : true
-
-            property var borderColor: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.3)
-                                                            : Qt.rgba(0, 0, 0, 0.2)
-
-            FishUI.WindowShadow {
-                view: control
-                radius: _background.radius
-                strength: 0.4
-                enabled: true
-            }
-
-            FishUI.WindowBlur {
-                view: control
-                windowRadius: _background.radius
-                enabled: control.blurEnabled && !control.submenu
-            }
-        }
-
-        Flickable {
-            id: _flickable
-
-            x: _contentItem.contentMargin
-            y: _contentItem.verticalContentMargin
-            width: _mainLayout.implicitWidth
-            height: _contentItem.height - _contentItem.verticalContentMargin * 2
-            contentWidth: width
-            contentHeight: _mainLayout.implicitHeight
-            clip: true
-            boundsBehavior: Flickable.StopAtBounds
-            // A menu scrolls by the wheel alone. Flicking would give it
-            // momentum, and rows still sliding under the pointer swallow the
-            // click that was meant for one of them.
-            interactive: false
-
-            readonly property bool scrollable: contentHeight > height
-
-            ColumnLayout {
-                id: _mainLayout
-                width: _flickable.width
-                height: implicitHeight
-                spacing: 1
-            }
-        }
-
-        // The wheel scrolls a menu that does not fit, one step at a time.
-        WheelHandler {
-            enabled: _flickable.scrollable
-
-            onWheel: function (event) {
-                var step = event.angleDelta.y / 120 * 60
-                if (step === 0)
-                    step = event.pixelDelta.y
-
-                _flickable.contentY = Math.max(0, Math.min(_flickable.contentHeight - _flickable.height,
-                                                           _flickable.contentY - step))
-            }
-        }
-
-        // Scroll indicator for the rare menu that does not fit on screen.
-        Rectangle {
-            width: 3
-            radius: width / 2
-            x: _contentItem.width - _contentItem.contentMargin - width
-            y: _flickable.y + _flickable.height * (_flickable.contentY / _flickable.contentHeight)
-            height: Math.max(24, _flickable.height * (_flickable.height / _flickable.contentHeight))
-            visible: _flickable.scrollable
-            color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.35)
-                                         : Qt.rgba(0, 0, 0, 0.25)
-        }
+        maxHeight: control.availableHeight > 0 ? control.availableHeight : 0
     }
 
     // ------------------------------------------------------------------
@@ -141,7 +55,7 @@ FishUI.MenuPopupWindow {
     // ------------------------------------------------------------------
 
     // Row that the keyboard highlights, as an index into menuRows().
-    property int currentIndex: -1
+    property alias currentIndex: _contentItem.currentIndex
 
     // The menu is being driven from the keyboard: the pointer is somewhere
     // else entirely, so the hover-based submenu dismissal has to stand down
@@ -153,79 +67,20 @@ FishUI.MenuPopupWindow {
     signal keyNavigationLeft()
     signal keyNavigationRight()
 
-    function isMenuRow(item) {
-        return !!item && item.visible &&
-                item.text !== undefined && item.highlighted !== undefined
-    }
-
-    // The rows of this menu, in visual order. A row created by a Loader (a
-    // menu built from a model) is unwrapped to the item it loaded.
     function menuRows() {
-        var rows = []
-        var children = _mainLayout.children
-        for (var i = 0; i < children.length; ++i) {
-            var child = children[i]
-            if (control.isMenuRow(child)) {
-                rows.push(child)
-            } else if (child && child.visible && child.item !== undefined &&
-                       control.isMenuRow(child.item)) {
-                rows.push(child.item)
-            }
-        }
-        return rows
+        return _contentItem.menuRows()
     }
 
     function currentRow() {
-        var rows = control.menuRows()
-        return control.currentIndex >= 0 && control.currentIndex < rows.length
-                ? rows[control.currentIndex] : null
-    }
-
-    function applyHighlight() {
-        var rows = control.menuRows()
-        for (var i = 0; i < rows.length; ++i)
-            rows[i].highlighted = (i === control.currentIndex)
+        return _contentItem.currentRow()
     }
 
     function setCurrentIndex(index) {
-        control.currentIndex = index
-        control.applyHighlight()
-        control.ensureCurrentVisible()
+        _contentItem.setCurrentIndex(index)
     }
 
-    // Keep the keyboard selection inside the visible part of a menu that
-    // scrolls.
-    function ensureCurrentVisible() {
-        if (!_flickable.scrollable)
-            return
-
-        var row = control.currentRow()
-        if (!row)
-            return
-
-        var top = row.mapToItem(_mainLayout, 0, 0).y
-        var bottom = top + row.height
-
-        if (top < _flickable.contentY)
-            _flickable.contentY = top
-        else if (bottom > _flickable.contentY + _flickable.height)
-            _flickable.contentY = bottom - _flickable.height
-    }
-
-    // Walk to the next selectable row, wrapping around at both ends.
     function moveCurrentIndex(step) {
-        var rows = control.menuRows()
-        if (rows.length === 0)
-            return
-
-        var index = control.currentIndex
-        for (var i = 0; i < rows.length; ++i) {
-            index = (index + step + rows.length * 2) % rows.length
-            if (rows[index].enabled) {
-                control.setCurrentIndex(index)
-                return
-            }
-        }
+        _contentItem.moveCurrentIndex(step)
     }
 
     // The deepest open popup of this chain; it is the one keys apply to.
@@ -292,6 +147,10 @@ FishUI.MenuPopupWindow {
     // Key events are reported by the popup window itself. Whichever popup of
     // the chain the compositor happens to give them to, they are handled by
     // the one that is open deepest - the menu the user is looking at.
+    onWheelMoved: function (angleDelta, pixelDelta) {
+        _contentItem.scrollByWheel(angleDelta, pixelDelta)
+    }
+
     onKeyPressed: function (key, modifiers) {
         var menu = control.leafMenu()
         if (menu !== control) {
@@ -388,15 +247,8 @@ FishUI.MenuPopupWindow {
         }
     }
 
-    // The popup takes its size from the layout's implicit size, and a menu
-    // whose rows come from a model has not laid them out yet when it is asked
-    // to show. The first pass computes that implicit size, which the layout's
-    // own width and height bindings adopt; the second puts the rows at their
-    // places inside it. Without both, such a menu maps at the size of an empty
-    // popup with all of its rows stacked on top of each other.
     function ensureLayout() {
-        _mainLayout.ensurePolished()
-        _mainLayout.ensurePolished()
+        _contentItem.ensureLayout()
     }
 
     function open() {
@@ -442,7 +294,7 @@ FishUI.MenuPopupWindow {
 
     onVisibleChanged: {
         if (!visible) {
-            _flickable.contentY = 0
+            _contentItem.resetScroll()
             pointerEntered = false
             keyboardNavigation = false
             setCurrentIndex(-1)

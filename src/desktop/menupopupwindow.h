@@ -93,9 +93,13 @@ signals:
     // menu the user is navigating, and an item-level Keys handler then stops
     // receiving anything at all.
     void keyPressed(int key, int modifiers);
+    // The wheel over this popup. Only the routing between the popups of a
+    // chain needs the window; how far a menu scrolls is left to the scene.
+    void wheelMoved(const QPointF &angleDelta, const QPointF &pixelDelta);
 
 protected:
     void keyPressEvent(QKeyEvent *) override;
+    void wheelEvent(QWheelEvent *) override;
     void mousePressEvent(QMouseEvent *) override;
     void mouseReleaseEvent(QMouseEvent *) override;
     void mouseMoveEvent(QMouseEvent *) override;
@@ -106,6 +110,8 @@ protected slots:
 
 private:
     bool isSubmenuPopup() const;
+    // The popup of this chain that the pointer is over, innermost first.
+    MenuPopupWindow *popupUnder(const QPoint &globalPos);
     QRect availableScreenGeometry() const;
     MenuPopupWindow *rootPopup() const;
     QPoint popupPosition(const QPoint &requested, const QSize &size) const;

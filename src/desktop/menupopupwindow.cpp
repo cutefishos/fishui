@@ -22,6 +22,7 @@
 #include <QCoreApplication>
 #include <QCursor>
 #include <QKeyEvent>
+#include <QWheelEvent>
 #include <QQuickRenderControl>
 #include <QQuickItem>
 #include <QScreen>
@@ -536,6 +537,31 @@ void MenuPopupWindow::updateGeometry()
 void MenuPopupWindow::keyPressEvent(QKeyEvent *e)
 {
     emit keyPressed(e->key(), int(e->modifiers()));
+    e->accept();
+}
+
+MenuPopupWindow *MenuPopupWindow::popupUnder(const QPoint &globalPos)
+{
+    if (m_childPopup && m_childPopup->isVisible()) {
+        if (MenuPopupWindow *popup = m_childPopup->popupUnder(globalPos))
+            return popup;
+    }
+
+    return isVisible() && geometry().contains(globalPos) ? this : nullptr;
+}
+
+// The rows sit in a Flickable that is deliberately not interactive, so no item
+// in the scene is offered the wheel. On top of that the menu that owns the
+// pointer grab is sent the wheel wherever the pointer is, so an event over a
+// submenu arrives at the root popup. Route it to the popup the pointer is
+// really over and let that scene scroll itself.
+void MenuPopupWindow::wheelEvent(QWheelEvent *e)
+{
+    MenuPopupWindow *target = rootPopup()->popupUnder(e->globalPosition().toPoint());
+    if (!target)
+        target = this;
+
+    emit target->wheelMoved(e->angleDelta(), e->pixelDelta());
     e->accept();
 }
 

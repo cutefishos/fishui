@@ -12,6 +12,8 @@ singleton Theme 1.0 Theme.qml
 singleton Units 1.0 Units.qml
 
 ComboBox 1.0 ComboBox.qml
+ComboBoxMenu 1.0 ComboBoxMenu.qml
+MenuSurface 1.0 MenuSurface.qml
 Menu 1.0 Menu.qml
 MenuItem 1.0 MenuItem.qml
 MenuSeparator 1.0 MenuSeparator.qml
