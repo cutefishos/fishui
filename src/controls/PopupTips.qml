@@ -65,7 +65,7 @@ Window {
 
         Behavior on color {
             ColorAnimation {
-                duration: control.animationEnabled ? 200 : 0
+                duration: 200
                 easing.type: Easing.Linear
             }
         }
