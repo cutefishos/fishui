@@ -34,6 +34,10 @@ Item {
     property bool animationEnabled: true
     property alias backgroundOpacity: _background.opacity
 
+    // Background and border are one Rectangle on purpose: a separate
+    // transparent-fill ring on top of the background is two antialiased
+    // rounded shapes, and along the corner arc their feathers cancel so the
+    // hairline never reaches full opacity.
     Rectangle {
         id: _background
         anchors.fill: parent
@@ -42,22 +46,15 @@ Item {
         antialiasing: true
         smooth: true
 
+        border.width: control.borderEnabled ? 1 / FishUI.Dpi.ratio : 0
+        border.pixelAligned: FishUI.Dpi.ratio <= 1
+        border.color: FishUI.Theme.darkMode ? Qt.rgba(1, 1, 1, 0.1) : Qt.rgba(0, 0, 0, 0.1)
+
         Behavior on color {
             ColorAnimation {
                 duration: control.animationEnabled ? 200 : 0
                 easing.type: Easing.Linear
             }
         }
-    }
-
-    Rectangle {
-        anchors.fill: parent
-        color: "transparent"
-        radius: _background.radius
-        border.width: 1 / FishUI.Dpi.ratio
-        border.pixelAligned: FishUI.Dpi.ratio > 1 ? false : true
-        border.color: FishUI.Theme.darkMode ? Qt.rgba(255, 255, 255, 0.1) : Qt.rgba(0, 0, 0, 0.1)
-        visible: control.borderEnabled
-        antialiasing: true
     }
 }
