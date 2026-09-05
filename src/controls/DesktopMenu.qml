@@ -217,6 +217,13 @@ FishUI.MenuPopupWindow {
     function updatePointerHighlight(globalPos) {
         _contentItem.setCurrentIndex(_contentItem.rowAtGlobal(globalPos))
 
+        // Reaching a row with a submenu opens it, the same as hovering one
+        // does. Dragging with a button held delivers no hover at all, so the
+        // submenu would otherwise only open once the button came back up.
+        var row = _contentItem.currentRow()
+        if (row && row.childMenu)
+            row.openChildMenu()
+
         var rows = control.menuRows()
         for (var i = 0; i < rows.length; ++i) {
             var child = rows[i].childMenu
