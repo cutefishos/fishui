@@ -22,8 +22,12 @@ T.MenuItem {
     // unchecked, so the labels of the whole group line up.
     property bool reservesCheckColumn: control.checkable
     readonly property bool submenuOpen: !!control.childMenu && control.childMenu.visible
-    readonly property bool active: control.enabled && (control.hovered || control.highlighted ||
-                                                       control.pressed || control.submenuOpen)
+    // A popup-window menu follows the pointer itself and sets this: Qt Quick
+    // stops updating hover while a button is held, which leaves the row that
+    // was pressed lit next to the row the pointer has moved on to.
+    property bool pointerTracking: false
+    readonly property bool active: control.enabled && (control.highlighted || control.submenuOpen ||
+                                                       (!control.pointerTracking && control.hovered))
     property color hoveredColor: Qt.rgba(FishUI.Theme.highlightColor.r,
                                          FishUI.Theme.highlightColor.g,
                                          FishUI.Theme.highlightColor.b,

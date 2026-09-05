@@ -266,21 +266,34 @@ FishUI.MenuPopupWindow {
     function open() {
         control.ensureLayout()
         control.show()
+        control.primePointerHighlight()
     }
 
     function popup() {
         control.ensureLayout()
         control.show()
+        control.primePointerHighlight()
     }
 
     function popupAt(x, y) {
         control.ensureLayout()
         control.showAt(x, y)
+        control.primePointerHighlight()
     }
 
     function popupSubMenu() {
         control.ensureLayout()
         control.show()
+        control.primePointerHighlight()
+    }
+
+    // A menu that maps under the pointer has no motion to learn from, and hover
+    // is not delivered while a button is held. Light the row it opened on.
+    function primePointerHighlight() {
+        if (control.keyboardNavigation)
+            return
+
+        control.updatePointerHighlight(control.globalCursorPos())
     }
 
     // A submenu closes immediately after the pointer has actually entered

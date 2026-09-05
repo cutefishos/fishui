@@ -188,8 +188,12 @@ Item {
 
     function applyHighlight() {
         var rows = control.menuRows()
-        for (var i = 0; i < rows.length; ++i)
+        for (var i = 0; i < rows.length; ++i) {
             rows[i].highlighted = (i === control.currentIndex)
+            // From here on this menu decides what is lit, hover included.
+            if (rows[i].pointerTracking !== undefined)
+                rows[i].pointerTracking = true
+        }
     }
 
     function setCurrentIndex(index) {
