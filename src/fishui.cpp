@@ -85,6 +85,10 @@ void FishUI::registerTypes(const char *uri)
     qmlRegisterType(componentUrl(QStringLiteral("MenuItem.qml")), uri, 1, 0, "MenuItem");
     qmlRegisterType(componentUrl(QStringLiteral("MenuSeparator.qml")), uri, 1, 0, "MenuSeparator");
 
+    qmlRegisterType(componentUrl(QStringLiteral("ConfirmDialog.qml")), uri, 1, 0, "ConfirmDialog");
+
+    qmlRegisterType(componentUrl(QStringLiteral("ConfirmDialogButton.qml")), uri, 1, 0, "ConfirmDialogButton");
+
     qmlProtectModule(uri, 1);
 }
 

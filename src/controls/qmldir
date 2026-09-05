@@ -31,3 +31,5 @@ TabCloseButton 1.0 TabCloseButton.qml
 TabView 1.0 TabView.qml
 
 Toast 1.0 Toast.qml
+ConfirmDialog 1.0 ConfirmDialog.qml
+ConfirmDialogButton 1.0 ConfirmDialogButton.qml
