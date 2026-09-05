@@ -158,6 +158,19 @@ Item {
         return rows
     }
 
+    // The row under a point in global coordinates, or -1. Hit testing lives
+    // here because Qt Quick sends no hover to a row while a button is held,
+    // so the pointer has to be followed by hand.
+    function rowAtGlobal(globalPos) {
+        var rows = control.menuRows()
+        for (var i = 0; i < rows.length; ++i) {
+            var local = rows[i].mapFromGlobal(globalPos.x, globalPos.y)
+            if (rows[i].contains(Qt.point(local.x, local.y)))
+                return i
+        }
+        return -1
+    }
+
     function currentRow() {
         var rows = control.menuRows()
         return control.currentIndex >= 0 && control.currentIndex < rows.length

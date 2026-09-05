@@ -105,19 +105,6 @@ FishUI.MenuPopupWindow {
         }
     }
 
-    // Hand the menu back to the pointer: drop the keyboard highlight of the
-    // whole chain so that the hovered row is the only highlighted one.
-    function clearKeyboardState() {
-        control.keyboardNavigation = false
-        var rows = control.menuRows()
-        for (var i = 0; i < rows.length; ++i) {
-            var child = rows[i].childMenu
-            if (child && child.visible)
-                child.clearKeyboardState()
-        }
-        control.setCurrentIndex(-1)
-    }
-
     function openCurrentSubmenu() {
         var row = control.currentRow()
         if (!row || !row.childMenu)
@@ -209,15 +196,33 @@ FishUI.MenuPopupWindow {
         }
     }
 
-    // Real pointer movement over the menu wins over the keyboard highlight.
-    // Movement elsewhere is ignored: while a menu is open it owns the pointer
-    // grab and sees every motion on the screen, including the jitter of a
-    // pointer that is nowhere near the menu.
-    onMouseMoved: {
-        if (control.popupChainContainsGlobalCursor())
-            control.clearKeyboardState()
+    // The pointer owns the highlight as soon as it moves over the menu. Qt
+    // Quick sends no hover to a row while a button is held, so the row under
+    // the pointer is picked here rather than left to hover - a menu highlights
+    // what the pointer is on whether or not the button is down.
+    onMouseMoved: function (globalPos) {
+        // Movement nowhere near the menu must not disturb keyboard navigation:
+        // an open menu owns the pointer grab and sees every motion on screen.
+        if (control.keyboardNavigation && !control.popupChainContainsGlobalCursor())
+            return
 
+        control.keyboardNavigation = false
+        control.updatePointerHighlight(globalPos)
         control.updateSubmenuHover()
+    }
+
+    // Highlight the row under the pointer in every open menu of the chain, and
+    // nothing in the ones the pointer has left. A row whose submenu is open
+    // stays lit on its own.
+    function updatePointerHighlight(globalPos) {
+        _contentItem.setCurrentIndex(_contentItem.rowAtGlobal(globalPos))
+
+        var rows = control.menuRows()
+        for (var i = 0; i < rows.length; ++i) {
+            var child = rows[i].childMenu
+            if (child && child.visible)
+                child.updatePointerHighlight(globalPos)
+        }
     }
 
     // Close a hover-opened submenu as soon as the pointer has left both it and

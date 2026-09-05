@@ -437,7 +437,6 @@ void MenuPopupWindow::dismissPopup()
 
     m_dismissed = true;
     setPointerInside(false);
-    clearDragHighlight();
 
     // Close transient child popups while this parent surface is still mapped.
     // Unmapping the parent first leaves KWin with a live xdg_popup whose
@@ -575,9 +574,6 @@ void MenuPopupWindow::mouseMoveEvent(QMouseEvent *e)
     // would otherwise still see the hover state of the previous position.
     QQuickWindow::mouseMoveEvent(e);
 
-    if (e->buttons() & (Qt::LeftButton | Qt::RightButton))
-        rootPopup()->updateDragHighlight(e->globalPosition().toPoint());
-
     emit mouseMoved(e->globalPosition());
 }
 
@@ -602,46 +598,6 @@ void MenuPopupWindow::mousePressEvent(QMouseEvent *e)
         return;
 
     dismissPopup();
-}
-
-// Qt Quick sends hover only to the item that holds the grab while a button is
-// down, so a menu being dragged over would light up nothing at all. Follow the
-// pointer by hand instead - over the whole chain, since the menu that owns the
-// grab is sent the motion wherever the pointer is.
-void MenuPopupWindow::updateDragHighlight(const QPoint &globalPos)
-{
-    MenuPopupWindow *target = popupUnder(globalPos);
-
-    for (MenuPopupWindow *popup = this; popup; popup = popup->m_childPopup) {
-        if (popup != target)
-            popup->clearDragHighlight();
-    }
-
-    if (!target)
-        return;
-
-    QQuickItem *row = rowUnder(target->contentItem(), target->mapFromGlobal(QPointF(globalPos)));
-    if (row && !row->isEnabled())
-        row = nullptr;
-
-    if (target->m_dragRow == row)
-        return;
-
-    target->clearDragHighlight();
-
-    if (row) {
-        row->setProperty("highlighted", true);
-        target->m_dragRow = row;
-    }
-}
-
-void MenuPopupWindow::clearDragHighlight()
-{
-    if (!m_dragRow)
-        return;
-
-    m_dragRow->setProperty("highlighted", false);
-    m_dragRow = nullptr;
 }
 
 // Choose the row under a point no matter what came before the release: the
@@ -685,18 +641,23 @@ void MenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
     m_pressed = false;
     m_pressedRow = nullptr;
 
-    // The grab is over: hover takes the highlight back.
-    for (MenuPopupWindow *popup = rootPopup(); popup; popup = popup->m_childPopup)
-        popup->clearDragHighlight();
-
     setPointerInside(inside);
 
     if (!inside) {
         // The menu that owns the pointer grab is sent the release wherever the
         // pointer is; one over another popup of the chain belongs to it.
         MenuPopupWindow *target = rootPopup()->popupUnder(e->globalPosition().toPoint());
-        if (target && target != this)
+        if (target && target != this) {
             target->activateRowAt(target->mapFromGlobal(e->globalPosition()));
+            m_mouseMoved = true;
+            return;
+        }
+
+        // Letting go outside the menu chooses nothing and closes it - unless
+        // this is the release of the press that opened it, which has not moved
+        // anywhere and still belongs to whatever was clicked to open it.
+        if (m_mouseMoved && m_shownTimer.elapsed() >= kOpeningPressMs)
+            dismissAllPopups();
 
         m_mouseMoved = true;
         return;

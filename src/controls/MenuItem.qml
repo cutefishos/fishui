@@ -28,10 +28,6 @@ T.MenuItem {
                                          FishUI.Theme.highlightColor.g,
                                          FishUI.Theme.highlightColor.b,
                                          FishUI.Theme.darkMode ? 0.82 : 0.9)
-    property color pressedColor: Qt.rgba(FishUI.Theme.highlightColor.r,
-                                         FishUI.Theme.highlightColor.g,
-                                         FishUI.Theme.highlightColor.b,
-                                         FishUI.Theme.darkMode ? 0.95 : 0.78)
 
     implicitWidth: Math.max(146, implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
@@ -128,8 +124,9 @@ T.MenuItem {
         width: control.width - Math.max(4, FishUI.Units.smallSpacing - 2) * 2
         height: control.height - 2
 
-        color: control.pressed ? control.pressedColor :
-               control.active ? control.hoveredColor : "transparent"
+        // A menu row has no pressed state of its own: pressing one only ever
+        // chooses the row the pointer is over when the button comes back up.
+        color: control.active ? control.hoveredColor : "transparent"
     }
 
     // Also called from the popup window when the row is clicked. Opening a

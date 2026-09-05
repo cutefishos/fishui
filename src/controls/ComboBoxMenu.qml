@@ -66,11 +66,11 @@ FishUI.MenuPopupWindow {
         _contentItem.centerCurrentRow()
     }
 
-    // The pointer takes the highlight back from the keyboard as soon as it
-    // moves over the list.
-    onMouseMoved: {
-        if (control.containsGlobalCursor())
-            _contentItem.setCurrentIndex(-1)
+    // The pointer owns the highlight as soon as it moves over the list. Qt
+    // Quick sends no hover to a row while a button is held, so the row under
+    // the pointer is picked here rather than left to hover.
+    onMouseMoved: function (globalPos) {
+        _contentItem.setCurrentIndex(_contentItem.rowAtGlobal(globalPos))
     }
 
     onWheelMoved: function (angleDelta, pixelDelta) {
