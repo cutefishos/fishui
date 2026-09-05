@@ -112,6 +112,7 @@ private:
     bool isSubmenuPopup() const;
     // The popup of this chain that the pointer is over, innermost first.
     MenuPopupWindow *popupUnder(const QPoint &globalPos);
+    void activateRowAt(const QPointF &pos);
     QRect availableScreenGeometry() const;
     MenuPopupWindow *rootPopup() const;
     QPoint popupPosition(const QPoint &requested, const QSize &size) const;
@@ -134,6 +135,9 @@ private:
     int m_contentTopMargin;
     QRect m_availableGeometry;
     bool m_pressed;
+    // The row the press landed on, if any. A release on another row chooses
+    // that other row, so the two have to be told apart.
+    QPointer<QQuickItem> m_pressedRow;
     QElapsedTimer m_shownTimer;
 
     // Every popup of this process, so that a menu about to be mapped can take

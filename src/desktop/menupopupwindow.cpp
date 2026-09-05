@@ -585,6 +585,7 @@ void MenuPopupWindow::mousePressEvent(QMouseEvent *e)
 
     if (inside) {
         m_pressed = true;
+        m_pressedRow = rowUnder(contentItem(), e->position());
         QQuickWindow::mousePressEvent(e);
         return;
     }
@@ -599,51 +600,81 @@ void MenuPopupWindow::mousePressEvent(QMouseEvent *e)
     dismissPopup();
 }
 
+// Choose the row under a point no matter what came before the release: the
+// press may have been on another row, on whatever opened the menu, or on
+// nothing at all. Such a row never saw a press and so cannot turn a release
+// into a click, so the pair is replayed on it as a normal press and release.
+void MenuPopupWindow::activateRowAt(const QPointF &pos)
+{
+    QQuickItem *row = rowUnder(contentItem(), pos);
+    if (!row || !row->isEnabled())
+        return;
+
+    // A row that owns a submenu opens it instead of choosing anything, so the
+    // menu chain has to stay on screen.
+    if (row->property("hasChildMenu").toBool()) {
+        QMetaObject::invokeMethod(row, "openChildMenu");
+        return;
+    }
+
+    // Both events have to leave the current delivery - Qt Quick ignores a
+    // pointer event sent while another one is being handled - and the release
+    // must be built only once the press has been delivered, otherwise it
+    // carries no press state and the item never sees it.
+    const QPointF global = mapToGlobal(pos);
+    QMouseEvent *press = new QMouseEvent(QEvent::MouseButtonPress, pos, pos, global,
+                                         Qt::LeftButton, Qt::LeftButton, Qt::NoModifier);
+    QCoreApplication::postEvent(this, press);
+    QTimer::singleShot(0, this, [this, pos, global] {
+        QMouseEvent re(QEvent::MouseButtonRelease, pos, pos, global,
+                       Qt::LeftButton, Qt::NoButton, Qt::NoModifier);
+        QCoreApplication::sendEvent(this, &re);
+    });
+}
+
 void MenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
 {
     const QRect rect(QPoint(), size());
     const bool inside = rect.contains(e->position().toPoint());
     const bool pressedHere = m_pressed;
+    QQuickItem *pressedRow = m_pressedRow;
     m_pressed = false;
+    m_pressedRow = nullptr;
 
     setPointerInside(inside);
 
     if (!inside) {
+        // The menu that owns the pointer grab is sent the release wherever the
+        // pointer is; one over another popup of the chain belongs to it.
+        MenuPopupWindow *target = rootPopup()->popupUnder(e->globalPosition().toPoint());
+        if (target && target != this)
+            target->activateRowAt(target->mapFromGlobal(e->globalPosition()));
+
         m_mouseMoved = true;
         return;
     }
 
-    // Activate on a plain click (press and release in this popup) and on the
-    // press-drag-release gesture that starts on whatever opened the menu.
-    // The release of the very press that opened the menu is ignored: it has
-    // neither a press of its own here nor any pointer movement.
+    // The release of the very press that opened the menu chooses nothing: it
+    // has neither a press of its own here nor any pointer movement.
     if (!pressedHere && (!m_mouseMoved || m_shownTimer.elapsed() < kOpeningPressMs)) {
         m_mouseMoved = true;
         return;
     }
 
-    if (!pressedHere) {
-        // Press-drag-release: the item under the cursor never saw a press,
-        // so it cannot turn this release into a click. Replay the pair as a
-        // normal press followed by a release. Both have to leave the current
-        // delivery - Qt Quick ignores a pointer event sent while another one
-        // is being handled - and the release must be built only once the
-        // press has been delivered, otherwise it carries no press state and
-        // the item never sees it.
-        const QPointF local = e->position();
-        const QPointF scene = e->scenePosition();
-        const QPointF global = e->globalPosition();
-        const Qt::MouseButton button = e->button();
-        const Qt::KeyboardModifiers mods = e->modifiers();
-        QMouseEvent *press = new QMouseEvent(QEvent::MouseButtonPress, local, scene, global,
-                                             button, button, mods);
-        QCoreApplication::postEvent(this, press);
-        QTimer::singleShot(0, this, [this, local, scene, global, button, mods] {
-            QMouseEvent re(QEvent::MouseButtonRelease, local, scene, global,
-                           button, Qt::NoButton, mods);
-            QCoreApplication::sendEvent(this, &re);
-        });
-        m_mouseMoved = true;
+    m_mouseMoved = true;
+
+    if (e->button() == Qt::RightButton) {
+        QQuickWindow::mouseReleaseEvent(e);
+        return;
+    }
+
+    QQuickItem *row = rowUnder(contentItem(), e->position());
+
+    // Only the row that was pressed can turn this release into a click of its
+    // own. Anywhere else - another row, or a row the pointer came back to
+    // after leaving the menu - the row under the release is chosen instead.
+    if (!pressedHere || !row || row != pressedRow) {
+        activateRowAt(e->position());
         return;
     }
 
@@ -652,19 +683,15 @@ void MenuPopupWindow::mouseReleaseEvent(QMouseEvent *e)
     // becomes a click, so the action would silently not run.
     QQuickWindow::mouseReleaseEvent(e);
 
-    m_mouseMoved = true;
-
-    if (m_dismissed || e->button() == Qt::RightButton)
+    if (m_dismissed)
         return;
 
     // Only choosing something closes the menu. A click on the frame, on a
     // separator or on a disabled row chooses nothing and leaves it open.
-    QQuickItem *row = rowUnder(contentItem(), e->position());
-    if (!row || !row->isEnabled())
+    if (!row->isEnabled())
         return;
 
-    // A row that owns a submenu opens it instead of choosing anything, so
-    // the menu chain has to stay on screen.
+    // A row that owns a submenu opens it instead of choosing anything.
     if (row->property("hasChildMenu").toBool()) {
         QMetaObject::invokeMethod(row, "openChildMenu");
         return;
