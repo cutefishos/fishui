@@ -28,6 +28,10 @@ FishUI.Window {
 
     readonly property int dialogWidth: Math.max(336, actions.implicitWidth + 32)
     readonly property int dialogHeight: layout.implicitHeight + 32
+    // The labels are given this width outright: sized by the layout instead,
+    // they are first measured unwrapped and the window is mapped one text line
+    // too short, then grows a frame later.
+    readonly property int textWidth: dialogWidth - 32 - 32
 
     width: dialogWidth
     height: dialogHeight
@@ -85,22 +89,23 @@ FishUI.Window {
         anchors.margins: 16
         spacing: 16
 
-        ColumnLayout {
+        Column {
             Layout.fillWidth: true
             Layout.rightMargin: 32
             spacing: 4
 
             QQC2.Label {
+                width: control.textWidth
                 text: control.title
                 textFormat: Text.PlainText
                 font.pixelSize: 14
                 font.weight: Font.DemiBold
                 color: FishUI.Theme.textColor
                 wrapMode: Text.Wrap
-                Layout.fillWidth: true
             }
 
             QQC2.Label {
+                width: control.textWidth
                 text: control.text
                 textFormat: Text.PlainText
                 font.pixelSize: 14
@@ -108,7 +113,6 @@ FishUI.Window {
                 wrapMode: Text.Wrap
                 lineHeight: 20
                 lineHeightMode: Text.FixedHeight
-                Layout.fillWidth: true
                 visible: text.length > 0
             }
         }

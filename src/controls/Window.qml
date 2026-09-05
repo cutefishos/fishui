@@ -75,8 +75,17 @@ Window {
     // the shadow it is opening with should be the one it will keep: building
     // the inactive shadow first only to replace it a frame later is what made
     // an opening window blink.
+    // The first activation must not be cross-faded either: a window is mapped
+    // inactive and activated a frame later, so an enabled Behavior repaints the
+    // whole window for the length of the animation just as it appears.
     property bool _wasActive: false
-    onActiveChanged: if (active) _wasActive = true
+    property bool _settled: false
+    onActiveChanged: {
+        if (active) {
+            _wasActive = true
+            Qt.callLater(function() { control._settled = true })
+        }
+    }
 
     // Window shadows
     FishUI.WindowShadow {
@@ -200,6 +209,7 @@ Window {
                       : Qt.rgba(0, 0, 0, control.active ? 0.18 : 0.12)
 
         Behavior on color {
+            enabled: control._settled
             ColorAnimation {
                 duration: 200
                 easing.type: Easing.Linear
@@ -207,6 +217,7 @@ Window {
         }
 
         Behavior on border.color {
+            enabled: control._settled
             ColorAnimation {
                 duration: 150
                 easing.type: Easing.Linear
